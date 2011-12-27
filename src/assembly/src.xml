@@ -1,0 +1,30 @@
+<assembly>
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <scope>compile</scope>
+            <useProjectArtifact>true</useProjectArtifact>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>target/</directory>
+            <outputDirectory>sources</outputDirectory>
+            <includes>
+                <include>**sources.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>bin/</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
+    </fileSets>
+
+</assembly>

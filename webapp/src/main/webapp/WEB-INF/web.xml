@@ -1,0 +1,37 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <!--<servlet>-->
+        <!--<display-name>GridService</display-name>-->
+        <!--<servlet-name>GridService</servlet-name>-->
+        <!--<servlet-name>fr.soat.devoxxfr.game.business.PropertiesUtilsertiesUtils</servlet-name>-->
+        <!--<servlet-class>fr.soat.devoxxfr.game.business.PropertiesUtilsertiesUtils</servlet-class>-->
+        <!--<init-param>-->
+        <!--<param-name>sleep-time-in-seconds</param-name>-->
+        <!--<param-value>10</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+
+
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>fr.soat.devoxx.game.business</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <!--<servlet-name>fr.soat.devoxxfr.game.business.PropertiesUtilsertiesUtils</servlet-name>-->
+        <servlet-name>Jersey Web Application</servlet-name>
+        <!--<servlet-name>GridService</servlet-name>-->
+        <url-pattern>/services/*</url-pattern>
+        <!--<url-pattern>/resources</url-pattern>-->
+    </servlet-mapping>
+
+</web-app>

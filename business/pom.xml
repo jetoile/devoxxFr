@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>game</artifactId>
+        <groupId>fr.soat.devoxxfr.game</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>business</artifactId>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>fr.soat.devoxxfr.game</groupId>
+            <artifactId>persistent</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.soat.devoxxfr.game</groupId>
+            <artifactId>pojo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.soat.devoxxfr.game</groupId>
+            <artifactId>admin-pojo</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <jdbc.url>jdbc:hsqldb:mem:test</jdbc.url>
+                <jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
+                <jdbc.username>sa</jdbc.username>
+                <jdbc.password></jdbc.password>
+                <jdbc.target-database>org.eclipse.persistence.platform.database.HSQLPlatform</jdbc.target-database>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <jdbc.url>jdbc:mysql://localhost:3306/devoxx</jdbc.url>
+                <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>Sic21pes</jdbc.password>
+                <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
+            </properties>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <configuration>
+                    <!--<relativePath>../</relativePath>-->
+                    <rootPath>${workspace.root}</rootPath>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

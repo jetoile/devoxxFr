@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>game</artifactId>
+        <groupId>fr.soat.devoxxfr.game</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>admin-pojo</artifactId>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>fr.soat.devoxxfr.game</groupId>
+            <artifactId>pojo</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.morphia</groupId>
+            <artifactId>morphia</artifactId>
+            <version>0.99</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--<id>maven-mongodb-plugin-repo</id>-->
+    <!--<name>maven mongodb plugin repository</name>-->
+    <!--<url>http://maven-mongodb-plugin.googlecode.com/svn/maven/repo</url>-->
+    <!--<layout>default</layout>-->
+    <!--</repository>-->
+    <!--</repositories>-->
+
+    <!--<build>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>com.googlecode</groupId>-->
+    <!--<artifactId>maven-mongodb-plugin</artifactId>-->
+    <!--<version>0.2</version>-->
+    <!--<configuration>-->
+    <!--<dbConnectionSettings>-->
+    <!--<hostname>localhost</hostname>-->
+    <!--<database>devoxx</database>-->
+    <!--</dbConnectionSettings>-->
+    <!--<dbUpdateScriptsDirectory>-->
+    <!--<param>src/main/mongo/update</param>-->
+    <!--</dbUpdateScriptsDirectory>-->
+    <!--<dbCreateScriptsDirectory>-->
+    <!--<param>src/main/mongo/create</param>-->
+    <!--</dbCreateScriptsDirectory>-->
+    <!--</configuration>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</build>-->
+</project>
