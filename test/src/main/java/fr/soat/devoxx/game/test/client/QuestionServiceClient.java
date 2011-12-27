@@ -69,8 +69,8 @@ public class QuestionServiceClient {
         resp = client.testGetReplyForQuestion3WithInvalidResponse();
         System.out.println("RESULT: is responding to a question: " + resp);
 
-        System.out.println("is deleting the user");
-        client.testDeleteUser();
+//        System.out.println("is deleting the user");
+//        client.testDeleteUser();
     }
 
 
@@ -82,6 +82,7 @@ public class QuestionServiceClient {
     
     public ResponseResponseDto testGetReplyForQuestion1() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
+        requestDto.setUserName("toto");
         requestDto.setId(1);
         requestDto.setResponses(Lists.newArrayList("toto"));
 
@@ -95,6 +96,7 @@ public class QuestionServiceClient {
 
     public ResponseResponseDto testGetReplyForQuestion3() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
+        requestDto.setUserName("toto");
         requestDto.setId(3);
         requestDto.setResponses(Lists.newArrayList("toto", "titi"));
 
@@ -107,6 +109,7 @@ public class QuestionServiceClient {
 
     public ResponseResponseDto testGetReplyForQuestion3WithFalseResponse() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
+        requestDto.setUserName("toto");
         requestDto.setId(3);
         requestDto.setResponses(Lists.newArrayList("toto", "titi", "tutu"));
 
@@ -119,6 +122,7 @@ public class QuestionServiceClient {
 
     public ResponseResponseDto testGetReplyForQuestion3WithInvalidResponse() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
+        requestDto.setUserName("toto");
         requestDto.setId(3);
         requestDto.setResponses(Collections.EMPTY_LIST);
 
