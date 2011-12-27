@@ -35,7 +35,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -132,6 +131,14 @@ public enum GameUserDataManager {
 
         //UpdateOperations<User> ops = datastore.createUpdateOperations(User.class).set("lastLogin", now);
 //        ds.update(queryToFindMe(), ops);
+    }
+
+    public GameResult getResult(String userName) {
+        GameResult result = new GameResult();
+        result.setNbSuccess(getGamesByResultType(userName, ResponseType.SUCCESS).size());
+        result.setNbFail(getGamesByResultType(userName, ResponseType.FAIL).size());
+        result.setNbInvalid(getGamesByResultType(userName, ResponseType.INVALID).size());
+        return result;
     }
 
 }

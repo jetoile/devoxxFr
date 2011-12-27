@@ -69,6 +69,10 @@ public class QuestionServiceClient {
         resp = client.testGetReplyForQuestion3WithInvalidResponse();
         System.out.println("RESULT: is responding to a question: " + resp);
 
+
+        System.out.println("is getting results");
+        System.out.println("RESULT: is responding to a question: " + client.testGetResult());
+
 //        System.out.println("is deleting the user");
 //        client.testDeleteUser();
     }
@@ -166,6 +170,14 @@ public class QuestionServiceClient {
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
         service.path("services").path("/user/user/toto").delete();
+    }
+
+    public ResultResponseDto testGetResult() {
+        ClientConfig config = new DefaultClientConfig();
+        Client client = Client.create(config);
+        WebResource service = client.resource(getBaseURI());
+        ResultResponseDto res = service.path("services").path("/result/result/toto").type(MediaType.APPLICATION_JSON).get(ResultResponseDto.class);
+        return res;
     }
 
 }
