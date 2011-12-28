@@ -52,6 +52,24 @@
 
     <profiles>
         <profile>
+            <id>cloudbees</id>
+
+            <properties>
+                <jdbc.url>jdbc:cloudbees://devoxxfr</jdbc.url>
+                <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+                <jdbc.username>jetoile</jdbc.username>
+                <jdbc.password>jetoile</jdbc.password>
+                <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>default</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
