@@ -62,11 +62,15 @@ public enum GameUserDataManager {
         String host = this.configuration.getString("mongodb.host", "localhost");
         int port = this.configuration.getInt("mongodb.port", 27017);
         String dbName = this.configuration.getString("mongodb.dbname", "devoxx");
+        String login = this.configuration.getString("mongodb.login", "jetoile");
+        String password = this.configuration.getString("mongodb.password", "jetoile");
         
         Mongo mongo = null;
         try {
             mongo = new Mongo(host, port);
+            mongo.getDB(dbName).authenticate(login, password.toCharArray());
             ds = new Morphia().createDatastore(mongo, dbName);
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
