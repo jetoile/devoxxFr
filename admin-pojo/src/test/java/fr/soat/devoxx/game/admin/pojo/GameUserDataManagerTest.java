@@ -47,13 +47,13 @@ import static org.mockito.Mockito.*;
 public class GameUserDataManagerTest {
     @Before
     public void setUp() {
-        try {
-            Mongo mongo = new Mongo("localhost", 27017);
-            Datastore ds = new Morphia().createDatastore(mongo, "foo");
-            GameUserDataManager.INSTANCE.ds = ds;
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Mongo mongo = new Mongo("localhost", 27017);
+//            Datastore ds = new Morphia().createDatastore(mongo, "foo");
+//            GameUserDataManager.INSTANCE.ds = ds;
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
