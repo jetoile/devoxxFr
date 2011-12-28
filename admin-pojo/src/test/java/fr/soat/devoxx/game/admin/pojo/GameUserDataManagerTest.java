@@ -25,6 +25,8 @@ package fr.soat.devoxx.game.admin.pojo;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.google.code.morphia.query.FieldEnd;
+import com.google.code.morphia.query.Query;
 import com.google.common.collect.Lists;
 import com.mongodb.Mongo;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
@@ -71,53 +73,107 @@ public class GameUserDataManagerTest {
 
     @Test(expected = StorageException.class)
     public void addGameWithAnUnknownUserShouldFail() throws Exception {
+        //given
+        GameUserData gameUserData = new GameUserData();
+        gameUserData.setName("use");
+
+        Datastore ds = mock(Datastore.class);
+        Query<GameUserData> query = mock(Query.class);
+        FieldEnd fieldEnd = mock(FieldEnd.class);
+
+        GameUserDataManager.INSTANCE.ds = ds;        
+        when(query.get()).thenReturn(null);
+        when(query.field("name")).thenReturn(fieldEnd);
+        when(fieldEnd.equal(anyString())).thenReturn(query);
+        when(ds.find(GameUserData.class)).thenReturn(query);
+
         Game game = new Game();
         game.setGivenAnswers(Lists.newArrayList("toto", "titi"));
         game.setType(ResponseType.SUCCESS);
 
+        //when
         GameUserDataManager.INSTANCE.addGame("use", game);
+//        verify(ds).save();
     }
 
     @Test
     public void addGameShouldSuccess() throws StorageException {
+        //given
+        GameUserData gameUserData = mock(GameUserData.class);
+        when(gameUserData.getName()).thenReturn("user1");
+
+        Datastore ds = mock(Datastore.class);
+        Query<GameUserData> query = mock(Query.class);
+        FieldEnd fieldEnd = mock(FieldEnd.class);
+
+        GameUserDataManager.INSTANCE.ds = ds;
+        when(query.get()).thenReturn(gameUserData);
+        when(query.field("name")).thenReturn(fieldEnd);
+        when(fieldEnd.equal(anyString())).thenReturn(query);
+        when(ds.find(GameUserData.class)).thenReturn(query);
+
         Game game = new Game();
         game.setId(1);
         game.setGivenAnswers(Lists.newArrayList("toto", "titi"));
         game.setType(ResponseType.SUCCESS);
 
-        GameUserDataManager.INSTANCE.registerUser("user1");
+        //when
         GameUserDataManager.INSTANCE.addGame("user1", game);
 
-        assertEquals("GameUserData{name='user1', score=0, games=[Game{id=1, givenAnswers=[toto, titi], type=SUCCESS}]}", GameUserDataManager.INSTANCE.getGames("user1").toString());
-
-        GameUserDataManager.INSTANCE.destroyUser("user1");
+        //then
+        verify(gameUserData, times(1)).addGame(game);
+        verify(ds, times(1)).save(gameUserData);
     }
 
     @Test
-    public void getGamesByResponseTyepShouldSuccess() throws StorageException {
-        GameUserDataManager.INSTANCE.registerUser("user1");
-        GameUserDataManager.INSTANCE.registerUser("user2");
+    public void getGamesByResponseTypeShouldSuccess() throws StorageException {
+        //given
+        GameUserData gameUserData = mock(GameUserData.class);
+        when(gameUserData.getName()).thenReturn("user1");
 
-        Game game = new Game();
-        game.setId(1);
-        game.setGivenAnswers(Lists.newArrayList("toto", "titi"));
-        game.setType(ResponseType.SUCCESS);
-        GameUserDataManager.INSTANCE.addGame("user1", game);
-        GameUserDataManager.INSTANCE.addGame("user2", game);
+//        GameUserData gameUserData2 = mock(GameUserData.class);
+//        when(gameUserData2.getName()).thenReturn("user2");
 
-        game = new Game();
-        game.setId(2);
-        game.setGivenAnswers(Lists.newArrayList("tutu1"));
-        game.setType(ResponseType.FAIL);
-        GameUserDataManager.INSTANCE.addGame("user1", game);
-        GameUserDataManager.INSTANCE.addGame("user2", game);
+        Datastore ds = mock(Datastore.class);
+        Query<GameUserData> query = mock(Query.class);
+        Query<GameUserData> query2 = mock(Query.class);
+        FieldEnd fieldEnd = mock(FieldEnd.class);
+        FieldEnd fieldEnd2 = mock(FieldEnd.class);
+
+        GameUserDataManager.INSTANCE.ds = ds;
+        when(query.field("name")).thenReturn(fieldEnd);
+        when(fieldEnd.equal("user1")).thenReturn(query2);
+        when(query2.field("games.type")).thenReturn(fieldEnd2);
+        when(fieldEnd2.contains("SUCCESS")).thenReturn(query2);
+        when(query2.asList()).thenReturn(Lists.newArrayList(gameUserData));
+        when(ds.find(GameUserData.class)).thenReturn(query);
+
+        Query<GameUserData> query3 = mock(Query.class);
+        when(fieldEnd2.contains("FAIL")).thenReturn(query3);
+        when(query3.asList()).thenReturn(Lists.newArrayList(gameUserData));
+
+        Query<GameUserData> query4 = mock(Query.class);
+        when(fieldEnd2.contains("INVALID")).thenReturn(query4);
+        when(query4.asList()).thenReturn(Lists.newArrayList(gameUserData));
+
+        Game game1 = new Game();
+        game1.setId(1);
+        game1.setGivenAnswers(Lists.newArrayList("toto", "titi"));
+        game1.setType(ResponseType.SUCCESS);
+
+        Game game2 = new Game();
+        game2.setId(2);
+        game2.setGivenAnswers(Lists.newArrayList("tutu1"));
+        game2.setType(ResponseType.FAIL);
 
 
-        game = new Game();
-        game.setId(3);
-        game.setGivenAnswers(Lists.newArrayList("tutu"));
-        game.setType(ResponseType.SUCCESS);
-        GameUserDataManager.INSTANCE.addGame("user1", game);
+        Game game3 = new Game();
+        game3.setId(3);
+        game3.setGivenAnswers(Lists.newArrayList("tutu"));
+        game3.setType(ResponseType.SUCCESS);
+
+        when(gameUserData.getGames()).thenReturn(Lists.newArrayList(game1, game2, game3));
+//        when(gameUserData2.getGames()).thenReturn(Lists.newArrayList(game1, game2));
 
         List<Game> games = GameUserDataManager.INSTANCE.getGamesByResultType("user1", ResponseType.SUCCESS);
         assertTrue(games.size() == 2);
