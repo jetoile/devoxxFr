@@ -79,7 +79,7 @@
                 <jdbc.url>jdbc:mysql://localhost:3306/devoxx</jdbc.url>
                 <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
                 <jdbc.username>root</jdbc.username>
-                <jdbc.password>Sic21pes</jdbc.password>
+                <jdbc.password></jdbc.password>
                 <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
             </properties>
 
