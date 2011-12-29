@@ -38,7 +38,7 @@ public class Response implements Serializable {
     private int id;
 
     @NotNull
-    private List<String> responses = new ArrayList<>();
+    private List<String> responses = new ArrayList<String>();
 
     public Response() {
     }

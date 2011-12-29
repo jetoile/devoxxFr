@@ -36,8 +36,8 @@ import java.util.Set;
  * Time: 14:26
  */
 public class InvalidUserException extends Exception {
-    private List<String> causes = new ArrayList<>();
-    private List<String> causesKey = new ArrayList<>();
+    private List<String> causes = new ArrayList<String>();
+    private List<String> causesKey = new ArrayList<String>();
     
     public InvalidUserException(String cause) {
         super(cause);

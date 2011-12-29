@@ -81,7 +81,7 @@ public enum GameUserDataManager {
     }
     
     public List<Game> getGamesByResultType(String userName, ResponseType responseType) {
-        List<Game>  result = new ArrayList<>();
+        List<Game>  result = new ArrayList<Game>();
         if (ds != null) {
             List<GameUserData> gameUserDatas = ds.find(GameUserData.class).field("name").equal(userName).field("games.type").contains(responseType.name()).asList();
             for (GameUserData gameUserData : gameUserDatas) {

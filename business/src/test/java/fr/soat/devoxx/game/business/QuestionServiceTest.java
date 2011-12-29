@@ -76,7 +76,7 @@ public class QuestionServiceTest {
     public void giveResponseForQuestion1ShouldReturnSuccessWithValidResponse() {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(1);
-        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto");
         responseDto.setResponses(responses);
         ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
@@ -88,14 +88,14 @@ public class QuestionServiceTest {
     public void giveResponseForQuestion1ShouldReturnFailWithFalseResponse() {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(1);
-        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto1");
         responseDto.setResponses(responses);
         ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
-        responses = new ArrayList<>();
+        responses = new ArrayList<String>();
         responses.add("toto");
         responses.add("tata");
         responseDto.setResponses(responses);
@@ -103,7 +103,7 @@ public class QuestionServiceTest {
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
-        responses = new ArrayList<>();
+        responses = new ArrayList<String>();
         responseDto.setResponses(responses);
         responseResponseDto = questionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
@@ -126,7 +126,7 @@ public class QuestionServiceTest {
     public void giveResponseForQuestion2ShouldReturnSuccessWithValidResponse() {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(2);
-        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto");
         responseDto.setResponses(responses);
         ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
@@ -138,14 +138,14 @@ public class QuestionServiceTest {
     public void giveResponseForQuestion2ShouldReturnFailWithFalseResponse() {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(2);
-        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto1");
         responseDto.setResponses(responses);
         ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
-        responses = new ArrayList<>();
+        responses = new ArrayList<String>();
         responses.add("toto");
         responses.add("tata");
         responseDto.setResponses(responses);
@@ -153,7 +153,7 @@ public class QuestionServiceTest {
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
-        responses = new ArrayList<>();
+        responses = new ArrayList<String>();
         responseDto.setResponses(responses);
         responseResponseDto = questionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
@@ -165,7 +165,7 @@ public class QuestionServiceTest {
     public void giveResponseForQuestion3ShouldReturnSuccessWithValidResponse() {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(3);
-        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto");
         responses.add("titi");
         responseDto.setResponses(responses);
@@ -178,14 +178,14 @@ public class QuestionServiceTest {
     public void giveResponseForQuestion3ShouldReturnFailWithFalseResponse() {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(3);
-        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto");
         responseDto.setResponses(responses);
         ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
-        responses = new ArrayList<>();
+        responses = new ArrayList<String>();
         responses.add("toto");
         responses.add("tata");
         responseDto.setResponses(responses);
@@ -194,7 +194,7 @@ public class QuestionServiceTest {
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
 
-        responses = new ArrayList<>();
+        responses = new ArrayList<String>();
         responses.add("toto");
         responses.add("titi");
         responses.add("tutu");
@@ -203,7 +203,7 @@ public class QuestionServiceTest {
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
-        responses = new ArrayList<>();
+        responses = new ArrayList<String>();
         responseDto.setResponses(responses);
         responseResponseDto = questionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);

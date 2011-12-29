@@ -38,7 +38,7 @@ import java.util.Random;
  */
 public class Questions {
 
-    private final Map<Integer, Question> questions = new HashMap<>();
+    private final Map<Integer, Question> questions = new HashMap<Integer, Question>();
 
     public void addQuestion(Question question) {
         this.questions.put(question.getId(), question);

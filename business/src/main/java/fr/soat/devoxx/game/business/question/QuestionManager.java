@@ -105,7 +105,10 @@ public enum QuestionManager {
                 if (question.getQuestionType() == QuestionType.MULTIPLE_SINGLE_CHOICE && question.getAnswers().size() != 1) {
                     throw new InvalidQuestionException("multiple single choice should have an only answer");
                 }
-            } catch (NoSuchElementException | InvalidQuestionException e) {
+            } catch (NoSuchElementException e) {
+                LOGGER.error("error while reading question: {}", e.getMessage());
+                continue;
+            } catch (InvalidQuestionException e) {
                 LOGGER.error("error while reading question: {}", e.getMessage());
                 continue;
             }
@@ -135,17 +138,26 @@ public enum QuestionManager {
 
     private QuestionType getQuestionType(int i) throws InvalidQuestionException {
         String type = this.configuration.getString(i + ".question.type");
-        
-        switch (type) {
-        case "FREE" :
+        if (QuestionType.FREE.name().equals(type)) {
             return QuestionType.FREE;
-        case "MULTIPLE_CHOICE" :
+        } else if (QuestionType.MULTIPLE_CHOICE.name().equals(type)) {
             return QuestionType.MULTIPLE_CHOICE;
-        case "MULTIPLE_SINGLE_CHOICE" :
+        } else if (QuestionType.MULTIPLE_SINGLE_CHOICE.name().equals(type)) {
             return QuestionType.MULTIPLE_SINGLE_CHOICE;
-        default:
+        } else {
             throw new InvalidQuestionException("wrong type");
         }
+
+//        switch (type) {
+//            case "FREE" :
+//            return QuestionType.FREE;
+//        case "MULTIPLE_CHOICE" :
+//            return QuestionType.MULTIPLE_CHOICE;
+//        case "MULTIPLE_SINGLE_CHOICE" :
+//            return QuestionType.MULTIPLE_SINGLE_CHOICE;
+//        default:
+//            throw new InvalidQuestionException("wrong type");
+//        }
     }
 
     private class InvalidQuestionException extends Exception {

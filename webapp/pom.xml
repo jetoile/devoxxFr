@@ -88,10 +88,10 @@
                     <groupId>mysql</groupId>
                     <artifactId>mysql-connector-java</artifactId>
                 </dependency>
-                <dependency>
-                    <groupId>com.sun.jersey</groupId>
-                    <artifactId>jersey-jrebel</artifactId>
-                </dependency>
+                <!--<dependency>-->
+                    <!--<groupId>com.sun.jersey</groupId>-->
+                    <!--<artifactId>jersey-jrebel</artifactId>-->
+                <!--</dependency>-->
             </dependencies>
             <build>
                 <plugins>

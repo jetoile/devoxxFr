@@ -46,7 +46,7 @@ public class GameUserData {
     private int score = 0;
 
     @Embedded("games")
-    private ArrayList<Game> games = new ArrayList<>();
+    private ArrayList<Game> games = new ArrayList<Game>();
 
     public int getScore() {
 

@@ -40,7 +40,7 @@ public class ResponseRequestDto implements Serializable {
 
     private String userName;
     
-    private List<String> responses = new ArrayList<>();
+    private List<String> responses = new ArrayList<String>();
 
     public ResponseRequestDto() {
     }
