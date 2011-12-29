@@ -40,20 +40,23 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>jrebel-maven-plugin</artifactId>
-                <configuration>
-                    <!--<relativePath>../</relativePath>-->
-                    <rootPath>${workspace.root}</rootPath>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.zeroturnaround</groupId>
+                        <artifactId>jrebel-maven-plugin</artifactId>
+                        <configuration>
+                            <!--<relativePath>../</relativePath>-->
+                            <rootPath>${workspace.root}</rootPath>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <!--<repositories>-->
     <!--<repository>-->
     <!--<id>maven-mongodb-plugin-repo</id>-->
