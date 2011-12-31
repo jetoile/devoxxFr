@@ -23,10 +23,13 @@
  */
 package fr.soat.devoxx.game.business;
 
+import com.sun.jersey.api.json.JSONWithPadding;
 import fr.soat.devoxx.game.admin.pojo.GameResult;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.business.admin.AdminResultService;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -37,10 +40,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/result")
 public class ResultService {
 
+    private AdminResultService delegate = new AdminResultService();
+
     @Path("/result/{username}")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public GameResult getResultForUser(@PathParam("username") String userName) {
-        return GameUserDataManager.INSTANCE.getResult(userName);
+    @Produces("application/x-javascript")
+    public JSONWithPadding getResultForUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String userName) {
+        GameResult result = delegate.getResultForUser(userName);
+        return new JSONWithPadding(result, callback);
     }
 }

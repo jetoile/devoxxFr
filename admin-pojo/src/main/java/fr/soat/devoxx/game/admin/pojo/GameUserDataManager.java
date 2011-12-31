@@ -30,6 +30,7 @@ import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,13 +63,15 @@ public enum GameUserDataManager {
         String host = this.configuration.getString("mongodb.host", "localhost");
         int port = this.configuration.getInt("mongodb.port", 27017);
         String dbName = this.configuration.getString("mongodb.dbname", "devoxx");
-        String login = this.configuration.getString("mongodb.login", "jetoile");
-        String password = this.configuration.getString("mongodb.password", "jetoile");
+        String login = this.configuration.getString("mongodb.login", "");
+        String password = this.configuration.getString("mongodb.password", "");
         
         Mongo mongo = null;
         try {
             mongo = new Mongo(host, port);
-            mongo.getDB(dbName).authenticate(login, password.toCharArray());
+            if (!StringUtils.isEmpty(login) || !StringUtils.isEmpty(password)) {
+                mongo.getDB(dbName).authenticate(login, password.toCharArray());
+            }
             ds = new Morphia().createDatastore(mongo, dbName);
 
         } catch (UnknownHostException e) {

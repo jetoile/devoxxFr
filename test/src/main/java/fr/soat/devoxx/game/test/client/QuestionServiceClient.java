@@ -34,6 +34,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONWithPadding;
 import fr.soat.devoxx.game.pojo.*;
 
 /**
@@ -81,6 +82,7 @@ public class QuestionServiceClient {
     private static URI getBaseURI() {
 //        return UriBuilder.fromUri("http://localhost:9090/").build();
         return UriBuilder.fromUri("http://localhost:8080/webapp-1.0.0-SNAPSHOT/").build();
+//        return UriBuilder.fromUri("http://devoxxfr.jetoile.cloudbees.net/").build();
     }
 
     
@@ -93,7 +95,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
 
@@ -107,7 +109,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
 
@@ -120,7 +122,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
 
@@ -133,7 +135,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
     
@@ -145,7 +147,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        UserResponseDto res = service.path("services").path("/user/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
+        UserResponseDto res = service.path("services").path("/admin/user/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
         return  res;
     }
 
@@ -157,7 +159,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        QuestionResponseDto res = service.path("services").path("/question/question").type(MediaType.APPLICATION_JSON).get(QuestionResponseDto.class);
+        QuestionResponseDto res = service.path("services").path("/admin/question/question").type(MediaType.APPLICATION_JSON).get(QuestionResponseDto.class);
         return res;
     }
 
@@ -176,7 +178,8 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResultResponseDto res = service.path("services").path("/result/result/toto").type(MediaType.APPLICATION_JSON).get(ResultResponseDto.class);
+        ResultResponseDto res = service.path("services").path("/admin/result/result/toto").type(MediaType.APPLICATION_JSON).get(ResultResponseDto.class);
+//        JSONWithPadding res = service.path("services").path("/result/result/toto").type(MediaType.APPLICATION_JSON).get(JSONWithPadding.class);
         return res;
     }
 

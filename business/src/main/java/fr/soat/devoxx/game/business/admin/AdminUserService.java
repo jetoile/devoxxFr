@@ -21,9 +21,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game.business;
+package fr.soat.devoxx.game.business.admin;
 
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.business.PropertiesUtils;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import fr.soat.devoxx.game.persistent.User;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
@@ -37,13 +38,14 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Set;
@@ -53,11 +55,13 @@ import java.util.Set;
  * Date: 20/12/11
  * Time: 14:12
  */
-@Path("/user")
-public class UserService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+@Path("/admin/user")
+public class AdminUserService {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminUserService.class);
 
     private String PERSISTENCE_UNIT_NAME = "devoxx";
+
+    private GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
     {
@@ -74,17 +78,47 @@ public class UserService {
             em = emf.createEntityManager();
     }
 
-    public UserService() {
-        //NOTHING TO DO
+    public AdminUserService() {
+        this.gameUserDataManager = GameUserDataManager.INSTANCE;
     }
 
-    UserService(String persistenceUnitName) {
+    AdminUserService(String persistenceUnitName, GameUserDataManager gameUserDataManager) {
         this.PERSISTENCE_UNIT_NAME = persistenceUnitName;
+        this.gameUserDataManager = gameUserDataManager;
     }
 
     private void close() {
         if (em != null) {
             em.close();
+        }
+    }
+
+    @Path("/user1")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
+        try {
+            init();
+            User user = new User(name, mail);
+
+            Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+            if (constraintViolations.size() != 0) {
+                LOGGER.error("Invalid input for user creation {} - {}", name, mail);
+                throw new InvalidUserException(constraintViolations);
+            }
+            final String token = generateToken();
+            user.setToken(token);
+
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+            LOGGER.debug("User creation successful: {} - {}", name, mail);
+
+            this.gameUserDataManager.registerUser(name);
+
+            return dozerMapper.map(user, UserResponseDto.class);
+        } finally {
+            close();
         }
     }
 
@@ -110,7 +144,7 @@ public class UserService {
             em.getTransaction().commit();
             LOGGER.debug("User creation successful: {}", userRequestDto);
 
-            GameUserDataManager.INSTANCE.registerUser(userRequestDto.getName());
+            this.gameUserDataManager.registerUser(userRequestDto.getName());
 
             return dozerMapper.map(user, UserResponseDto.class);
         } finally {
@@ -159,7 +193,7 @@ public class UserService {
             }
             em.getTransaction().commit();
 
-            GameUserDataManager.INSTANCE.destroyUser(userName);
+            this.gameUserDataManager.destroyUser(userName);
 
             LOGGER.debug("delete all user {} successful", userName);
         } finally {

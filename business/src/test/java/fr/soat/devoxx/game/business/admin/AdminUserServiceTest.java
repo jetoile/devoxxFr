@@ -21,12 +21,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game.business;
+package fr.soat.devoxx.game.business.admin;
 
+import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.*;
 
@@ -35,25 +43,31 @@ import static org.junit.Assert.*;
  * Date: 20/12/11
  * Time: 15:28
  */
-public class UserServiceTest {
-    private UserService userService;
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(GameUserDataManager.class)
+@PowerMockIgnore("javax.management.*")
+public class AdminUserServiceTest {
+    private AdminUserService adminUserService;
 
     @Before
     public void init() {
-        userService = new UserService("devoxx-test");
-//        userService = new UserService("devoxx");
-        userService.deleteUser("toto");
+        GameUserDataManager gameUserDataManager = PowerMockito.mock(GameUserDataManager.class);
+//        when(gameUserDataManager.)
+
+        adminUserService = new AdminUserService("devoxx-test", gameUserDataManager);
+//        adminUserService = new UserService("devoxx");
+        adminUserService.deleteUser("toto");
     }
 
     @Test
     public void generateTokenShouldReturnDifferentResults() {
-        assertNotSame(userService.generateToken(), userService.generateToken());
+        assertNotSame(adminUserService.generateToken(), adminUserService.generateToken());
     }
 
     @Test
     public void createUserShouldReturnAToken() throws InvalidUserException {
 
-        UserResponseDto user = userService.createUser("toto", "toto@gmail.com");
+        UserResponseDto user = adminUserService.createUser("toto", "toto@gmail.com");
         assertNotNull(user);
         assertNotNull(user.getToken());
     }
@@ -61,35 +75,35 @@ public class UserServiceTest {
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidMailShouldThrowException() throws InvalidUserException {
-        userService.createUser("toto", "toto@gmailcom");
+        adminUserService.createUser("toto", "toto@gmailcom");
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidMail2ShouldThrowException() throws InvalidUserException {
-        userService.createUser("toto", "totogmailcom");
+        adminUserService.createUser("toto", "totogmailcom");
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidMail3ShouldThrowException() throws InvalidUserException {
-        userService.createUser("toto", null);
+        adminUserService.createUser("toto", null);
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidNameShouldThrowException() throws InvalidUserException {
-        userService.createUser("to", "toto@gmailcom");
+        adminUserService.createUser("to", "toto@gmailcom");
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidName2ShouldThrowException() throws InvalidUserException {
-        userService.createUser(null, "toto@gmailcom");
+        adminUserService.createUser(null, "toto@gmailcom");
     }
 
     @Test
     public void generateAValidUserShouldSuccessAndBePersist() throws InvalidUserException {
-        UserResponseDto user = userService.createUser("toto", "toto@gmail.com");
+        UserResponseDto user = adminUserService.createUser("toto", "toto@gmail.com");
         assertNotNull(user);
 //        assertTrue(user.getToken().length() == 10);
-        assertEquals("toto", userService.getUser("toto").getName());
+        assertEquals("toto", adminUserService.getUser("toto").getName());
     }
 }
 

@@ -21,8 +21,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game.business;
+package fr.soat.devoxx.game.business.admin;
 
+import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.business.question.QuestionManager;
 import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
@@ -31,31 +32,44 @@ import fr.soat.devoxx.game.pojo.question.QuestionType;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * User: khanh
  * Date: 21/12/11
  * Time: 19:34
  */
-public class QuestionServiceTest {
-    private QuestionService questionService;
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(GameUserDataManager.class)
+@PowerMockIgnore("javax.management.*")
+public class AdminQuestionServiceTest {
+    private AdminQuestionService adminQuestionService;
 
     @Before
     public void setUp() {
+        GameUserDataManager gameUserDataManager = PowerMockito.mock(GameUserDataManager.class);
+//        when(gameUserDataManager.getResult())
+
         QuestionManager questionManager = QuestionManager.INSTANCE;
         questionManager.setConfiguration("question-test.properties");
-        questionService = new QuestionService();
-        questionService.questionManager = questionManager;
+        adminQuestionService = new AdminQuestionService(gameUserDataManager);
+        adminQuestionService.questionManager = questionManager;
     }
 
     @Test
     public void getQuestionShouldReturnAValidResult() {
-        QuestionResponseDto questionDto = questionService.getQuestion();
+        QuestionResponseDto questionDto = adminQuestionService.getQuestion();
         assertNotNull(questionDto);
         assertNotNull(questionDto.getLabel());
         assertFalse(questionDto.getLabel().isEmpty());
@@ -79,7 +93,7 @@ public class QuestionServiceTest {
         ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto");
         responseDto.setResponses(responses);
-        ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
+        ResponseResponseDto responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.SUCCESS, responseResponseDto.getResponseType());
     }
@@ -91,7 +105,7 @@ public class QuestionServiceTest {
         ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto1");
         responseDto.setResponses(responses);
-        ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
+        ResponseResponseDto responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
@@ -99,13 +113,13 @@ public class QuestionServiceTest {
         responses.add("toto");
         responses.add("tata");
         responseDto.setResponses(responses);
-        responseResponseDto = questionService.giveResponse(responseDto);
+        responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
         responses = new ArrayList<String>();
         responseDto.setResponses(responses);
-        responseResponseDto = questionService.giveResponse(responseDto);
+        responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
     }
@@ -116,7 +130,7 @@ public class QuestionServiceTest {
         responseDto.setId(1);
         ArrayList<String> responses = null;
         responseDto.setResponses(responses);
-        ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
+        ResponseResponseDto responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.INVALID, responseResponseDto.getResponseType());
     }
@@ -129,7 +143,7 @@ public class QuestionServiceTest {
         ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto");
         responseDto.setResponses(responses);
-        ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
+        ResponseResponseDto responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.SUCCESS, responseResponseDto.getResponseType());
     }
@@ -141,7 +155,7 @@ public class QuestionServiceTest {
         ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto1");
         responseDto.setResponses(responses);
-        ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
+        ResponseResponseDto responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
@@ -149,13 +163,13 @@ public class QuestionServiceTest {
         responses.add("toto");
         responses.add("tata");
         responseDto.setResponses(responses);
-        responseResponseDto = questionService.giveResponse(responseDto);
+        responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
         responses = new ArrayList<String>();
         responseDto.setResponses(responses);
-        responseResponseDto = questionService.giveResponse(responseDto);
+        responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
     }
@@ -169,7 +183,7 @@ public class QuestionServiceTest {
         responses.add("toto");
         responses.add("titi");
         responseDto.setResponses(responses);
-        ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
+        ResponseResponseDto responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.SUCCESS, responseResponseDto.getResponseType());
     }
@@ -181,7 +195,7 @@ public class QuestionServiceTest {
         ArrayList<String> responses = new ArrayList<String>();
         responses.add("toto");
         responseDto.setResponses(responses);
-        ResponseResponseDto responseResponseDto = questionService.giveResponse(responseDto);
+        ResponseResponseDto responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
@@ -189,7 +203,7 @@ public class QuestionServiceTest {
         responses.add("toto");
         responses.add("tata");
         responseDto.setResponses(responses);
-        responseResponseDto = questionService.giveResponse(responseDto);
+        responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
@@ -199,13 +213,13 @@ public class QuestionServiceTest {
         responses.add("titi");
         responses.add("tutu");
         responseDto.setResponses(responses);
-        responseResponseDto = questionService.giveResponse(responseDto);
+        responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
 
         responses = new ArrayList<String>();
         responseDto.setResponses(responses);
-        responseResponseDto = questionService.giveResponse(responseDto);
+        responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
     }

@@ -49,7 +49,7 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>jrebel</id>
             <build>
                 <plugins>
                     <plugin>

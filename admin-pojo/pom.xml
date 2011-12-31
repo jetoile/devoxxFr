@@ -21,28 +21,23 @@
         <dependency>
             <groupId>com.google.code.morphia</groupId>
             <artifactId>morphia</artifactId>
-            <version>0.99</version>
         </dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
         </dependency>
-
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
         </dependency>
-
     </dependencies>
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>jrebel</id>
             <build>
                 <plugins>
                     <plugin>
@@ -57,34 +52,4 @@
             </build>
         </profile>
     </profiles>
-    <!--<repositories>-->
-    <!--<repository>-->
-    <!--<id>maven-mongodb-plugin-repo</id>-->
-    <!--<name>maven mongodb plugin repository</name>-->
-    <!--<url>http://maven-mongodb-plugin.googlecode.com/svn/maven/repo</url>-->
-    <!--<layout>default</layout>-->
-    <!--</repository>-->
-    <!--</repositories>-->
-
-    <!--<build>-->
-    <!--<plugins>-->
-    <!--<plugin>-->
-    <!--<groupId>com.googlecode</groupId>-->
-    <!--<artifactId>maven-mongodb-plugin</artifactId>-->
-    <!--<version>0.2</version>-->
-    <!--<configuration>-->
-    <!--<dbConnectionSettings>-->
-    <!--<hostname>localhost</hostname>-->
-    <!--<database>devoxx</database>-->
-    <!--</dbConnectionSettings>-->
-    <!--<dbUpdateScriptsDirectory>-->
-    <!--<param>src/main/mongo/update</param>-->
-    <!--</dbUpdateScriptsDirectory>-->
-    <!--<dbCreateScriptsDirectory>-->
-    <!--<param>src/main/mongo/create</param>-->
-    <!--</dbCreateScriptsDirectory>-->
-    <!--</configuration>-->
-    <!--</plugin>-->
-    <!--</plugins>-->
-    <!--</build>-->
 </project>

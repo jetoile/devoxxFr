@@ -21,10 +21,20 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>fr.soat.devoxx.game.business</param-value>
+            <param-value>fr.soat.devoxx.game.business, fr.soat.devoxx.game.business.admin</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <!--<servlet>-->
+        <!--<servlet-name>Jersey Web Application Admin</servlet-name>-->
+        <!--<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>-->
+        <!--<init-param>-->
+            <!--<param-name>com.sun.jersey.config.property.packages</param-name>-->
+            <!--<param-value>fr.soat.devoxx.game.business.admin</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
 
     <servlet-mapping>
         <!--<servlet-name>fr.soat.devoxxfr.game.business.PropertiesUtilsertiesUtils</servlet-name>-->
@@ -33,5 +43,10 @@
         <url-pattern>/services/*</url-pattern>
         <!--<url-pattern>/resources</url-pattern>-->
     </servlet-mapping>
+
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Jersey Web Application Admin</servlet-name>-->
+        <!--<url-pattern>/admin/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
 </web-app>
