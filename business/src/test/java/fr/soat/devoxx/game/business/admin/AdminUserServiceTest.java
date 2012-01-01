@@ -25,6 +25,7 @@ package fr.soat.devoxx.game.business.admin;
 
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
+import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,8 +67,10 @@ public class AdminUserServiceTest {
 
     @Test
     public void createUserShouldReturnAToken() throws InvalidUserException {
-
-        UserResponseDto user = adminUserService.createUser("toto", "toto@gmail.com");
+        UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setName("toto");
+        userRequestDto.setMail("toto@gmail.com");
+        UserResponseDto user = adminUserService.createUser(userRequestDto);
         assertNotNull(user);
         assertNotNull(user.getToken());
     }
@@ -75,32 +78,50 @@ public class AdminUserServiceTest {
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidMailShouldThrowException() throws InvalidUserException {
-        adminUserService.createUser("toto", "toto@gmailcom");
+        UserRequestDto user = new UserRequestDto();
+        user.setName("toto");
+        user.setMail("toto@gmailcom");
+        adminUserService.createUser(user);
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidMail2ShouldThrowException() throws InvalidUserException {
-        adminUserService.createUser("toto", "totogmailcom");
+        UserRequestDto user = new UserRequestDto();
+        user.setName("toto");
+        user.setMail("totogmailcom");
+        adminUserService.createUser(user);
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidMail3ShouldThrowException() throws InvalidUserException {
-        adminUserService.createUser("toto", null);
+        UserRequestDto user = new UserRequestDto();
+        user.setName("toto");
+        user.setMail(null);
+        adminUserService.createUser(user);
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidNameShouldThrowException() throws InvalidUserException {
-        adminUserService.createUser("to", "toto@gmailcom");
+        UserRequestDto user = new UserRequestDto();
+        user.setName("to");
+        user.setMail("toto@gmailcom");
+        adminUserService.createUser(user);
     }
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidName2ShouldThrowException() throws InvalidUserException {
-        adminUserService.createUser(null, "toto@gmailcom");
+        UserRequestDto user = new UserRequestDto();
+        user.setName(null);
+        user.setMail("toto@gmailcom");
+        adminUserService.createUser(user);
     }
 
     @Test
     public void generateAValidUserShouldSuccessAndBePersist() throws InvalidUserException {
-        UserResponseDto user = adminUserService.createUser("toto", "toto@gmail.com");
+        UserRequestDto userRequest = new UserRequestDto();
+        userRequest.setName("toto");
+        userRequest.setMail("toto@gmail.com");
+        UserResponseDto user = adminUserService.createUser(userRequest);
         assertNotNull(user);
 //        assertTrue(user.getToken().length() == 10);
         assertEquals("toto", adminUserService.getUser("toto").getName());

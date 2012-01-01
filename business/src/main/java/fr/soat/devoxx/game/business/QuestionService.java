@@ -23,9 +23,11 @@
  */
 package fr.soat.devoxx.game.business;
 
+import com.sun.jersey.api.json.JSONWithPadding;
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
+import fr.soat.devoxx.game.business.admin.AdminQuestionService;
 import fr.soat.devoxx.game.business.question.Question;
 import fr.soat.devoxx.game.business.question.QuestionManager;
 import fr.soat.devoxx.game.business.question.Response;
@@ -56,66 +58,23 @@ import java.util.Set;
 public class QuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuestionService.class);
 
-    private final Mapper dozerMapper = new DozerBeanMapper();
-
-    QuestionManager questionManager = QuestionManager.INSTANCE;
-
-    private final Validator validator;
-
-    {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
+    private AdminQuestionService delegate = new AdminQuestionService();
 
     @Path("/question")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public QuestionResponseDto getQuestion() {
-        return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
+    @Produces("application/x-javascript")
+    public JSONWithPadding getQuestion(@QueryParam("jsoncallback") @DefaultValue("fn") String callback) {
+        QuestionResponseDto result = delegate.getQuestion();
+        return new JSONWithPadding(result, callback);
     }
 
     @Path("/reply")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResponseResponseDto giveResponse(ResponseRequestDto responseDto) {
-        Response res = dozerMapper.map(responseDto, Response.class);
-
-        ResponseResponseDto response = new ResponseResponseDto();
-
-        Set<ConstraintViolation<Response>> constraintViolations = validator.validate(res);
-        if (constraintViolations.size() != 0) {
-            LOGGER.error("Invalid response from user");
-            response.setResponseType(ResponseType.INVALID);
-            return response;
-        }
-        Question question = questionManager.loadQuestions().getQuestionById(res.getId());
-        List<String> answers = question.getAnswers();
-        List<String> responses = responseDto.getResponses();
-
-        response.setId(res.getId());
-        response.setAnswer(responses);
-        response.setResponseType(ResponseType.FAIL);
-
-        if (answers.size() == responses.size()) {
-            //TODO : gerer le cas des majuscules/minuscules
-            if (answers.containsAll(responses)) {
-                response.setResponseType(ResponseType.SUCCESS);
-            }
-        }
-
-        Game game = new Game();
-        game.setId(response.getId());
-        game.setGivenAnswers(response.getAnswer());
-        game.setType(response.getResponseType());
-//                dozerMapper.map(response, Game.class);
-        try {
-            GameUserDataManager.INSTANCE.addGame(responseDto.getUserName(), game);
-        } catch (StorageException e) {
-            LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
-        }
-
-        return response;
+    @Produces("application/x-javascript")
+    public JSONWithPadding giveResponse(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, ResponseRequestDto responseDto) {
+        ResponseResponseDto result = delegate.giveResponse(responseDto);
+        return new JSONWithPadding(result, callback);
     }
 
 }

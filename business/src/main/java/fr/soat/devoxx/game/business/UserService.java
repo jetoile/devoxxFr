@@ -23,7 +23,9 @@
  */
 package fr.soat.devoxx.game.business;
 
+import com.sun.jersey.api.json.JSONWithPadding;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.business.admin.AdminUserService;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import fr.soat.devoxx.game.persistent.User;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
@@ -57,142 +59,27 @@ import java.util.Set;
 public class UserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    private String PERSISTENCE_UNIT_NAME = "devoxx";
-
-    private final Validator validator;
-    {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
-
-    private final Mapper dozerMapper = new DozerBeanMapper();
-    private EntityManagerFactory emf;
-    private EntityManager em;
-
-    private void init() {
-            emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-            em = emf.createEntityManager();
-    }
-
-    public UserService() {
-        //NOTHING TO DO
-    }
-
-    UserService(String persistenceUnitName) {
-        this.PERSISTENCE_UNIT_NAME = persistenceUnitName;
-    }
-
-    private void close() {
-        if (em != null) {
-            em.close();
-        }
-    }
-
-    @Path("/user")
+    private AdminUserService delegate = new AdminUserService();
+    
+    @Path("/user/")
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public UserResponseDto createUser(UserRequestDto userRequestDto) throws InvalidUserException {
-        try {
-            init();
-            User user = dozerMapper.map(userRequestDto, User.class);
-            
-            Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+//    @GET
+    @Produces("application/x-javascript")
+    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
+//    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String name, @PathParam("mail") String mail) throws InvalidUserException {
+        UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setName(name);
+        userRequestDto.setMail(mail);
 
-            if (constraintViolations.size() != 0) {
-                LOGGER.error("Invalid input for user creation {}", userRequestDto);
-                throw new InvalidUserException(constraintViolations);
-            }
-            final String token = generateToken();
-            user.setToken(token);
-
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-            LOGGER.debug("User creation successful: {}", userRequestDto);
-
-            GameUserDataManager.INSTANCE.registerUser(userRequestDto.getName());
-
-            return dozerMapper.map(user, UserResponseDto.class);
-        } finally {
-            close();
-        }
+        UserResponseDto result = delegate.createUser(userRequestDto);
+        return new JSONWithPadding(result, callback);
     }
 
     @Path("/user/{username}")
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public UserResponseDto getUser(@PathParam("username") String userName) {
-        try {
-            init();
-
-            List<User> users = getUsers(em, userName);
-                    
-            if (users.size() == 1) {
-                LOGGER.debug("get user {} successful", userName);
-                UserResponseDto response = dozerMapper.map(users.get(0), UserResponseDto.class);
-                response.setToken(null);
-                return response;
-            } else if (users.size() > 1) {
-                LOGGER.debug("get user {} failed: too many response", userName);
-                return null;
-            } else {
-                LOGGER.debug("get user {} failed: not found", userName);
-                return null;
-            }
-        } finally {
-            close();
-        }
-
-    }
-
-    @Path("/user/{username}")
-    @DELETE
-    public void deleteUser(@PathParam("username") String userName) {
-        try {
-            init();
-
-            List<User> users = getUsers(em, userName);
-
-            em.getTransaction().begin();
-            for (User user : users) {
-                em.remove(user);
-            }
-            em.getTransaction().commit();
-
-            GameUserDataManager.INSTANCE.destroyUser(userName);
-
-            LOGGER.debug("delete all user {} successful", userName);
-        } finally {
-            close();
-        }
-    }
-
-    private List<User> getUsers(EntityManager em, String userName) {
-        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em, userName);
-        return em.createQuery(criteriaQuery).setParameter("name", userName).getResultList();
-    }
-
-    String generateToken() {
-        return RandomStringUtils.randomAlphanumeric(PropertiesUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
-    }
-    
-    private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em, String userName) {
-        //                    List<User> users = em.createQuery(
-        //                    "select g from User g where g.name = :name")
-        //                    .setParameter("name", userName).getResultList();
-
-        CriteriaBuilder queryBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery = queryBuilder.createQuery(User.class);
-
-        Root<User> root = criteriaQuery.from(User.class);
-
-        criteriaQuery
-                .select(root)
-                .where(
-                        queryBuilder.equal(
-                                root.get("name"),
-                                userName)
-                );
-        return criteriaQuery;
+    @Produces("application/x-javascript")
+    public JSONWithPadding getUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String userName) {
+        UserResponseDto result = delegate.getUser(userName);
+        return new JSONWithPadding(result, callback);
     }
 }
