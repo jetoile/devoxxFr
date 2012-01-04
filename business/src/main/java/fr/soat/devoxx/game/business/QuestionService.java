@@ -75,12 +75,12 @@ public class QuestionService {
     public JSONWithPadding giveResponse(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, 
                                         @FormParam("userName") String userName,
                                         @FormParam("id") Integer questionId,
-                                        @FormParam("responses") String responses) {
+                                        @FormParam("responses") List responses) {
+        //JERSEY-569 - http://java.net/jira/browse/JERSEY-569
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setUserName(userName);
         responseDto.setId(questionId);
-        //TODO...
-        responseDto.setResponses(Lists.newArrayList(responses));
+        responseDto.setResponses(responses);
 
         ResponseResponseDto result = delegate.giveResponse(responseDto);
         return new JSONWithPadding(result, callback);
