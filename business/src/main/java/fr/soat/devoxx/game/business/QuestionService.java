@@ -23,6 +23,7 @@
  */
 package fr.soat.devoxx.game.business;
 
+import com.google.common.collect.Lists;
 import com.sun.jersey.api.json.JSONWithPadding;
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
@@ -70,9 +71,17 @@ public class QuestionService {
 
     @Path("/reply")
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces("application/x-javascript")
-    public JSONWithPadding giveResponse(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, ResponseRequestDto responseDto) {
+    public JSONWithPadding giveResponse(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, 
+                                        @FormParam("userName") String userName,
+                                        @FormParam("id") Integer questionId,
+                                        @FormParam("responses") String responses) {
+        ResponseRequestDto responseDto = new ResponseRequestDto();
+        responseDto.setUserName(userName);
+        responseDto.setId(questionId);
+        //TODO...
+        responseDto.setResponses(Lists.newArrayList(responses));
+
         ResponseResponseDto result = delegate.giveResponse(responseDto);
         return new JSONWithPadding(result, callback);
     }
