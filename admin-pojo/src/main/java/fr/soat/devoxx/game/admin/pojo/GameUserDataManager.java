@@ -79,10 +79,6 @@ public enum GameUserDataManager {
         }
     }
 
-    public GameUserData getGames(String userName) {
-        return ds.find(GameUserData.class).field("name").equal(userName).get();
-    }
-    
     public List<Game> getGamesByResultType(String userName, ResponseType responseType) {
         List<Game>  result = new ArrayList<Game>();
         if (ds != null) {
@@ -100,6 +96,26 @@ public enum GameUserDataManager {
         return result;
     }
 
+    public Game getGameById(String userName, int id) {
+        Game result = Game.EMPTY;
+        GameUserData gameUserData = null;
+        if (ds != null) {
+            gameUserData = ds.find(GameUserData.class).field("name").equal(userName).field("games.id").equal(id).get();
+        } else {
+            LOGGER.error("unable to access to mongoDb: datastore is unknown: ");
+        }
+        if (gameUserData != null) {
+            Game gameToFind = new Game();
+            gameToFind.setId(id);
+            ArrayList<Game> games = gameUserData.getGames();
+            int index = games.indexOf(gameToFind); //cf. hashcode & equals
+            if (index != -1) {
+                result = games.get(index);
+            }
+        }
+        return result;
+    }
+    
     public void registerUser(String name) {
         GameUserData gameUserData = new GameUserData();
         gameUserData.setName(name);
@@ -123,14 +139,14 @@ public enum GameUserDataManager {
         }
     }
 
-    public void addGame(String userName, Game game) throws StorageException {
+    public void addOrUpdateGame(String userName, Game game) throws StorageException {
         if (ds != null) {
             GameUserData gameUserData = ds.find(GameUserData.class).field("name").equal(userName).get();
             if (gameUserData == null) {
                 LOGGER.error("insertion error: unable to find the user {}... the game {} will not be inserted", userName, game);
                 throw new StorageException("unable to find user " + userName);
             }
-            gameUserData.addGame(game);
+            gameUserData.addOrReplace(game);
             ds.save(gameUserData);
         } else {
             LOGGER.error("unable to save game {} for user {}: datastore is unknown: ", game, userName);

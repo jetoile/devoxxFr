@@ -24,17 +24,14 @@
 package fr.soat.devoxx.game.admin.pojo;
 
 import com.google.code.morphia.Datastore;
-import com.google.code.morphia.Morphia;
 import com.google.code.morphia.query.FieldEnd;
 import com.google.code.morphia.query.Query;
 import com.google.common.collect.Lists;
-import com.mongodb.Mongo;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -92,7 +89,7 @@ public class GameUserDataManagerTest {
         game.setType(ResponseType.SUCCESS);
 
         //when
-        GameUserDataManager.INSTANCE.addGame("use", game);
+        GameUserDataManager.INSTANCE.addOrUpdateGame("use", game);
 //        verify(ds).save();
     }
 
@@ -118,10 +115,10 @@ public class GameUserDataManagerTest {
         game.setType(ResponseType.SUCCESS);
 
         //when
-        GameUserDataManager.INSTANCE.addGame("user1", game);
+        GameUserDataManager.INSTANCE.addOrUpdateGame("user1", game);
 
         //then
-        verify(gameUserData, times(1)).addGame(game);
+        verify(gameUserData, times(1)).addOrReplace(game);
         verify(ds, times(1)).save(gameUserData);
     }
 

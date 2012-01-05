@@ -65,6 +65,15 @@ public class GameUserData {
         this.games.add(game);
     }
     
+    public void addOrReplace(Game game) {
+        int index = this.games.indexOf(game);
+        if (index != -1) {
+            this.games.set(index, game);
+        } else {
+            this.games.add(game);
+        }
+    }
+    
     public void setGames(ArrayList<Game> games) {
         this.games = games;
     }

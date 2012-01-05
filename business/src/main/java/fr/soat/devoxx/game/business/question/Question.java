@@ -27,6 +27,7 @@ import fr.soat.devoxx.game.pojo.question.QuestionType;
 import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,9 +47,9 @@ public class Question {
     
     private String label;
     
-    private List<String> questions;
+    private List<String> questions = new ArrayList<String>();
     
-    private List<String> answers;
+    private List<String> answers = new ArrayList<String>();
 
     public int getId() {
 

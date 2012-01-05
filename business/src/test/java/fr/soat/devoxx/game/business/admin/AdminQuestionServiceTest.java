@@ -23,8 +23,11 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
+import com.google.common.collect.Lists;
+import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.business.question.QuestionManager;
+import fr.soat.devoxx.game.pojo.AllQuestionResponseDto;
 import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
@@ -39,10 +42,12 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -55,10 +60,11 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore("javax.management.*")
 public class AdminQuestionServiceTest {
     private AdminQuestionService adminQuestionService;
+    private GameUserDataManager gameUserDataManager;
 
     @Before
     public void setUp() {
-        GameUserDataManager gameUserDataManager = PowerMockito.mock(GameUserDataManager.class);
+        gameUserDataManager = PowerMockito.mock(GameUserDataManager.class);
 //        when(gameUserDataManager.getResult())
 
         QuestionManager questionManager = QuestionManager.INSTANCE;
@@ -73,7 +79,7 @@ public class AdminQuestionServiceTest {
         assertNotNull(questionDto);
         assertNotNull(questionDto.getLabel());
         assertFalse(questionDto.getLabel().isEmpty());
-        
+
         assertNotNull(questionDto.getId());
         assertNotNull(questionDto.getQuestionType());
         assertNotNull(questionDto.getQuestions());
@@ -83,11 +89,17 @@ public class AdminQuestionServiceTest {
         } else {
             assertTrue(questionDto.getQuestions().isEmpty());
         }
-        
+
     }
-    
+
     @Test
     public void giveResponseForQuestion1ShouldReturnSuccessWithValidResponse() {
+        Game game = new Game();
+        game.setId(1);
+        game.setType(ResponseType.NEED_RESPONSE);
+        
+        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+        
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(1);
         ArrayList<String> responses = new ArrayList<String>();
@@ -100,6 +112,12 @@ public class AdminQuestionServiceTest {
 
     @Test
     public void giveResponseForQuestion1ShouldReturnFailWithFalseResponse() {
+        Game game = new Game();
+        game.setId(1);
+        game.setType(ResponseType.NEED_RESPONSE);
+
+        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(1);
         ArrayList<String> responses = new ArrayList<String>();
@@ -138,6 +156,12 @@ public class AdminQuestionServiceTest {
 
     @Test
     public void giveResponseForQuestion2ShouldReturnSuccessWithValidResponse() {
+        Game game = new Game();
+        game.setId(2);
+        game.setType(ResponseType.NEED_RESPONSE);
+
+        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(2);
         ArrayList<String> responses = new ArrayList<String>();
@@ -150,6 +174,12 @@ public class AdminQuestionServiceTest {
 
     @Test
     public void giveResponseForQuestion2ShouldReturnFailWithFalseResponse() {
+        Game game = new Game();
+        game.setId(2);
+        game.setType(ResponseType.NEED_RESPONSE);
+
+        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(2);
         ArrayList<String> responses = new ArrayList<String>();
@@ -177,6 +207,12 @@ public class AdminQuestionServiceTest {
 
     @Test
     public void giveResponseForQuestion3ShouldReturnSuccessWithValidResponse() {
+        Game game = new Game();
+        game.setId(3);
+        game.setType(ResponseType.NEED_RESPONSE);
+
+        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(3);
         ArrayList<String> responses = new ArrayList<String>();
@@ -190,6 +226,12 @@ public class AdminQuestionServiceTest {
 
     @Test
     public void giveResponseForQuestion3ShouldReturnFailWithFalseResponse() {
+        Game game = new Game();
+        game.setId(3);
+        game.setType(ResponseType.NEED_RESPONSE);
+
+        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(3);
         ArrayList<String> responses = new ArrayList<String>();
@@ -222,6 +264,36 @@ public class AdminQuestionServiceTest {
         responseResponseDto = adminQuestionService.giveResponse(responseDto);
         assertNotNull(responseResponseDto);
         assertEquals(ResponseType.FAIL, responseResponseDto.getResponseType());
+    }
+
+    @Test
+    public void getAllQuestionsShouldReturnOnlyValidType() {
+        //given
+        Game game1 = new Game();
+        game1.setType(ResponseType.NEED_RESPONSE);
+        game1.setGivenAnswers(Collections.EMPTY_LIST);
+        game1.setId(1);
+
+        Game game2 = new Game();
+        game2.setType(ResponseType.FAIL);
+        game2.setGivenAnswers(Collections.EMPTY_LIST);
+        game2.setId(2);
+
+        Game game3 = new Game();
+        game3.setType(ResponseType.SUCCESS);
+        game3.setGivenAnswers(Lists.newArrayList("titi", "tutu"));
+        game3.setId(3);
+
+        when(gameUserDataManager.getGamesByResultType("toto", ResponseType.NEED_RESPONSE)).thenReturn(Lists.newArrayList(game1));
+
+        //wwhen
+        AllQuestionResponseDto results = adminQuestionService.getAllQuestions("toto");
+
+        //then
+        assertNotNull(results);
+        assertTrue(results.getQuestions().size() == 1);
+        assertEquals(results.getQuestions().get(0).getId(), 1);
+
     }
 
 

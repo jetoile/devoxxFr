@@ -32,6 +32,8 @@ import fr.soat.devoxx.game.pojo.question.ResponseType;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,9 +43,11 @@ import java.util.List;
  */
 @Embedded
 public class Game implements Serializable {
+    public final static Game EMPTY = new EmptyGame();
+
     private int id;
 
-    private List<String> givenAnswers;
+    private List<String> givenAnswers = new ArrayList<String>();
 
     private ResponseType type;
 
@@ -75,11 +79,45 @@ public class Game implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Game game = (Game) o;
+
+        if (id != game.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
     public String toString() {
         return "Game{" +
                 "id=" + id +
                 ", givenAnswers=" + givenAnswers +
                 ", type=" + type +
                 '}';
+    }
+
+    private static class EmptyGame extends Game {
+        @Override
+        public int getId() {
+            return 0;
+        }
+
+        @Override
+        public List<String> getGivenAnswers() {
+            return Collections.EMPTY_LIST;
+        }
+
+        @Override
+        public ResponseType getType() {
+            return ResponseType.INVALID;
+        }
     }
 }

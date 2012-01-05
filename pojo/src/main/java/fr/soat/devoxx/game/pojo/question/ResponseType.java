@@ -31,5 +31,6 @@ package fr.soat.devoxx.game.pojo.question;
 public enum ResponseType {
     SUCCESS,
     FAIL,
-    INVALID;
+    INVALID,
+    NEED_RESPONSE;
 }

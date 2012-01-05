@@ -32,6 +32,7 @@ import fr.soat.devoxx.game.business.admin.AdminQuestionService;
 import fr.soat.devoxx.game.business.question.Question;
 import fr.soat.devoxx.game.business.question.QuestionManager;
 import fr.soat.devoxx.game.business.question.Response;
+import fr.soat.devoxx.game.pojo.AllQuestionResponseDto;
 import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
@@ -84,6 +85,15 @@ public class QuestionService {
 
         ResponseResponseDto result = delegate.giveResponse(responseDto);
         return new JSONWithPadding(result, callback);
+    }
+    
+    @Path("/allQuestions/{username}")
+    @GET
+    @Produces("application/x-javascript")
+    public JSONWithPadding getAllQuestions(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String username) {
+        AllQuestionResponseDto result = delegate.getAllQuestions(username);
+        return new JSONWithPadding(result, callback);
+        
     }
 
 }

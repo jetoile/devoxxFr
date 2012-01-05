@@ -23,61 +23,36 @@
  */
 package fr.soat.devoxx.game.pojo;
 
-import fr.soat.devoxx.game.pojo.question.ResponseType;
-
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * User: khanh
- * Date: 21/12/11
- * Time: 19:59
+ * Date: 05/01/12
+ * Time: 20:10
  */
-@XmlRootElement(name = "responseResponse")
-public class ResponseResponseDto implements Serializable {
+@XmlRootElement(name = "allQuestionsReponse")
+public class AllQuestionResponseDto {
 
-    private int id;
+    private List<QuestionResponseDto> questions = new ArrayList<QuestionResponseDto>();
 
-    private ResponseType responseType;
-    
-    private List answer;
-
-    public ResponseResponseDto() {
+    public List<QuestionResponseDto> getQuestions() {
+        return questions;
     }
 
-    public int getId() {
-        return id;
+    public void setQuestions(List<QuestionResponseDto> questions) {
+        this.questions = questions;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void addQuestion(QuestionResponseDto question) {
+        this.questions.add(question);
     }
 
     @Override
     public String toString() {
-        return "ResponseResponseDto{" +
-                "id=" + id +
-                ", responseType=" + responseType +
-                ", answer=" + answer +
+        return "AllQuestionResponseDto{" +
+                "questions=" + questions +
                 '}';
-    }
-
-    public List<String> getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(List<String> answer) {
-        this.answer = answer;
-    }
-
-    public ResponseType getResponseType() {
-
-        return responseType;
-    }
-
-    public void setResponseType(ResponseType responseType) {
-        this.responseType = responseType;
     }
 }
