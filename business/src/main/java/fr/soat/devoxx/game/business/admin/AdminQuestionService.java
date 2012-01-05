@@ -131,11 +131,8 @@ public class AdminQuestionService {
 
         Game game = gameUserDataManager.getGameById(responseDto.getUserName(), res.getId());
                 
-//        Game game = new Game();
-//        game.setId(response.getId());
         game.setGivenAnswers(response.getAnswer());
         game.setType(response.getResponseType());
-//                dozerMapper.map(response, Game.class);
         try {
             gameUserDataManager.addOrUpdateGame(responseDto.getUserName(), game);
         } catch (StorageException e) {
@@ -147,16 +144,22 @@ public class AdminQuestionService {
 
     @Path("/question/{username}")
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
     public void addQuestionForUser(@PathParam("username") String userName) {
+        boolean success = false;
+        Question randomQuestion = null;
+        //l'invariant est qu'il n'y a pas 2 fois le même id de question dans les questions posées
+        while (!success) {
+            randomQuestion = questionManager.loadQuestions().getRandomQuestion();
 
-        Question randomQuestion = questionManager.loadQuestions().getRandomQuestion();
-        
+            Game game = gameUserDataManager.getGameById(userName, randomQuestion.getId());
+            if (game == Game.EMPTY) {
+                success = true;
+            }
+        }
+
         Game game = new Game();
         game.setId(randomQuestion.getId());
         game.setType(ResponseType.NEED_RESPONSE);
-
-        //TODO l'invariant est qu'il n'y a pas 2 fois le même id de question dans les questions posées
 
         try {
             gameUserDataManager.addOrUpdateGame(userName, game);
