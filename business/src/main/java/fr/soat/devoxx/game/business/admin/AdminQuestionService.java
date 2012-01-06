@@ -23,6 +23,7 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
+import com.sun.jersey.api.json.JSONWithPadding;
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
@@ -146,8 +147,10 @@ public class AdminQuestionService {
         return response;
     }
 
-    @Path("/question/{username}")
+    @Path("/create/{username}")
     @PUT
+//    @GET
+//    public void addQuestionForUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String userName) {
     public void addQuestionForUser(@PathParam("username") String userName) {
         boolean success = false;
         Question randomQuestion = null;
@@ -170,6 +173,7 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
+//        return new JSONWithPadding(null, callback);
     }
 
 }
