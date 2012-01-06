@@ -130,7 +130,10 @@ public class AdminQuestionService {
         }
 
         Game game = gameUserDataManager.getGameById(responseDto.getUserName(), res.getId());
-                
+               
+        if (game == null) {
+            game = new Game();
+        }
         game.setGivenAnswers(response.getAnswer());
         game.setType(response.getResponseType());
         try {
@@ -152,7 +155,7 @@ public class AdminQuestionService {
             randomQuestion = questionManager.loadQuestions().getRandomQuestion();
 
             Game game = gameUserDataManager.getGameById(userName, randomQuestion.getId());
-            if (game == Game.EMPTY) {
+            if (game == null) {
                 success = true;
             }
         }

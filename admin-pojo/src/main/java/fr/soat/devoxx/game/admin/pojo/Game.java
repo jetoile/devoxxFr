@@ -26,6 +26,7 @@ package fr.soat.devoxx.game.admin.pojo;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Transient;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
@@ -43,7 +44,8 @@ import java.util.List;
  */
 @Embedded
 public class Game implements Serializable {
-    public final static Game EMPTY = new EmptyGame();
+//    @Transient
+//    public final static Game EMPTY = new EmptyGame();
 
     private int id;
 
@@ -104,20 +106,20 @@ public class Game implements Serializable {
                 '}';
     }
 
-    private static class EmptyGame extends Game {
-        @Override
-        public int getId() {
-            return 0;
-        }
-
-        @Override
-        public List<String> getGivenAnswers() {
-            return Collections.EMPTY_LIST;
-        }
-
-        @Override
-        public ResponseType getType() {
-            return ResponseType.INVALID;
-        }
-    }
+//    private static class EmptyGame extends Game {
+//        @Override
+//        public int getId() {
+//            return 0;
+//        }
+//
+//        @Override
+//        public List<String> getGivenAnswers() {
+//            return Collections.EMPTY_LIST;
+//        }
+//
+//        @Override
+//        public ResponseType getType() {
+//            return ResponseType.INVALID;
+//        }
+//    }
 }

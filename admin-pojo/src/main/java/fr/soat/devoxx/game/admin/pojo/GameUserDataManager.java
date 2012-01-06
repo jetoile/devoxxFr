@@ -97,7 +97,7 @@ public enum GameUserDataManager {
     }
 
     public Game getGameById(String userName, int id) {
-        Game result = Game.EMPTY;
+        Game result = null;
         GameUserData gameUserData = null;
         if (ds != null) {
             gameUserData = ds.find(GameUserData.class).field("name").equal(userName).field("games.id").equal(id).get();
