@@ -133,6 +133,7 @@ public class AdminQuestionService {
                
         if (game == null) {
             game = new Game();
+            game.setId(response.getId());
         }
         game.setGivenAnswers(response.getAnswer());
         game.setType(response.getResponseType());
