@@ -149,13 +149,16 @@ public class AdminQuestionService {
 
     @Path("/create/{username}")
     @PUT
-//    @GET
-//    public void addQuestionForUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String userName) {
     public void addQuestionForUser(@PathParam("username") String userName) {
+        //TODO : change the algorithm : not optimized...
         boolean success = false;
+        int NbToTry = questionManager.getNbQuestions();
+
         Question randomQuestion = null;
+        int nbTry = 0;
         //l'invariant est qu'il n'y a pas 2 fois le même id de question dans les questions posées
-        while (!success) {
+        while (!success && nbTry < NbToTry) {
+            nbTry++;
             randomQuestion = questionManager.loadQuestions().getRandomQuestion();
 
             Game game = gameUserDataManager.getGameById(userName, randomQuestion.getId());
@@ -173,7 +176,6 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
-//        return new JSONWithPadding(null, callback);
     }
 
 }
