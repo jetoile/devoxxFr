@@ -25,6 +25,7 @@ package fr.soat.devoxx.game.admin.pojo;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.google.common.collect.Lists;
 import com.mongodb.Mongo;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
@@ -36,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -127,6 +129,19 @@ public enum GameUserDataManager {
         }
     }
 
+    public void cleanUser(String name) {
+        if (ds != null) {
+            GameUserData entity = ds.get(GameUserData.class, name);
+            if (entity != null) {
+                entity.setGames(new ArrayList<Game>());
+                ds.save(entity);
+            }
+            LOGGER.debug("user {} has been cleanup in mongoDb", name);
+        } else {
+            LOGGER.error("unable to cleanup user {}: datastore is unknown: ", name);
+        }
+    }
+    
     public void destroyUser(String name) {
         if (ds != null) {
             GameUserData entity = ds.get(GameUserData.class, name);

@@ -94,36 +94,6 @@ public class AdminUserService {
         }
     }
 
-//    @Path("/user1")
-//    @POST
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
-//
-//        try {
-//            init();
-//            User user = new User(name, mail);
-//
-//            Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
-//            if (constraintViolations.size() != 0) {
-//                LOGGER.error("Invalid input for user creation {} - {}", name, mail);
-//                throw new InvalidUserException(constraintViolations);
-//            }
-//            final String token = generateToken();
-//            user.setToken(token);
-//
-//            em.getTransaction().begin();
-//            em.persist(user);
-//            em.getTransaction().commit();
-//            LOGGER.debug("User creation successful: {} - {}", name, mail);
-//
-//            this.gameUserDataManager.registerUser(name);
-//
-//            return dozerMapper.map(user, UserResponseDto.class);
-//        } finally {
-//            close();
-//        }
-//    }
-
     @Path("/user")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -178,7 +148,12 @@ public class AdminUserService {
         } finally {
             close();
         }
+    }
 
+    @Path("/games/{username}")
+    @DELETE
+    public void cleanUserGames(@PathParam("username") String userName) {
+            this.gameUserDataManager.cleanUser(userName);
     }
 
     @Path("/user/{username}")
