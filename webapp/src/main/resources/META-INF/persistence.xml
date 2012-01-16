@@ -4,7 +4,8 @@
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="devoxx" transaction-type="RESOURCE_LOCAL">
 
-        <jta-data-source>java:jboss/datasources/devoxxFrJee</jta-data-source>
+        <!--<jta-data-source>java:jboss/datasources/devoxxFrJee</jta-data-source>-->
+        <jta-data-source>java:comp/env/jdbc/devoxxfrjee</jta-data-source>
         <class>fr.soat.devoxx.game.persistent.User</class>
 
         <properties>
