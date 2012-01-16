@@ -4,36 +4,13 @@
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="devoxx" transaction-type="RESOURCE_LOCAL">
 
-
-        <!--
-            <property name="eclipselink.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-            <property name="eclipselink.jdbc.url" value="jdbc:hsqldb:mem:test"/>
-            <property name="eclipselink.jdbc.user" value="sa"/>
-            <property name="eclipselink.jdbc.password" value=""/>
-            <property name="eclipselink.target-database"
-                      value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
-            <property name="eclipselink.logging.level" value="OFF"/>
-            <property name="eclipselink.orm.throw.exceptions" value="true"/>
-
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
-        -->
-
+        <jta-data-source>java:jboss/datasources/devoxxFrJee</jta-data-source>
         <class>fr.soat.devoxx.game.persistent.User</class>
+
         <properties>
-            <property name="eclipselink.jdbc.driver" value="${jdbc.driver}"/>
-            <property name="eclipselink.jdbc.url" value="${jdbc.url}"/>
-            <property name="eclipselink.jdbc.user" value="${jdbc.username}"/>
-            <property name="eclipselink.jdbc.password" value="${jdbc.password}"/>
-
-            <property name="eclipselink.target-database"
-                      value="${jdbc.target-database}"/>
-            <property name="eclipselink.logging.level" value="OFF"/>
-            <property name="eclipselink.orm.throw.exceptions" value="true"/>
-
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
-
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
     </persistence-unit>
 </persistence>

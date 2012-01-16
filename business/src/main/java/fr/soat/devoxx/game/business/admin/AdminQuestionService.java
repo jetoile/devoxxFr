@@ -23,7 +23,6 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import com.sun.jersey.api.json.JSONWithPadding;
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
@@ -46,8 +45,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -131,7 +128,7 @@ public class AdminQuestionService {
         }
 
         Game game = gameUserDataManager.getGameById(responseDto.getUserName(), res.getId());
-               
+
         if (game == null) {
             game = new Game();
             game.setId(response.getId());

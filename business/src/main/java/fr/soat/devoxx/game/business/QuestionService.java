@@ -23,33 +23,17 @@
  */
 package fr.soat.devoxx.game.business;
 
-import com.google.common.collect.Lists;
-import com.sun.jersey.api.json.JSONWithPadding;
-import fr.soat.devoxx.game.admin.pojo.Game;
-import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
-import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.business.admin.AdminQuestionService;
-import fr.soat.devoxx.game.business.question.Question;
-import fr.soat.devoxx.game.business.question.QuestionManager;
-import fr.soat.devoxx.game.business.question.Response;
 import fr.soat.devoxx.game.pojo.AllQuestionResponseDto;
 import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
-import fr.soat.devoxx.game.pojo.question.ResponseType;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.Set;
 
 /**
  * User: khanh
@@ -64,36 +48,34 @@ public class QuestionService {
 
     @Path("/question")
     @GET
-    @Produces("application/x-javascript")
-    public JSONWithPadding getQuestion(@QueryParam("jsoncallback") @DefaultValue("fn") String callback) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public QuestionResponseDto getQuestion() {
         QuestionResponseDto result = delegate.getQuestion();
-        return new JSONWithPadding(result, callback);
+        return result;
     }
 
     @Path("/reply")
     @POST
-    @Produces("application/x-javascript")
-    public JSONWithPadding giveResponse(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, 
-                                        @FormParam("userName") String userName,
-                                        @FormParam("id") Integer questionId,
-                                        @FormParam("responses") List responses) {
-        //JERSEY-569 - http://java.net/jira/browse/JERSEY-569
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseResponseDto giveResponse(@FormParam("userName") String userName,
+                                            @FormParam("id") Integer questionId,
+                                            @FormParam("responses") List responses) {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setUserName(userName);
         responseDto.setId(questionId);
         responseDto.setResponses(responses);
 
         ResponseResponseDto result = delegate.giveResponse(responseDto);
-        return new JSONWithPadding(result, callback);
+        return result;
     }
-    
+
     @Path("/allQuestions/{username}")
     @GET
-    @Produces("application/x-javascript")
-    public JSONWithPadding getAllQuestions(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String username) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public AllQuestionResponseDto getAllQuestions(@PathParam("username") String username) {
         AllQuestionResponseDto result = delegate.getAllQuestions(username);
-        return new JSONWithPadding(result, callback);
-        
+        return result;
+
     }
 
 }

@@ -1,0 +1,5 @@
+<resource name="jdbc/devoxxfrjee" auth="Container" type="javax.sql.DataSource">
+    <param name="username" value="jetoilejee" />
+    <param name="password" value="jetoile" />
+    <param name="url" value="jdbc:cloudbees://devoxxfrjee" />
+</resource>

@@ -23,32 +23,15 @@
  */
 package fr.soat.devoxx.game.business;
 
-import com.sun.jersey.api.json.JSONWithPadding;
-import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.business.admin.AdminUserService;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
-import fr.soat.devoxx.game.persistent.User;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
-import org.apache.commons.lang.RandomStringUtils;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.*;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Set;
 
 /**
  * User: khanh
@@ -60,26 +43,26 @@ public class UserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private AdminUserService delegate = new AdminUserService();
-    
+
     @Path("/user/")
     @POST
 //    @GET
-    @Produces("application/x-javascript")
-    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
 //    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String name, @PathParam("mail") String mail) throws InvalidUserException {
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setName(name);
         userRequestDto.setMail(mail);
 
         UserResponseDto result = delegate.createUser(userRequestDto);
-        return new JSONWithPadding(result, callback);
+        return result;
     }
 
     @Path("/user/{username}")
     @GET
-    @Produces("application/x-javascript")
-    public JSONWithPadding getUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String userName) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserResponseDto getUser(@PathParam("username") String userName) {
         UserResponseDto result = delegate.getUser(userName);
-        return new JSONWithPadding(result, callback);
+        return result;
     }
 }
