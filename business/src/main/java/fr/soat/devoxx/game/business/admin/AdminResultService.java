@@ -23,12 +23,14 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import com.sun.jersey.api.json.JSONWithPadding;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import fr.soat.devoxx.game.admin.pojo.GameResult;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 /**
  * User: khanh
@@ -38,7 +40,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/admin/result")
 public class AdminResultService {
 
-    @Path("/result/{username}")
+    @Path("/{username}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public GameResult getResultForUser(@PathParam("username") String userName) {
