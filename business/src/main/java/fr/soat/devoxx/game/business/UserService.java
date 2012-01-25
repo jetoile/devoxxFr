@@ -44,11 +44,13 @@ public class UserService {
 
     private AdminUserService delegate = new AdminUserService();
 
+//    @Path("/user/{username}/{mail}")
     @Path("/user/")
     @POST
 //    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
+//    public UserResponseDto createUser(@PathParam("username") String name, @PathParam("mail") String mail) throws InvalidUserException {
 //    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String name, @PathParam("mail") String mail) throws InvalidUserException {
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setName(name);

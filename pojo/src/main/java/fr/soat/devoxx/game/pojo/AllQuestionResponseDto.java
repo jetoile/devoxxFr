@@ -32,7 +32,7 @@ import java.util.List;
  * Date: 05/01/12
  * Time: 20:10
  */
-@XmlRootElement(name = "allQuestionsReponse")
+//@XmlRootElement(name = "allQuestionsReponse")
 public class AllQuestionResponseDto {
 
     private List<QuestionResponseDto> questions = new ArrayList<QuestionResponseDto>();

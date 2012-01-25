@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Date: 27/12/11
  * Time: 21:36
  */
-@XmlRootElement(name = "resultResponse")
+//@XmlRootElement(name = "resultResponse")
 public class ResultResponseDto {
     private int nbSuccess = 0;
     private int nbFail = 0;

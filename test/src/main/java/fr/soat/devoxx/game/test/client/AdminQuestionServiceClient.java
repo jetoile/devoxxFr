@@ -62,8 +62,8 @@ public class AdminQuestionServiceClient {
 
     private static URI getBaseURI() {
 //        return UriBuilder.fromUri("http://localhost:9090/").build();
-        return UriBuilder.fromUri("http://localhost:8080/webapp-1.0.0-SNAPSHOT/").build();
-//        return UriBuilder.fromUri("http://devoxxfr.jetoile.cloudbees.net/").build();
+//        return UriBuilder.fromUri("http://localhost:8080/webapp-1.0.0-SNAPSHOT/").build();
+        return UriBuilder.fromUri("http://devoxxfr.jetoile.cloudbees.net/").build();
     }
 
 

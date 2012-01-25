@@ -33,7 +33,7 @@ import java.util.List;
  * Date: 21/12/11
  * Time: 19:59
  */
-@XmlRootElement(name = "responseRequest")
+//@XmlRootElement(name = "responseRequest")
 public class ResponseRequestDto implements Serializable {
 
     private int id;

@@ -96,6 +96,7 @@ public class AdminUserService {
 
     @Path("/user")
     @POST
+//    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(UserRequestDto userRequestDto) throws InvalidUserException {
         try {
@@ -152,12 +153,14 @@ public class AdminUserService {
 
     @Path("/games/{username}")
     @DELETE
+//    @POST
     public void cleanUserGames(@PathParam("username") String userName) {
             this.gameUserDataManager.cleanUser(userName);
     }
 
     @Path("/user/{username}")
     @DELETE
+//    @POST
     public void deleteUser(@PathParam("username") String userName) {
         try {
             init();

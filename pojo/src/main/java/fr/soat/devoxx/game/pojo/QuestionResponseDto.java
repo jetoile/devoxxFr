@@ -34,7 +34,7 @@ import java.util.List;
  * Date: 21/12/11
  * Time: 16:42
  */
-@XmlRootElement(name = "questionReponse")
+//@XmlRootElement(name = "questionReponse")
 public class QuestionResponseDto implements Serializable {
 
     private int id;

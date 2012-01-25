@@ -34,6 +34,7 @@ import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
+import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -146,7 +147,10 @@ public class AdminQuestionService {
 
     @Path("/create/{username}")
     @PUT
+//    @POST
+//    @GET
     public void addQuestionForUser(@PathParam("username") String userName) {
+//    public String addQuestionForUser(@PathParam("username") String userName) {
         //TODO : change the algorithm : not optimized...
         boolean success = false;
         int NbToTry = questionManager.getNbQuestions();
@@ -173,6 +177,9 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
+//        finally {
+//            return StringUtils.EMPTY;
+//        }
     }
 
 }
