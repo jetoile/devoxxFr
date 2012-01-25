@@ -23,18 +23,8 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
-import fr.soat.devoxx.game.business.PropertiesUtils;
-import fr.soat.devoxx.game.business.exception.InvalidUserException;
-import fr.soat.devoxx.game.persistent.User;
-import fr.soat.devoxx.game.pojo.UserRequestDto;
-import fr.soat.devoxx.game.pojo.UserResponseDto;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,10 +36,29 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Set;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.business.PropertiesUtils;
+import fr.soat.devoxx.game.business.exception.InvalidUserException;
+import fr.soat.devoxx.game.persistent.User;
+import fr.soat.devoxx.game.pojo.UserRequestDto;
+import fr.soat.devoxx.game.pojo.UserResponseDto;
 
 /**
  * User: khanh
@@ -94,7 +103,7 @@ public class AdminUserService {
         }
     }
 
-    @Path("/user")
+    @Path("/")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(UserRequestDto userRequestDto) throws InvalidUserException {
@@ -124,7 +133,7 @@ public class AdminUserService {
         }
     }
 
-    @Path("/user/{username}")
+    @Path("/{username}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public UserResponseDto getUser(@PathParam("username") String userName) {
@@ -140,23 +149,25 @@ public class AdminUserService {
                 return response;
             } else if (users.size() > 1) {
                 LOGGER.debug("get user {} failed: too many response", userName);
-                return null;
+//                return null;
+                throw new WebApplicationException(Response.status(Status.NOT_FOUND).entity("too many response").build());
             } else {
                 LOGGER.debug("get user {} failed: not found", userName);
-                return null;
+//                return null;
+                throw new WebApplicationException(Status.NOT_FOUND);
             }
         } finally {
             close();
         }
     }
 
-    @Path("/games/{username}")
+    @Path("/{username}/games")
     @DELETE
     public void cleanUserGames(@PathParam("username") String userName) {
             this.gameUserDataManager.cleanUser(userName);
     }
 
-    @Path("/user/{username}")
+    @Path("/{username}")
     @DELETE
     public void deleteUser(@PathParam("username") String userName) {
         try {

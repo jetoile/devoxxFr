@@ -23,7 +23,28 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import com.sun.jersey.api.json.JSONWithPadding;
+import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
+
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
@@ -35,21 +56,6 @@ import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * User: khanh
@@ -81,14 +87,14 @@ public class AdminQuestionService {
         this.gameUserDataManager = gameUserDataManager;
     }
 
-    @Path("/question")
+    @Path("/")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public QuestionResponseDto getQuestion() {
         return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
     }
 
-    @Path("/allQuestions/{username}")
+    @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public AllQuestionResponseDto getAllQuestions(@PathParam("username") String username) {
@@ -100,7 +106,7 @@ public class AdminQuestionService {
         return results;
     }
 
-    @Path("/reply")
+    @Path("/{username}/reply")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -147,9 +153,9 @@ public class AdminQuestionService {
         return response;
     }
 
-    @Path("/create/{username}")
+    @Path("/{username}/create")
     @PUT
-    public void addQuestionForUser(@PathParam("username") String userName) {
+    public javax.ws.rs.core.Response addQuestionForUser(@PathParam("username") String userName) {
         //TODO : change the algorithm : not optimized...
         boolean success = false;
         int NbToTry = questionManager.getNbQuestions();
@@ -176,6 +182,8 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
+        
+        return javax.ws.rs.core.Response.ok().build();
     }
 
 }

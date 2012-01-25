@@ -23,14 +23,18 @@
  */
 package fr.soat.devoxx.game.business;
 
-import com.sun.jersey.api.json.JSONWithPadding;
-import fr.soat.devoxx.game.admin.pojo.GameResult;
-import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
-import fr.soat.devoxx.game.business.admin.AdminResultService;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
+import com.sun.jersey.api.json.JSONWithPadding;
+
+import fr.soat.devoxx.game.admin.pojo.GameResult;
+import fr.soat.devoxx.game.business.admin.AdminResultService;
+import fr.soat.devoxx.game.business.types.CustomMediaType;
 
 /**
  * User: khanh
@@ -42,9 +46,9 @@ public class ResultService {
 
     private AdminResultService delegate = new AdminResultService();
 
-    @Path("/result/{username}")
+    @Path("/{username}")
     @GET
-    @Produces("application/x-javascript")
+    @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
     public JSONWithPadding getResultForUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String userName) {
         GameResult result = delegate.getResultForUser(userName);
         return new JSONWithPadding(result, callback);
