@@ -25,13 +25,13 @@ package fr.soat.devoxx.game.business;
 
 import fr.soat.devoxx.game.business.admin.AdminUserService;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
-import fr.soat.devoxx.game.business.types.CustomMediaType;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 /**
  * User: khanh
@@ -47,7 +47,7 @@ public class UserService {
     @Path("/")
     @POST
 //    @GET
-    @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
+    @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setName(name);
@@ -58,7 +58,7 @@ public class UserService {
 
     @Path("/{username}")
     @GET
-    @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
+    @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto getUser(@PathParam("username") String userName) {
         return delegate.getUser(userName);
     }
