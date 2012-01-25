@@ -44,6 +44,12 @@ import fr.soat.devoxx.game.pojo.*;
  */
 public class QuestionServiceClient {
 
+//	public static final String BASE_URI = "http://localhost:9090/";
+//	public static final String BASE_URI = "http://devoxxfr.jetoile.cloudbees.net/";
+	public static final String BASE_URI = "http://localhost:8080/webapp/";
+	public static final String SERVICE_PATH = "services";
+	public static final String TEST_USERNAME = "toto";
+	
     public static void main(String[] args) {
         QuestionServiceClient client = new QuestionServiceClient();
         System.out.println("is creating an user");
@@ -80,74 +86,72 @@ public class QuestionServiceClient {
 
 
     private static URI getBaseURI() {
-//        return UriBuilder.fromUri("http://localhost:9090/").build();
-        return UriBuilder.fromUri("http://localhost:8080/webapp-1.0.0-SNAPSHOT/").build();
-//        return UriBuilder.fromUri("http://devoxxfr.jetoile.cloudbees.net/").build();
+        return UriBuilder.fromUri(BASE_URI).build();
     }
 
     
     public ResponseResponseDto testGetReplyForQuestion1() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
-        requestDto.setUserName("toto");
+        requestDto.setUserName(TEST_USERNAME);
         requestDto.setId(1);
         requestDto.setResponses(Lists.newArrayList("toto"));
 
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME+"/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
 
 
     public ResponseResponseDto testGetReplyForQuestion3() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
-        requestDto.setUserName("toto");
+        requestDto.setUserName(TEST_USERNAME);
         requestDto.setId(3);
         requestDto.setResponses(Lists.newArrayList("toto", "titi"));
 
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME+"/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
 
     public ResponseResponseDto testGetReplyForQuestion3WithFalseResponse() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
-        requestDto.setUserName("toto");
+        requestDto.setUserName(TEST_USERNAME);
         requestDto.setId(3);
         requestDto.setResponses(Lists.newArrayList("toto", "titi", "tutu"));
 
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME+"/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
 
     public ResponseResponseDto testGetReplyForQuestion3WithInvalidResponse() {
         ResponseRequestDto requestDto = new ResponseRequestDto();
-        requestDto.setUserName("toto");
+        requestDto.setUserName(TEST_USERNAME);
         requestDto.setId(3);
-        requestDto.setResponses(Collections.EMPTY_LIST);
+        requestDto.setResponses(Collections.<String>emptyList());
 
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResponseResponseDto res = service.path("services").path("/admin/question/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
+        ResponseResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME+"/reply").type(MediaType.APPLICATION_JSON).post(ResponseResponseDto.class, requestDto);
         return res;
     }
     
     public UserResponseDto testCreateUser() {
         UserRequestDto requestDto = new UserRequestDto();
-        requestDto.setName("toto");
-        requestDto.setMail("toto@gmail.com");
+        requestDto.setName(TEST_USERNAME);
+        requestDto.setMail(TEST_USERNAME+"@gmail.com");
 
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        UserResponseDto res = service.path("services").path("/admin/user/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
+        UserResponseDto res = service.path(SERVICE_PATH).path("/admin/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
         return  res;
     }
 
@@ -159,7 +163,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        QuestionResponseDto res = service.path("services").path("/admin/question/question").type(MediaType.APPLICATION_JSON).get(QuestionResponseDto.class);
+        QuestionResponseDto res = service.path(SERVICE_PATH).path("/admin/question").type(MediaType.APPLICATION_JSON).get(QuestionResponseDto.class);
         return res;
     }
 
@@ -171,14 +175,14 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        service.path("services").path("/user/user/toto").delete();
+        service.path(SERVICE_PATH).path("/user/"+TEST_USERNAME).delete();
     }
 
     public ResultResponseDto testGetResult() {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        ResultResponseDto res = service.path("services").path("/admin/result/result/toto").type(MediaType.APPLICATION_JSON).get(ResultResponseDto.class);
+        ResultResponseDto res = service.path(SERVICE_PATH).path("/admin/result/"+TEST_USERNAME).type(MediaType.APPLICATION_JSON).get(ResultResponseDto.class);
 //        JSONWithPadding res = service.path("services").path("/result/result/toto").type(MediaType.APPLICATION_JSON).get(JSONWithPadding.class);
         return res;
     }
