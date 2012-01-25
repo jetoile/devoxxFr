@@ -92,29 +92,6 @@ public enum PropertiesUtils {
         }
     }
 
-    /*@Path("/height")
-    @GET
-    @Produces("application/json")
-    public String getHeight() {
-        try {
-            return "" + this.configuration.getInt(GRID_HEIGHT_KEY);
-        } catch (NoSuchElementException e) {
-            LOGGER.warn("unable to get {} in {}: will use default value {}", new String[] {GRID_HEIGHT_KEY, GAME_PROPERTIES_FILENAME, Integer.toString(GRID_HEIGHT_DEFAULT_VALUE)});
-            return "" + GRID_HEIGHT_DEFAULT_VALUE;
-        }
-    }
-
-    @Path("/width")
-    @GET
-    @Produces("application/json")
-    public String getWidth() {
-        try {
-            return "" + this.configuration.getInt(GRID_WIDTH_KEY);
-        } catch (NoSuchElementException e) {
-            LOGGER.warn("unable to get {} in {}: will use default value {}", new String[] {GRID_WIDTH_KEY, GAME_PROPERTIES_FILENAME, Integer.toString(GRID_WIDTH_DEFAULT_VALUE)});
-            return "" + GRID_WIDTH_DEFAULT_VALUE;
-        }
-    }*/
 
 
 }

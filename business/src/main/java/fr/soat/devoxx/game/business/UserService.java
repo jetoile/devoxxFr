@@ -23,25 +23,15 @@
  */
 package fr.soat.devoxx.game.business;
 
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sun.jersey.api.json.JSONWithPadding;
-
 import fr.soat.devoxx.game.business.admin.AdminUserService;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import fr.soat.devoxx.game.business.types.CustomMediaType;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.*;
 
 /**
  * User: khanh
@@ -53,26 +43,23 @@ public class UserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private AdminUserService delegate = new AdminUserService();
-    
+
     @Path("/")
     @POST
 //    @GET
     @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
-    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
-//    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String name, @PathParam("mail") String mail) throws InvalidUserException {
+    public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setName(name);
         userRequestDto.setMail(mail);
 
-        UserResponseDto result = delegate.createUser(userRequestDto);
-        return new JSONWithPadding(result, callback);
+        return delegate.createUser(userRequestDto);
     }
 
     @Path("/{username}")
     @GET
     @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
-    public JSONWithPadding getUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String userName) {
-        UserResponseDto result = delegate.getUser(userName);
-        return new JSONWithPadding(result, callback);
+    public UserResponseDto getUser(@PathParam("username") String userName) {
+        return delegate.getUser(userName);
     }
 }
