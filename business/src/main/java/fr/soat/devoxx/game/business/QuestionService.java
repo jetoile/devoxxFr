@@ -33,6 +33,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,16 +60,17 @@ public class QuestionService {
 
     @Path("/")
     @GET
-    @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
-    public JSONWithPadding getQuestion(@QueryParam("jsoncallback") @DefaultValue("fn") String callback) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public QuestionResponseDto getQuestion(@QueryParam("jsoncallback") @DefaultValue("fn") String callback) {
         QuestionResponseDto result = delegate.getQuestion();
-        return new JSONWithPadding(result, callback);
+        //return new JSONWithPadding(result, callback);
+        return result;
     }
 
     @Path("/reply")
     @POST
-    @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
-    public JSONWithPadding giveResponse(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, 
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseResponseDto giveResponse(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, 
                                         @FormParam("userName") String userName,
                                         @FormParam("id") Integer questionId,
                                         @FormParam("responses") List responses) {
@@ -79,16 +81,17 @@ public class QuestionService {
         responseDto.setResponses(responses);
 
         ResponseResponseDto result = delegate.giveResponse(responseDto);
-        return new JSONWithPadding(result, callback);
+        //return new JSONWithPadding(result, callback);
+        return result;
     }
     
     @Path("/{username}")
     @GET
-    @Produces(CustomMediaType.APPLICATION_XJAVASCRIPT)
-    public JSONWithPadding getAllQuestions(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String username) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public AllQuestionResponseDto getAllQuestions(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String username) {
         AllQuestionResponseDto result = delegate.getAllQuestions(username);
-        return new JSONWithPadding(result, callback);
-        
+        //return new JSONWithPadding(result, callback);        
+        return result;
     }
 
 }
