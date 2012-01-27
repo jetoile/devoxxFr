@@ -54,9 +54,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
-import fr.soat.devoxx.game.business.PropertiesUtils;
+import fr.soat.devoxx.game.business.GameUtils;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import fr.soat.devoxx.game.persistent.User;
+import fr.soat.devoxx.game.persistent.util.UserUtils;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 
@@ -117,8 +118,8 @@ public class AdminUserService {
                 LOGGER.error("Invalid input for user creation {}", userRequestDto);
                 throw new InvalidUserException(constraintViolations);
             }
-            final String token = generateToken();
-            user.setToken(token);
+            /*final String token = generateToken();
+            user.setToken(token);*/
 
             em.getTransaction().begin();
             em.persist(user);
@@ -194,9 +195,9 @@ public class AdminUserService {
         return em.createQuery(criteriaQuery).setParameter("name", userName).getResultList();
     }
 
-    String generateToken() {
-        return RandomStringUtils.randomAlphanumeric(PropertiesUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
-    }
+//    String generateToken() {
+//        return RandomStringUtils.randomAlphanumeric(UserUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
+//    }
     
     private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em, String userName) {
         //                    List<User> users = em.createQuery(
