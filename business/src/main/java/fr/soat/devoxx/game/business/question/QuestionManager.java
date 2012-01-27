@@ -25,7 +25,7 @@ package fr.soat.devoxx.game.business.question;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import fr.soat.devoxx.game.business.PropertiesUtils;
+import fr.soat.devoxx.game.business.GameUtils;
 import fr.soat.devoxx.game.pojo.question.QuestionType;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -47,7 +47,7 @@ public enum QuestionManager {
     public static final String QUESTION_LABEL = ".question.label";
     public static final String SEPARATOR = ";";
 
-    private final String QUESTION_FILE_PATH = PropertiesUtils.INSTANCE.getQuestionFilePath();
+    private final String QUESTION_FILE_PATH = GameUtils.INSTANCE.getQuestionFilePath();
 
     private PropertiesConfiguration configuration;
 
