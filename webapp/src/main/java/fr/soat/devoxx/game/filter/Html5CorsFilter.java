@@ -27,8 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
  * User: khanh
@@ -48,10 +50,19 @@ public class Html5CorsFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         logger.debug("HTML5CorsFilter add HTML5 CORS Headers");
+        Enumeration e = ((HttpServletRequest)request).getHeaderNames();
+        String header = null, headers = "method : " + ((HttpServletRequest)request).getMethod() + "\n";
+		while (e.hasMoreElements()) {
+			header = (String) e.nextElement();
+			if (header != null) {
+				headers += header + " : " + ((HttpServletRequest)request).getHeader(header) + "\n";
+			}
+		}
+		logger.info(headers); // Log client headers
 
         HttpServletResponse res = (HttpServletResponse) response;
         res.addHeader("Access-Control-Allow-Origin", "*");
-        res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+        res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
         res.addHeader("Access-Control-Allow-Headers", "Content-Type");
         chain.doFilter(request, response);
     }
