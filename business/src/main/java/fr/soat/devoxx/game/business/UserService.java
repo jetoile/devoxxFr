@@ -49,21 +49,17 @@ public class UserService {
 //    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
-//    public UserResponseDto createUser(@PathParam("username") String name, @PathParam("mail") String mail) throws InvalidUserException {
-//    public JSONWithPadding createUser(@QueryParam("jsoncallback") @DefaultValue("fn") String callback, @PathParam("username") String name, @PathParam("mail") String mail) throws InvalidUserException {
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setName(name);
         userRequestDto.setMail(mail);
 
-        UserResponseDto result = delegate.createUser(userRequestDto);
-        return result;
+        return delegate.createUser(userRequestDto);
     }
 
     @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto getUser(@PathParam("username") String userName) {
-        UserResponseDto result = delegate.getUser(userName);
-        return result;
+        return delegate.getUser(userName);
     }
 }

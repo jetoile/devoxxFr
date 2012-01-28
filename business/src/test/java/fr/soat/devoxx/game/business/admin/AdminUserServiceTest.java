@@ -27,6 +27,8 @@ import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
+
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,21 +60,16 @@ public class AdminUserServiceTest {
         adminUserService = new AdminUserService("devoxx-test", gameUserDataManager);
 //        adminUserService = new UserService("devoxx");
         adminUserService.deleteUser("toto");
-    }
-
-    @Test
-    public void generateTokenShouldReturnDifferentResults() {
-        assertNotSame(adminUserService.generateToken(), adminUserService.generateToken());
-    }
+    }    
 
     @Test
     public void createUserShouldReturnAToken() throws InvalidUserException {
-        UserRequestDto userRequestDto = new UserRequestDto();
-        userRequestDto.setName("toto");
-        userRequestDto.setMail("toto@gmail.com");
-        UserResponseDto user = adminUserService.createUser(userRequestDto);
-        assertNotNull(user);
-        assertNotNull(user.getToken());
+		UserRequestDto userRequestDto = new UserRequestDto();
+		userRequestDto.setName("toto");
+		userRequestDto.setMail("toto@gmail.com");
+		UserResponseDto user = adminUserService.createUser(userRequestDto);
+		assertNotNull(user);
+		assertFalse(StringUtils.isEmpty(user.getToken()));
     }
 
 
@@ -86,10 +83,10 @@ public class AdminUserServiceTest {
 
     @Test(expected = InvalidUserException.class)
     public void createUserWithInvalidMail2ShouldThrowException() throws InvalidUserException {
-        UserRequestDto user = new UserRequestDto();
-        user.setName("toto");
-        user.setMail("totogmailcom");
-        adminUserService.createUser(user);
+		UserRequestDto user = new UserRequestDto();
+		user.setName("toto");
+		user.setMail("totogmailcom");
+		adminUserService.createUser(user);
     }
 
     @Test(expected = InvalidUserException.class)

@@ -60,6 +60,7 @@ public class QuestionService {
     public ResponseResponseDto giveResponse(@FormParam("userName") String userName,
                                             @FormParam("id") Integer questionId,
                                             @FormParam("responses") List responses) {
+        //JERSEY-569 - http://java.net/jira/browse/JERSEY-569
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setUserName(userName);
         responseDto.setId(questionId);
@@ -75,7 +76,6 @@ public class QuestionService {
     public AllQuestionResponseDto getAllQuestions(@PathParam("username") String username) {
         AllQuestionResponseDto result = delegate.getAllQuestions(username);
         return result;
-
     }
 
 }

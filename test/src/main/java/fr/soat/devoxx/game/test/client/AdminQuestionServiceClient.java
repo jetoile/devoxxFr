@@ -67,12 +67,7 @@ public class AdminQuestionServiceClient {
     }
 
     private static URI getBaseURI() {
-//        return UriBuilder.fromUri("http://localhost:9090/").build();
-//        return UriBuilder.fromUri("http://localhost:8080/webapp-1.0.1-SNAPSHOT/").build();
-//        return UriBuilder.fromUri("http://devoxxfr.jetoile.cloudbees.net/").build();
-//        return UriBuilder.fromUri("http://devoxxfrjee.jetoile.cloudbees.net/").build();
         return UriBuilder.fromUri(BASE_URI).build();
-
     }
 
 
@@ -80,23 +75,19 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-//        service.path("services").path("/admin/question/create/toto").type(MediaType.APPLICATION_JSON).put();
         service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME+"/create").type(MediaType.APPLICATION_JSON).put();
-
     }
 
 
     public UserResponseDto testCreateUser() {
         UserRequestDto requestDto = new UserRequestDto();
-        requestDto.setName("toto");
-        requestDto.setMail("toto@gmail.com");
+        requestDto.setName(TEST_USERNAME);
+        requestDto.setMail(TEST_USERNAME+"@gmail.com");
 
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-//        UserResponseDto res = service.path("services").path("/admin/user/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
         UserResponseDto res = service.path(SERVICE_PATH).path("/admin/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
-
         return  res;
     }
 
@@ -123,9 +114,7 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-//        service.path("services").path("/admin/user/user/toto").delete();
         service.path(SERVICE_PATH).path("/admin/user/"+TEST_USERNAME).delete();
-
     }
 
 }

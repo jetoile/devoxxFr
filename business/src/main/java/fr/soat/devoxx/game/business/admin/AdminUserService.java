@@ -23,17 +23,8 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
-import fr.soat.devoxx.game.business.PropertiesUtils;
-import fr.soat.devoxx.game.business.exception.InvalidUserException;
-import fr.soat.devoxx.game.persistent.User;
-import fr.soat.devoxx.game.pojo.UserRequestDto;
-import fr.soat.devoxx.game.pojo.UserResponseDto;
-import org.apache.commons.lang.RandomStringUtils;
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -45,13 +36,30 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Set;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.business.GameUtils;
+import fr.soat.devoxx.game.business.exception.InvalidUserException;
+import fr.soat.devoxx.game.persistent.User;
+import fr.soat.devoxx.game.persistent.util.UserUtils;
+import fr.soat.devoxx.game.pojo.UserRequestDto;
+import fr.soat.devoxx.game.pojo.UserResponseDto;
 
 /**
  * User: khanh
@@ -99,7 +107,6 @@ public class AdminUserService {
 
     @Path("/")
     @POST
-//    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(UserRequestDto userRequestDto) throws InvalidUserException {
         try {
@@ -112,8 +119,8 @@ public class AdminUserService {
                 LOGGER.error("Invalid input for user creation {}", userRequestDto);
                 throw new InvalidUserException(constraintViolations);
             }
-            final String token = generateToken();
-            user.setToken(token);
+            /*final String token = generateToken();
+            user.setToken(token);*/
 
             em.getTransaction().begin();
             em.persist(user);
@@ -123,7 +130,6 @@ public class AdminUserService {
             this.gameUserDataManager.registerUser(userRequestDto.getName());
 
             return dozerMapper.map(user, UserResponseDto.class);
-//            return null;
         } finally {
             close();
         }
@@ -137,7 +143,7 @@ public class AdminUserService {
             init();
 
             List<User> users = getUsers(em, userName);
-
+                    
             if (users.size() == 1) {
                 LOGGER.debug("get user {} successful", userName);
                 UserResponseDto response = dozerMapper.map(users.get(0), UserResponseDto.class);
@@ -154,20 +160,17 @@ public class AdminUserService {
             }
         } finally {
             close();
-//            return null;
         }
     }
 
     @Path("/{username}/games")
     @DELETE
-//    @POST
     public void cleanUserGames(@PathParam("username") String userName) {
         this.gameUserDataManager.cleanUser(userName);
     }
 
     @Path("/{username}")
     @DELETE
-//    @POST
     public void deleteUser(@PathParam("username") String userName) {
         try {
             init();
@@ -195,10 +198,10 @@ public class AdminUserService {
                                     .setParameter("name", userName).getResultList();
     }
 
-    String generateToken() {
-        return RandomStringUtils.randomAlphanumeric(PropertiesUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
-    }
-
+//    String generateToken() {
+//        return RandomStringUtils.randomAlphanumeric(UserUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
+//    }
+    
     private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em, String userName) {
         //                    List<User> users = em.createQuery(
         //                    "select g from User g where g.name = :name")

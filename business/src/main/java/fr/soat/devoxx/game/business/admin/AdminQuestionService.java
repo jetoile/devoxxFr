@@ -129,7 +129,7 @@ public class AdminQuestionService {
         }
 
         Game game = gameUserDataManager.getGameById(responseDto.getUserName(), res.getId());
-
+               
         if (game == null) {
             game = new Game();
             game.setId(response.getId());
@@ -147,11 +147,7 @@ public class AdminQuestionService {
 
     @Path("/{username}/create")
     @PUT
-//    @POST
-//    @GET
     public javax.ws.rs.core.Response addQuestionForUser(@PathParam("username") String userName) {
-        LOGGER.debug("addQuestionForUser for user {}", userName);
-//    public String addQuestionForUser(@PathParam("username") String userName) {
         //TODO : change the algorithm : not optimized...
         boolean success = false;
         int NbToTry = questionManager.getNbQuestions();
@@ -178,10 +174,7 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
-        LOGGER.debug("end addQuestionForUser for user {} - {}", userName, game);
-//        finally {
-//            return StringUtils.EMPTY;
-//        }
+        
         return javax.ws.rs.core.Response.ok().build();
     }
 

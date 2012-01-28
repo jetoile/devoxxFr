@@ -175,7 +175,7 @@ public class QuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        service.path(SERVICE_PATH).path("/user/user/toto").delete();
+        service.path(SERVICE_PATH).path("/user/"+TEST_USERNAME).delete();
     }
 
     public ResultResponseDto testGetResult() {
