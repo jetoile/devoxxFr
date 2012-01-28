@@ -40,7 +40,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/admin/result")
 public class AdminResultService {
 
-    @Path("/result/{username}")
+    @Path("/{username}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public GameResult getResultForUser(@PathParam("username") String userName) {

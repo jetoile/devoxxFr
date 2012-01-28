@@ -44,8 +44,7 @@ public class UserService {
 
     private AdminUserService delegate = new AdminUserService();
 
-//    @Path("/user/{username}/{mail}")
-    @Path("/user/")
+    @Path("/")
     @POST
 //    @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,7 +59,7 @@ public class UserService {
         return result;
     }
 
-    @Path("/user/{username}")
+    @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto getUser(@PathParam("username") String userName) {

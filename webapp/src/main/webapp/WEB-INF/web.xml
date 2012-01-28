@@ -8,15 +8,15 @@
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
 
-    <!--<filter>-->
-        <!--<filter-name>jsonFilter</filter-name>-->
-        <!--<filter-class>fr.soat.devoxx.game.business.admin.JSONPRequestFilter</filter-class>-->
-    <!--</filter>-->
+    <filter>
+        <filter-name>jsonFilter</filter-name>
+        <filter-class>fr.soat.devoxx.game.business.admin.JSONPRequestFilter</filter-class>
+    </filter>
 
-    <!--<filter-mapping>-->
-        <!--<filter-name>jsonFilter</filter-name>-->
-        <!--<url-pattern>/services/*</url-pattern>-->
-    <!--</filter-mapping>-->
+    <filter-mapping>
+        <filter-name>jsonFilter</filter-name>
+        <url-pattern>/services/*</url-pattern>
+    </filter-mapping>
 
 
     <!--<resource-ref>-->

@@ -42,7 +42,7 @@ public class ResultService {
 
     private AdminResultService delegate = new AdminResultService();
 
-    @Path("/result/{username}")
+    @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public GameResult getResultForUser(@PathParam("username") String userName) {

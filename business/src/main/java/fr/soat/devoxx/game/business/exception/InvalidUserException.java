@@ -38,22 +38,22 @@ import java.util.Set;
 public class InvalidUserException extends Exception {
     private List<String> causes = new ArrayList<String>();
     private List<String> causesKey = new ArrayList<String>();
-    
+
     public InvalidUserException(String cause) {
         super(cause);
     }
-    
+
     public InvalidUserException(Set<ConstraintViolation<User>> constraintViolations) {
         super();
         for (ConstraintViolation constraintViolation : constraintViolations) {
-            causes.add(constraintViolation.getMessage());    
+            causes.add(constraintViolation.getMessage());
         }
     }
-    
+
     public List<String> getCauses() {
         return this.causes;
     }
-    
+
     public List<String> getCausesTemplate() {
         return this.causesKey;
     }

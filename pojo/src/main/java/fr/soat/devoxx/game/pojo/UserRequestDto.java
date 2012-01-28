@@ -31,7 +31,7 @@ import java.io.Serializable;
  * Date: 21/12/11
  * Time: 16:38
  */
-//@XmlRootElement(name = "userRequest")
+@XmlRootElement(name = "userRequest")
 public class UserRequestDto implements Serializable {
 //    private String token;
 

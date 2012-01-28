@@ -46,7 +46,7 @@ public class QuestionService {
 
     private AdminQuestionService delegate = new AdminQuestionService();
 
-    @Path("/question")
+    @Path("/")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public QuestionResponseDto getQuestion() {
@@ -69,7 +69,7 @@ public class QuestionService {
         return result;
     }
 
-    @Path("/allQuestions/{username}")
+    @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public AllQuestionResponseDto getAllQuestions(@PathParam("username") String username) {

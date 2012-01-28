@@ -42,7 +42,13 @@ import java.net.URI;
  * Time: 20:18
  */
 public class AdminQuestionServiceClient {
-    
+
+	public static final String BASE_URI = "http://devoxxfrjee.jetoile.cloudbees.net/";
+//	public static final String BASE_URI = "http://devoxxfr.jetoile.cloudbees.net/";
+//    public static final String BASE_URI = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/";
+    public static final String SERVICE_PATH = "services";
+    public static final String TEST_USERNAME = "toto";
+
     public static void main(String[] args) {
         AdminQuestionServiceClient client = new AdminQuestionServiceClient();
 
@@ -62,8 +68,11 @@ public class AdminQuestionServiceClient {
 
     private static URI getBaseURI() {
 //        return UriBuilder.fromUri("http://localhost:9090/").build();
-//        return UriBuilder.fromUri("http://localhost:8080/webapp-1.0.0-SNAPSHOT/").build();
-        return UriBuilder.fromUri("http://devoxxfr.jetoile.cloudbees.net/").build();
+//        return UriBuilder.fromUri("http://localhost:8080/webapp-1.0.1-SNAPSHOT/").build();
+//        return UriBuilder.fromUri("http://devoxxfr.jetoile.cloudbees.net/").build();
+//        return UriBuilder.fromUri("http://devoxxfrjee.jetoile.cloudbees.net/").build();
+        return UriBuilder.fromUri(BASE_URI).build();
+
     }
 
 
@@ -71,7 +80,9 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        service.path("services").path("/admin/question/question/toto").type(MediaType.APPLICATION_JSON).put();
+//        service.path("services").path("/admin/question/create/toto").type(MediaType.APPLICATION_JSON).put();
+        service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME+"/create").type(MediaType.APPLICATION_JSON).put();
+
     }
 
 
@@ -83,7 +94,9 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        UserResponseDto res = service.path("services").path("/admin/user/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
+//        UserResponseDto res = service.path("services").path("/admin/user/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
+        UserResponseDto res = service.path(SERVICE_PATH).path("/admin/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
+
         return  res;
     }
 
@@ -95,7 +108,9 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        AllQuestionResponseDto res = service.path("services").path("/admin/question/allQuestions/toto").type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
+//        AllQuestionResponseDto res = service.path("services").path("/admin/question/allQuestions/toto").type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
+        AllQuestionResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME).type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
+
         return res;
     }
 
@@ -108,7 +123,9 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        service.path("services").path("/admin/user/user/toto").delete();
+//        service.path("services").path("/admin/user/user/toto").delete();
+        service.path(SERVICE_PATH).path("/admin/user/"+TEST_USERNAME).delete();
+
     }
 
 }

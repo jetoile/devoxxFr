@@ -79,14 +79,14 @@ public class AdminQuestionService {
         this.gameUserDataManager = gameUserDataManager;
     }
 
-    @Path("/question")
+    @Path("/")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public QuestionResponseDto getQuestion() {
         return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
     }
 
-    @Path("/allQuestions/{username}")
+    @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public AllQuestionResponseDto getAllQuestions(@PathParam("username") String username) {
@@ -98,7 +98,7 @@ public class AdminQuestionService {
         return results;
     }
 
-    @Path("/reply")
+    @Path("/{username}/reply")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -145,11 +145,12 @@ public class AdminQuestionService {
         return response;
     }
 
-    @Path("/create/{username}")
+    @Path("/{username}/create")
     @PUT
 //    @POST
 //    @GET
-    public void addQuestionForUser(@PathParam("username") String userName) {
+    public javax.ws.rs.core.Response addQuestionForUser(@PathParam("username") String userName) {
+        LOGGER.debug("addQuestionForUser for user {}", userName);
 //    public String addQuestionForUser(@PathParam("username") String userName) {
         //TODO : change the algorithm : not optimized...
         boolean success = false;
@@ -177,9 +178,11 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
+        LOGGER.debug("end addQuestionForUser for user {} - {}", userName, game);
 //        finally {
 //            return StringUtils.EMPTY;
 //        }
+        return javax.ws.rs.core.Response.ok().build();
     }
 
 }

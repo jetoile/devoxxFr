@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
-<cloudbees-web-app xmlns="http://www.cloudbees.com/xml/webapp/1">
+<cloudbees-web-app>
 
-<resource name="jdbc/devoxxfrjee" auth="Container" type="javax.sql.DataSource">
-    <param name="username" value="jetoilejee" />
-    <param name="password" value="jetoile" />
-    <param name="url" value="jdbc:cloudbees://devoxxfrjee" />
-</resource>
+
+    <appid>jetoile/devoxxfrjee</appid>
+
+    <resource name="jdbc/devoxxfrjee" auth="Container" type="javax.sql.DataSource">
+        <param name="username" value="jetoilejee"/>
+        <param name="password" value="jetoile"/>
+        <!--<param name="url" value="jdbc:cloudbees://devoxxfrjee" />-->
+        <param name="url" value="jdbc:mysql://ec2-174-129-9-255.compute-1.amazonaws.com:3306/devoxxfrjee?autoReconnect=true"/>
+    </resource>
 
 </cloudbees-web-app>

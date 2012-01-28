@@ -30,7 +30,6 @@ import fr.soat.devoxx.game.persistent.User;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -50,6 +49,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Set;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 
 /**
  * User: khanh
@@ -65,6 +67,7 @@ public class AdminUserService {
     private GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
+
     {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
@@ -94,7 +97,7 @@ public class AdminUserService {
         }
     }
 
-    @Path("/user")
+    @Path("/")
     @POST
 //    @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -120,12 +123,13 @@ public class AdminUserService {
             this.gameUserDataManager.registerUser(userRequestDto.getName());
 
             return dozerMapper.map(user, UserResponseDto.class);
+//            return null;
         } finally {
             close();
         }
     }
 
-    @Path("/user/{username}")
+    @Path("/{username}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public UserResponseDto getUser(@PathParam("username") String userName) {
@@ -133,7 +137,7 @@ public class AdminUserService {
             init();
 
             List<User> users = getUsers(em, userName);
-                    
+
             if (users.size() == 1) {
                 LOGGER.debug("get user {} successful", userName);
                 UserResponseDto response = dozerMapper.map(users.get(0), UserResponseDto.class);
@@ -141,24 +145,27 @@ public class AdminUserService {
                 return response;
             } else if (users.size() > 1) {
                 LOGGER.debug("get user {} failed: too many response", userName);
-                return null;
+//                return null;
+                throw new WebApplicationException(Response.status(Status.NOT_FOUND).entity("too many response").build());
             } else {
                 LOGGER.debug("get user {} failed: not found", userName);
-                return null;
+//                return null;
+                throw new WebApplicationException(Status.NOT_FOUND);
             }
         } finally {
             close();
+//            return null;
         }
     }
 
-    @Path("/games/{username}")
+    @Path("/{username}/games")
     @DELETE
 //    @POST
     public void cleanUserGames(@PathParam("username") String userName) {
-            this.gameUserDataManager.cleanUser(userName);
+        this.gameUserDataManager.cleanUser(userName);
     }
 
-    @Path("/user/{username}")
+    @Path("/{username}")
     @DELETE
 //    @POST
     public void deleteUser(@PathParam("username") String userName) {
@@ -182,14 +189,16 @@ public class AdminUserService {
     }
 
     private List<User> getUsers(EntityManager em, String userName) {
-        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em, userName);
-        return em.createQuery(criteriaQuery).setParameter("name", userName).getResultList();
+//        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em, userName);
+//        return em.createQuery(criteriaQuery).setParameter("name", userName).getResultList();
+        return em.createQuery("select g from User g where g.name = :name")
+                                    .setParameter("name", userName).getResultList();
     }
 
     String generateToken() {
         return RandomStringUtils.randomAlphanumeric(PropertiesUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
     }
-    
+
     private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em, String userName) {
         //                    List<User> users = em.createQuery(
         //                    "select g from User g where g.name = :name")
