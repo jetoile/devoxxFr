@@ -23,17 +23,18 @@
  */
 package fr.soat.devoxx.game.persistent;
 
-import org.apache.commons.lang.StringUtils;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.Valid;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
+
+import org.apache.commons.lang.StringUtils;
+
+import fr.soat.devoxx.game.persistent.util.UserUtils;
 
 /**
  * User: khanh
@@ -52,13 +53,20 @@ public class User implements Serializable {
     @Size(min = 4)
     private String name;
 
-    //    @Pattern(regexp = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b")
-    @NotNull
-    @Pattern(regexp = "[\\w-]+@([\\w-]+\\.)+[\\w-]+")
-    private String mail;
+    //	@Pattern(regexp = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b")
+    //	@Pattern(regexp = "[\\w-]+@([\\w-]+\\.)+[\\w-]+")
+    //	@Email // Hibernate
+	@NotNull
+	@Pattern(regexp = "[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)*\\.[A-Za-z]{2,}")
+	private String mail;
 
-    @NotNull
-    private String token = StringUtils.EMPTY;
+	@NotNull
+	private String token = StringUtils.EMPTY;
+
+	@PrePersist
+	void generateUserToken() {
+		this.setToken(UserUtils.INSTANCE.generateToken());
+	}
 
     public void setToken(String token) {
         this.token = token;
