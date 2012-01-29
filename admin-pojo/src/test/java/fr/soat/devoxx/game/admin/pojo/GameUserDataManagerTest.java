@@ -123,6 +123,50 @@ public class GameUserDataManagerTest {
     }
 
     @Test
+    public void getGamesShouldReturnAllPlayedGamesForASpecificUser() throws StorageException {
+        //given
+        GameUserData gameUserData = mock(GameUserData.class);
+        when(gameUserData.getName()).thenReturn("user1");
+
+        Datastore ds = mock(Datastore.class);
+        Query<GameUserData> query = mock(Query.class);
+        Query<GameUserData> query2 = mock(Query.class);
+        FieldEnd fieldEnd = mock(FieldEnd.class);
+        FieldEnd fieldEnd2 = mock(FieldEnd.class);
+
+        GameUserDataManager.INSTANCE.ds = ds;
+        when(query.field("name")).thenReturn(fieldEnd);
+        when(fieldEnd.equal("user1")).thenReturn(query2);
+        when(query2.get()).thenReturn(gameUserData);
+        when(ds.find(GameUserData.class)).thenReturn(query);
+
+        Game game1 = new Game();
+        game1.setId(1);
+        game1.setGivenAnswers(Lists.newArrayList("toto", "titi"));
+        game1.setType(ResponseType.SUCCESS);
+
+        Game game2 = new Game();
+        game2.setId(2);
+        game2.setGivenAnswers(Lists.newArrayList("tutu1"));
+        game2.setType(ResponseType.FAIL);
+
+        Game game3 = new Game();
+        game3.setId(3);
+        game3.setGivenAnswers(Lists.newArrayList("tutu"));
+        game3.setType(ResponseType.SUCCESS);
+
+        //when
+        when(gameUserData.getGames()).thenReturn(Lists.newArrayList(game1, game2, game3));
+
+        //then
+        List<Game> games = GameUserDataManager.INSTANCE.getGames("user1");
+        assertTrue(games.size() == 3);
+        assertTrue(games.get(0).getId() == 1);
+        assertTrue(games.get(1).getId() == 2);
+        assertTrue(games.get(2).getId() == 3);
+    }
+
+    @Test
     public void getGamesByResponseTypeShouldSuccess() throws StorageException {
         //given
         GameUserData gameUserData = mock(GameUserData.class);
@@ -169,9 +213,10 @@ public class GameUserDataManagerTest {
         game3.setGivenAnswers(Lists.newArrayList("tutu"));
         game3.setType(ResponseType.SUCCESS);
 
+        //when
         when(gameUserData.getGames()).thenReturn(Lists.newArrayList(game1, game2, game3));
-//        when(gameUserData2.getGames()).thenReturn(Lists.newArrayList(game1, game2));
 
+        //then
         List<Game> games = GameUserDataManager.INSTANCE.getGamesByResultType("user1", ResponseType.SUCCESS);
         assertTrue(games.size() == 2);
         assertTrue(games.get(0).getId() == 1);

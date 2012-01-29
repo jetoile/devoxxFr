@@ -103,6 +103,32 @@ public class Question {
                 '}';
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Question question = (Question) o;
+//
+//        if (id != question.id) return false;
+//        if (answers != null ? !answers.equals(question.answers) : question.answers != null) return false;
+//        if (label != null ? !label.equals(question.label) : question.label != null) return false;
+//        if (questionType != question.questionType) return false;
+//        if (questions != null ? !questions.equals(question.questions) : question.questions != null) return false;
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = id;
+//        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
+//        result = 31 * result + (label != null ? label.hashCode() : 0);
+//        result = 31 * result + (questions != null ? questions.hashCode() : 0);
+//        result = 31 * result + (answers != null ? answers.hashCode() : 0);
+//        return result;
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,22 +137,13 @@ public class Question {
         Question question = (Question) o;
 
         if (id != question.id) return false;
-        if (answers != null ? !answers.equals(question.answers) : question.answers != null) return false;
-        if (label != null ? !label.equals(question.label) : question.label != null) return false;
-        if (questionType != question.questionType) return false;
-        if (questions != null ? !questions.equals(question.questions) : question.questions != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (questionType != null ? questionType.hashCode() : 0);
-        result = 31 * result + (label != null ? label.hashCode() : 0);
-        result = 31 * result + (questions != null ? questions.hashCode() : 0);
-        result = 31 * result + (answers != null ? answers.hashCode() : 0);
-        return result;
+        return id;
     }
 
     private static class EmptyQuestion extends Question {
