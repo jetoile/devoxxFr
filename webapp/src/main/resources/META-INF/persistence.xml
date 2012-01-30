@@ -5,7 +5,7 @@
     <persistence-unit name="devoxx" transaction-type="RESOURCE_LOCAL">
 
         <!--<jta-data-source>java:jboss/datasources/devoxxFrJee</jta-data-source>-->
-        <jta-data-source>jdbc/devoxxfrjee</jta-data-source>
+        <jta-data-source>jdbc/devoxxfrjee2</jta-data-source>
         <class>fr.soat.devoxx.game.persistent.User</class>
 
         <properties>
