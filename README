@@ -1,1 +1,5 @@
-need a mongodb instance on localhost:27017
+<p>need a mongodb instance on localhost:27017<p>
+<p><strong>Activate CloudBees Profile (tomcat) :</strong><br/>
+mvn clean package -Dcloudbees=master</p>
+<p><strong>Activate CloudBees Profile (jee/jboss) :</strong><br/>
+mvn clean package -Dcloudbees=jee</p>
