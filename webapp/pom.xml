@@ -33,12 +33,19 @@
     <profiles>
         <profile>
             <id>cloudbees</id>
+            
+            <activation>
+                <property>
+                     <name>cloudbees</name>
+                     <value>master</value>
+                </property>
+            </activation>
 
             <properties>
                 <!--<jdbc.url>jdbc:cloudbees://devoxxfr</jdbc.url>-->
                 <!--<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>-->
                 <!--<jdbc.username>jetoile</jdbc.username>-->
-                <!--<jdbc.password></jdbc.password>-->
+                <!--<jdbc.password></jdbc.password>-->                
                 <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
             </properties>
 
@@ -80,13 +87,19 @@
 
         <profile>
             <id>cloudbees-jee</id>
+            
+            <activation>
+                <property>
+                     <name>cloudbees</name>
+                     <value>jee</value>
+                </property>
+            </activation>
 
             <properties>
                 <!--<jdbc.url>jdbc:mysql://localhost:3306/devoxx</jdbc.url>-->
                 <!--<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>-->
                 <!--<jdbc.username>root</jdbc.username>-->
                 <!--<jdbc.password></jdbc.password>-->
-
 
                 <version.javax.activation>1.1</version.javax.activation>
                 <version.javax.enterprise>1.0-SP4</version.javax.enterprise>
@@ -188,8 +201,9 @@
                     <artifactId>mysql-connector-java</artifactId>
                     <scope>provided</scope>
                 </dependency>
-            </dependencies>
+            </dependencies>   
         </profile>
+        
         <profile>
             <id>default</id>
             <activation>
@@ -201,6 +215,7 @@
                 <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
                 <jdbc.username>root</jdbc.username>
                 <jdbc.password></jdbc.password>
+                
                 <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
             </properties>
 
@@ -263,6 +278,7 @@
                 </plugins>
             </build>
         </profile>
+        
         <profile>
             <id>dev</id>
             <properties>
@@ -302,12 +318,10 @@
                 </plugins>
             </build>
         </profile>
-
     </profiles>
 
 
     <build>
-
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
