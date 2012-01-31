@@ -1,3 +1,6 @@
+DevoxxFr Back Office
+====================
+
 need a mongodb instance on localhost:27017
 
 ### Activate CloudBees Profile (tomcat) :
