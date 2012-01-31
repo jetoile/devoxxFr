@@ -1,55 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>game</artifactId>
-        <groupId>fr.soat.devoxxfr.game</groupId>
-        <version>1.0.1-SNAPSHOT</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>game</artifactId>
+		<groupId>fr.soat.devoxxfr.game</groupId>
+		<version>1.0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>admin-pojo</artifactId>
+	<artifactId>admin-pojo</artifactId>
 
 
-    <dependencies>
-        <dependency>
-            <groupId>fr.soat.devoxxfr.game</groupId>
-            <artifactId>pojo</artifactId>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>fr.soat.devoxxfr.game</groupId>
+			<artifactId>pojo</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>com.google.code.morphia</groupId>
-            <artifactId>morphia</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-        </dependency>
-    </dependencies>
-    <profiles>
-        <profile>
-            <id>jrebel</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.zeroturnaround</groupId>
-                        <artifactId>jrebel-maven-plugin</artifactId>
-                        <configuration>
-                            <!--<relativePath>../</relativePath>-->
-                            <rootPath>${workspace.root}</rootPath>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+		<dependency>
+			<groupId>com.google.code.morphia</groupId>
+			<artifactId>morphia</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+		</dependency>
+	</dependencies>
+	<profiles>
+		<profile>
+			<id>jrebel</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.zeroturnaround</groupId>
+						<artifactId>jrebel-maven-plugin</artifactId>
+						<configuration>
+							<!--<relativePath>../</relativePath> -->
+							<rootPath>${workspace.root}</rootPath>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+        <!-- CloudBees MongoDB Profile -->
+		<profile>
+			<id>cloudbees-mongodb</id>
+			<activation>
+			    <property>
+			         <name>cloudbees</name>
+			    </property>
+			</activation>
+			<properties>
+				<mongodb.dbname>58EGqeL7mz2hs9caQxooxg</mongodb.dbname>
+				<mongodb.host>staff.mongohq.com</mongodb.host>
+				<mongodb.port>10017</mongodb.port>
+				<mongodb.login>devoxx</mongodb.login>
+				<mongodb.password>devoxx</mongodb.password>
+			</properties>
+		</profile>
+        <!-- Local MongoDB Profile -->
+		<profile>
+            <id>local-mongodb</id>
+            <activation>
+                <property>
+                     <name>!cloudbees</name>
+                </property>
+            </activation>
+            <properties>
+                <mongodb.dbname>devoxx</mongodb.dbname>
+                <mongodb.host>localhost</mongodb.host>
+                <mongodb.port>27017</mongodb.port>
+                <mongodb.login></mongodb.login>
+                <mongodb.password></mongodb.password>
+            </properties>
         </profile>
-    </profiles>
+	</profiles>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 </project>
