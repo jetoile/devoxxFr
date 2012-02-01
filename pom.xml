@@ -32,6 +32,7 @@
     <modules>
         <module>business</module>
         <module>webapp</module>
+        <module>webapp-mvc</module>
         <module>persistent</module>
         <module>pojo</module>
         <module>test</module>
@@ -102,11 +103,16 @@
                 <artifactId>persistent</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
+<!--             <dependency>
                 <groupId>fr.soat.devoxxfr.game</groupId>
                 <artifactId>webapp</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>webapp-mvc</artifactId>
+                <version>${project.version}</version>
+            </dependency> -->
             <dependency>
                 <groupId>fr.soat.devoxxfr.game</groupId>
                 <artifactId>pojo</artifactId>
