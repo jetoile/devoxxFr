@@ -26,10 +26,8 @@
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>classpath:messages/GlobalMessages</value>
-				<value>classpath:messages/LoginMessages</value>
-				<value>classpath:messages/SearchMessages</value>
-				<value>classpath:messages/SubscribeMessages</value>
+				<value>classpath:messages/globalMessages</value>
+				<value>classpath:messages/adminMessages</value>
 			</list>
 		</property>
 		<property name="defaultEncoding" value="ISO-8859-1" />
@@ -39,7 +37,7 @@
 	<!-- Internationalization -->
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-		<property name="defaultLocale" value="fr" />
+		<property name="defaultLocale" value="en" />
 	</bean>
 
 	<mvc:interceptors>
