@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>		
+	<!-- Definitions communes -->
+	<definition name="common.blank"  template="/common/blank.jsp"/>
+	<definition name="common.header" template="/common/header.jsp"/>
+	<definition name="common.footer" template="/common/footer.jsp"/>
+	
+	<definition name="common.layout" template="/common/layout.jsp">
+        <put-attribute name="pageTitle" type="string" value="Happyref"/>
+		<put-attribute name="header"  value="common.header"/>
+		<put-attribute name="content" value="common.blank"/>
+		<put-attribute name="footer"  value="common.footer"/>
+	</definition>
+
+	<!-- Définition de la vue home -->
+	<definition name="home.content" template="/home/content.jsp" />
+	<definition name="happyref.home" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Accueil"/>
+		<put-attribute name="content" value="home.content"/>
+	</definition>
+	
+	<!-- Définition de la vue login -->
+	<definition name="login.content" template="/common/login.jsp" />
+	<definition name="happyref.login" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Login"/>
+		<put-attribute name="content" value="login.content"/>
+	</definition>
+	
+	<!-- Définition de la vue inscription -->
+	<definition name="subscribe.content" template="/common/subscribe.jsp" />
+	<definition name="happyref.subscribe" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Inscription"/>
+		<put-attribute name="content" value="subscribe.content"/>
+	</definition>
+	
+	<!-- Définition de la vue inscription -->
+	<definition name="user.content" template="/user/home.jsp" />
+	<definition name="happyref.user.home" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Mon compte"/>
+		<put-attribute name="content" value="user.content"/>
+	</definition>
+	
+	<!-- Définition de la vue des résultats de la recherche -->
+	<definition name="search.content" template="/search/result.jsp" />
+	<definition name="happyref.search" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Résultats de la recherche"/>
+		<put-attribute name="content" value="search.content"/>
+	</definition>
+	
+	<!-- Définition de la vue errors -->
+	<definition name="error.content" template="/errors/error.jsp" />
+	<definition name="happyref.error" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Erreurs"/>
+		<put-attribute name="content" value="error.content"/>
+	</definition>
+	
+	<!-- Définition de la vue fiche produit -->
+	<definition name="product.content" template="/product/product.jsp" />
+	<definition name="happyref.product" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Fiche produit"/>
+		<put-attribute name="content" value="product.content"/>
+	</definition>
+	
+	<!-- Définition de la vue index admin -->
+	<definition name="admin.index.content" template="/admin/index.jsp" />
+	<definition name="happyref.admin.index" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - Administration"/>
+		<put-attribute name="content" value="admin.index.content"/>
+	</definition>
+	
+	<!-- Définition de la vue Not Found -->
+	<definition name="notfound.content" template="/common/404.jsp" />
+	<definition name="happyref.notfound" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="Happyref - 404"/>
+		<put-attribute name="content" value="notfound.content"/>
+	</definition>
+	
+</tiles-definitions>
