@@ -1,0 +1,252 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>game</artifactId>
+        <groupId>fr.soat.devoxxfr.game</groupId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>webapp-mvc</artifactId>
+    <packaging>war</packaging>
+    <name>webapp-mvc</name>
+    <description>Hosted webapp with Spring MVC</description>
+    
+    <properties>
+        <spring.version>3.1.0.RELEASE</spring.version>
+        <tiles.version>2.2.2</tiles.version>
+        <jstl.version>1.2</jstl.version>
+        <taglibs.verion>1.1.2</taglibs.verion>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>fr.soat.devoxxfr.game</groupId>
+            <artifactId>business</artifactId>
+        </dependency>
+        
+        <!-- Spring Dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Apache Tiles 2 dependencies -->
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-core</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-api</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-servlet</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+    </dependencies>
+    
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            
+            <dependencies>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+        
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>jstl</artifactId>
+                    <version>${jstl.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+        
+        <!--         <dependency>
+                    <groupId>taglibs</groupId>
+                    <artifactId>standard</artifactId>
+                    <version>${taglibs.version}</version>
+                    <scope>runtime</scope>
+                </dependency> -->
+            </dependencies>
+        </profile>
+        <profile>
+            <id>cloudbees</id>
+            
+            <activation>
+                <property>
+                     <name>cloudbees</name>
+                     <value>master</value>
+                </property>
+            </activation>
+
+            <properties>             
+                <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>eclipselink</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-server</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-json</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-servlet</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>eclipselink</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>cloudbees-jee</id>
+            
+            <activation>
+                <property>
+                     <name>cloudbees</name>
+                     <value>jee</value>
+                </property>
+            </activation>
+
+            <properties>
+                <version.javax.activation>1.1</version.javax.activation>
+                <version.javax.enterprise>1.0-SP4</version.javax.enterprise>
+                <version.javax.inject>1</version.javax.inject>
+                <version.javax.jws>1.0-MR1</version.javax.jws>
+                <version.javax.mail>1.4.4</version.javax.mail>
+                <version.javax.validation>1.0.0.GA</version.javax.validation>
+                <version.org.hibernate.javax.persistence>1.0.1.Final</version.org.hibernate.javax.persistence>
+
+
+                <version.org.jboss.spec.javax.annotation>1.0.0.Final</version.org.jboss.spec.javax.annotation>
+                <version.org.jboss.spec.javax.ejb>1.0.1.Final</version.org.jboss.spec.javax.ejb>
+                <version.org.jboss.spec.javax.el>1.0.0.Final</version.org.jboss.spec.javax.el>
+                <version.org.jboss.spec.javax.enterprise.deploy>1.0.0.Final
+                </version.org.jboss.spec.javax.enterprise.deploy>
+                <version.org.jboss.spec.javax.faces>1.0.0.Final</version.org.jboss.spec.javax.faces>
+                <version.org.jboss.spec.javax.interceptor>1.0.0.Final</version.org.jboss.spec.javax.interceptor>
+                <version.org.jboss.spec.javax.jms>1.0.0.Final</version.org.jboss.spec.javax.jms>
+                <version.org.jboss.spec.javax.management.j2ee>1.0.0.Final</version.org.jboss.spec.javax.management.j2ee>
+                <version.org.jboss.spec.javax.resource>1.0.0.Final</version.org.jboss.spec.javax.resource>
+                <version.org.jboss.spec.javax.rmi>1.0.1.Final</version.org.jboss.spec.javax.rmi>
+                <version.org.jboss.spec.javax.security.auth.message>1.0.0.Final
+                </version.org.jboss.spec.javax.security.auth.message>
+                <version.org.jboss.spec.javax.security.jacc>1.0.1.Final</version.org.jboss.spec.javax.security.jacc>
+                <version.org.jboss.spec.javax.servlet>1.0.0.Final</version.org.jboss.spec.javax.servlet>
+                <version.org.jboss.spec.javax.servlet.jsp>1.0.0.Final</version.org.jboss.spec.javax.servlet.jsp>
+                <version.org.jboss.spec.javax.servlet.jstl>1.0.1.Final</version.org.jboss.spec.javax.servlet.jstl>
+                <version.org.jboss.spec.javax.transaction>1.0.0.Final</version.org.jboss.spec.javax.transaction>
+                <version.org.jboss.spec.javax.ws.rs>1.0.0.Final</version.org.jboss.spec.javax.ws.rs>
+                <version.org.jboss.spec.javax.xml.bind>1.0.3.Final</version.org.jboss.spec.javax.xml.bind>
+                <version.org.jboss.spec.javax.xml.registry>1.0.0.Final</version.org.jboss.spec.javax.xml.registry>
+                <version.org.jboss.spec.javax.xml.rpc>1.0.0.Final</version.org.jboss.spec.javax.xml.rpc>
+                <version.org.jboss.spec.javax.xml.soap>1.0.1.Final</version.org.jboss.spec.javax.xml.soap>
+                <version.org.jboss.spec.javax.xml.ws>2.0.0.Final</version.org.jboss.spec.javax.xml.ws>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                    <artifactId>hibernate-jpa-2.0-api</artifactId>
+                    <version>${version.org.hibernate.javax.persistence}</version>
+                    <scope>provided</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jboss.spec.javax.servlet</groupId>
+                    <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+                    <version>${version.org.jboss.spec.javax.servlet}</version>
+                    <scope>provided</scope>
+                </dependency>
+                
+                <dependency>
+                    <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
+                    <artifactId>jboss-jstl-api_1.2_spec</artifactId>
+                    <version>${version.org.jboss.spec.javax.servlet.jstl}</version>
+                    <scope>provided</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>javax.enterprise</groupId>
+                    <artifactId>cdi-api</artifactId>
+                    <version>${version.javax.enterprise}</version>
+                    <scope>provided</scope>
+                </dependency>
+
+                <!-- Import the Common Annotations API (JSR-250), we use provided scope
+       as the API is included in JBoss AS 7 -->
+                <dependency>
+                    <groupId>org.jboss.spec.javax.annotation</groupId>
+                    <artifactId>jboss-annotations-api_1.1_spec</artifactId>
+                    <version>${version.org.jboss.spec.javax.annotation}</version>
+                    <scope>provided</scope>
+                </dependency>
+
+                <!-- Import the JAX-RS API, we use provided scope as the API is included
+            in JBoss AS 7 -->
+                <dependency>
+                    <groupId>org.jboss.spec.javax.ws.rs</groupId>
+                    <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
+                    <version>${version.org.jboss.spec.javax.xml.registry}</version>
+                    <scope>provided</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>   
+        </profile>
+    </profiles>
+</project>
