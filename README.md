@@ -7,14 +7,14 @@ Prerequisite
 ------------
 
 * Need a MongoDb instance (specified in pom.xml)
-* Need a MySQL Datasource
-* Need a JBoss AS 7 server
+* Need a MySQL5 Instance + Datasource
+* Need a JBoss AS 7
 
 Usages
 ------ 
 
-### Activate CloudBees Profile (tomcat) :
-    mvn clean package -Dcloudbees=master
+### Activate Local Profile (jee/jboss) :
+    mvn clean package
 
 ### Activate CloudBees Profile (jee/jboss) :
-    mvn clean package -Dcloudbees=jee
+    mvn clean package -Dcloudbees-jee
