@@ -17,4 +17,4 @@ Usages
     mvn clean package
 
 ### Activate CloudBees Profile (jee/jboss) :
-    mvn clean package -Dcloudbees-jee
+    mvn clean package -Pcloudbees-jee
