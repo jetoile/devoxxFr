@@ -187,10 +187,18 @@ public enum GameUserDataManager {
 
     public GameResult getResult(String userName) {
         GameResult result = new GameResult();
+        result.setUsername(userName);
         result.setNbSuccess(getGamesByResultType(userName, ResponseType.SUCCESS).size());
         result.setNbFail(getGamesByResultType(userName, ResponseType.FAIL).size());
         result.setNbInvalid(getGamesByResultType(userName, ResponseType.INVALID).size());
         return result;
     }
-
+    
+	public List<GameResult> getAllResult() {
+		List<GameResult> results = new ArrayList<GameResult>();
+		for (GameUserData gameUserData : ds.find(GameUserData.class).asList()) {
+			results.add(getResult(gameUserData.getName()));
+		}
+		return results;
+	}
 }
