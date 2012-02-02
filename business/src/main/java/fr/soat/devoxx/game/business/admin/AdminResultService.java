@@ -23,14 +23,21 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import fr.soat.devoxx.game.admin.pojo.GameResult;
-import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+
+import fr.soat.devoxx.game.admin.pojo.GameResult;
+import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.admin.pojo.dto.AllResultResponseDto;
+import fr.soat.devoxx.game.pojo.ResultResponseDto;
 
 /**
  * User: khanh
@@ -40,10 +47,25 @@ import javax.ws.rs.core.MediaType;
 @Path("/admin/result")
 public class AdminResultService {
 
+	private final Mapper dozerMapper = new DozerBeanMapper();
+	
     @Path("/{username}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public GameResult getResultForUser(@PathParam("username") String userName) {
-        return GameUserDataManager.INSTANCE.getResult(userName);
+    public ResultResponseDto getResultForUser(@PathParam("username") String userName) {
+    	GameResult gameResult = GameUserDataManager.INSTANCE.getResult(userName);
+        return dozerMapper.map(gameResult, ResultResponseDto.class);
     }
+    
+	@Path("/")
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public AllResultResponseDto getAllResult() {
+		AllResultResponseDto allResultResp = new AllResultResponseDto();
+		List<GameResult> allGameResult = GameUserDataManager.INSTANCE.getAllResult();
+		for (GameResult gameResult : allGameResult) {
+			allResultResp.addGameResult(this.dozerMapper.map(gameResult, ResultResponseDto.class));
+		}
+		return allResultResp;
+	}
 }
