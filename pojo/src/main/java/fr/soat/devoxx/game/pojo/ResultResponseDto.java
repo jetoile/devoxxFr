@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "resultResponse")
 public class ResultResponseDto {
+	private String username;
     private int nbSuccess = 0;
     private int nbFail = 0;
     private int nbInvalid = 0;
@@ -67,9 +68,18 @@ public class ResultResponseDto {
     @Override
     public String toString() {
         return "ResultResponseDto{" +
+        		"username=" + username +
                 "nbSuccess=" + nbSuccess +
                 ", nbFail=" + nbFail +
                 ", nbInvalid=" + nbInvalid +
                 '}';
     }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }
