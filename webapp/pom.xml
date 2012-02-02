@@ -37,7 +37,7 @@
             <activation>
                 <property>
                      <name>cloudbees</name>
-                     <value>master</value>
+                     <value>tomcat</value>
                 </property>
             </activation>
 
