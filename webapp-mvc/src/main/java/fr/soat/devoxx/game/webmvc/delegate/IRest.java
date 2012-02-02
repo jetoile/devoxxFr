@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Aurélien VIALE
+ * Copyright (c) 2012 Aurélien VIALE
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
