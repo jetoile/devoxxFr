@@ -26,38 +26,31 @@ package fr.soat.devoxx.game.admin.pojo.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "allUserResponse")
 public class AllUserResponseDto {
-	@XmlElement(name = "userReponses")
-	private List<UserResponseDto> usersDto = new ArrayList<UserResponseDto>();
+	
+	private List<UserResponseDto> userResponses = new ArrayList<UserResponseDto>();
 
-	/**
-	 * @return the usersDto
-	 */
-	public List<UserResponseDto> getUsersDto() {
-		return usersDto;
+	public List<UserResponseDto> getUserResponses() {
+		return userResponses;
 	}
 
 	/**
-	 * @param usersDto the usersDto to set
+	 * @param userResponses the userResponses to set
 	 */
-	public void setUsersDto(List<UserResponseDto> usersDto) {
-		this.usersDto = usersDto;
+	public void setUserResponses(List<UserResponseDto> userResponses) {
+		this.userResponses = userResponses;
 	}
 	
 	/**
 	 * @param usersResponseDto the UserResponseDto to add
 	 */
-	public void addUserDto(UserResponseDto usersResponseDto) {
-		this.usersDto.add(usersResponseDto);
+	public void addUserResponse(UserResponseDto usersResponseDto) {
+		this.userResponses.add(usersResponseDto);
 	}
 	
 	/* (non-Javadoc)
@@ -65,6 +58,6 @@ public class AllUserResponseDto {
 	 */
 	@Override
 	public String toString() {
-		return "AllUserResponseDto [usersDto=" + usersDto + "]";
+		return "AllUserResponseDto [userResponses=" + userResponses + "]";
 	}
 }
