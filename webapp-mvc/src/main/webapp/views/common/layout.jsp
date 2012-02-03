@@ -11,6 +11,26 @@
         <link type="text/css" rel="stylesheet" href="<c:url value='/css/devoxxfr.css' />" />   
         <script type="text/javascript" src="<c:url value='/js/jquery-1.7.1.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.17.custom.min.js' />"></script>
+        <script type="text/javascript">
+		$(function() {
+			$(".ui-btn").button();
+			
+		    $(".jtable th").each(function() {
+		        $(this).addClass("ui-state-default");
+		    });
+		    $(".jtable td").each(function() {
+		        $(this).addClass("ui-widget-content");
+		    });
+		    $(".jtable tr").hover(function() {
+		    	$(this).children("td").addClass("ui-state-hover");
+		    }, function() {
+		        $(this).children("td").removeClass("ui-state-hover");
+		    });
+		    $(".jtable tr").click(function() {		
+		        $(this).children("td").toggleClass("ui-state-highlight");
+		    });		
+		});
+		</script>
 	</head>
 	<body>
 		<div>
