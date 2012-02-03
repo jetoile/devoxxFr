@@ -26,8 +26,22 @@
     <!-- Définition de la vue index admin -->
     <definition name="admin.index.content" template="/views/admin/index.jsp" />
     <definition name="devoxxfr.admin.index" extends="common.layout">
-        <put-attribute name="pageTitle" type="string" value="Happyref - Administration" />
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Administration" />
         <put-attribute name="content" value="admin.index.content" />
+    </definition>
+    
+    <!-- Définition de la vue show user -->
+    <definition name="admin.showuser.content" template="/views/admin/showuser.jsp" />
+    <definition name="devoxxfr.admin.showuser" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Show User" />
+        <put-attribute name="content" value="admin.showuser.content" />
+    </definition>
+    
+    <!-- Définition de la vue show all users -->
+    <definition name="admin.showallusers.content" template="/views/admin/showallusers.jsp" />
+    <definition name="devoxxfr.admin.showallusers" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Show All Users" />
+        <put-attribute name="content" value="admin.showallusers.content" />
     </definition>
 
     <!-- Définition de la vue Not Found -->
@@ -35,6 +49,13 @@
     <definition name="devoxxfr.notfound" extends="common.layout">
         <put-attribute name="pageTitle" type="string" value="DevoxxFr - Page not found" />
         <put-attribute name="content" value="notfound.content" />
+    </definition>
+    
+    <!-- Définition de la vue Error messages -->
+    <definition name="errors.errormsg.content" template="/views/errors/errormsg.jsp" />
+    <definition name="devoxxfr.errors.errormsg" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Error" />
+        <put-attribute name="content" value="errors.errormsg.content" />
     </definition>
 
 </tiles-definitions>
