@@ -32,7 +32,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class RequesterDelegate implements IRest {
-	private final String BASE_URI = "http://localhost:8888/webapp/services";
+	private final String BASE_URI = "http://devoxxfrjee.aure77.cloudbees.net/services";
 
 	private String servicePath;
 	private WebResource service;
