@@ -23,6 +23,7 @@
  */
 package fr.soat.devoxx.game.admin.pojo.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,7 +32,8 @@ import fr.soat.devoxx.game.pojo.ResultResponseDto;
 
 @XmlRootElement(name = "allGameResult")
 public class AllResultResponseDto {
-	private List<ResultResponseDto> gameResults;
+
+	private List<ResultResponseDto> gameResults = new ArrayList<ResultResponseDto>();
 
 	public List<ResultResponseDto> getGameResults() {
 		return gameResults;
