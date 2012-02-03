@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -111,16 +112,13 @@ public class AdminUserService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public AllUserResponseDto getAllUsers() {
-		AllUserResponseDto allUsersDto = new AllUserResponseDto();
-		
+		AllUserResponseDto allUsersDto = new AllUserResponseDto();		
 		try {
 			init();
 			@SuppressWarnings("unchecked")
 			List<User> users = em.createQuery("from User u").getResultList();
-			LOGGER.debug(users.toString());
 			for (User user : users) {
-				allUsersDto.addUserDto(this.dozerMapper.map(user, UserResponseDto.class));
-				LOGGER.debug(user.toString());
+				allUsersDto.addUserResponse(this.dozerMapper.map(user, UserResponseDto.class));
 			}
 		} finally {
 			close();
@@ -168,26 +166,21 @@ public class AdminUserService {
 	public UserResponseDto getUser(@PathParam("username") String userName) {
 		try {
 			init();
+//			List<User> users = getUsers(em, userName);
+			User user = getUserByName(userName);
 
-			List<User> users = getUsers(em, userName);
-
-			if (users.size() == 1) {
+			if (null != user) {
 				LOGGER.debug("get user {} successful", userName);
-				UserResponseDto response = dozerMapper.map(users.get(0),
-						UserResponseDto.class);
+				UserResponseDto response = dozerMapper.map(user, UserResponseDto.class);
 				response.setToken(null);
 				return response;
-			} else if (users.size() > 1) {
-				LOGGER.debug("get user {} failed: too many response", userName);
-				// return null;
-				throw new WebApplicationException(Response
-						.status(Status.NOT_FOUND).entity("too many response")
-						.build());
 			} else {
 				LOGGER.debug("get user {} failed: not found", userName);
-				// return null;
 				throw new WebApplicationException(Status.NOT_FOUND);
 			}
+		} catch (PersistenceException e) {
+			LOGGER.debug("get user failed: PersistenceException", e);
+			throw new WebApplicationException(Status.NOT_FOUND);
 		} finally {
 			close();
 		}
@@ -204,36 +197,41 @@ public class AdminUserService {
 	public void deleteUser(@PathParam("username") String userName) {
 		try {
 			init();
+//			List<User> users = getUsers(em, userName);
+			User user = getUserByName(userName);
 
-			List<User> users = getUsers(em, userName);
-
-			em.getTransaction().begin();
-			for (User user : users) {
-				em.remove(user);
+			if(null != user) {
+				em.getTransaction().begin();			
+				em.remove(user);			
+				em.getTransaction().commit();
+			} else {
+				LOGGER.debug("delete user {} failed: not found", userName);
+				throw new WebApplicationException(Status.NOT_FOUND);
 			}
-			em.getTransaction().commit();
-
 			this.gameUserDataManager.destroyUser(userName);
 
-			LOGGER.debug("delete all user {} successful", userName);
+			LOGGER.debug("delete user {} successful", userName);
+		} catch (PersistenceException e) {
+			LOGGER.debug("delete user failed: PersistenceException", e);
+			throw new WebApplicationException(Status.NOT_FOUND);
 		} finally {
 			close();
 		}
 	}
 
-	private List<User> getUsers(EntityManager em, String userName) {
+	/*private List<User> getUsers(EntityManager em, String userName) {
 		// CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em,
 		// userName);
 		// return em.createQuery(criteriaQuery).setParameter("name",
 		// userName).getResultList();
 		return em.createQuery("select g from User g where g.name = :name")
 				.setParameter("name", userName).getResultList();
+	}*/
+	
+	private User getUserByName(String userName) throws PersistenceException {
+		return (User) em.createQuery("select g from User g where g.name = :name")
+				.setParameter("name", userName).getSingleResult();
 	}
-
-	// String generateToken() {
-	// return
-	// RandomStringUtils.randomAlphanumeric(UserUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
-	// }
 
 	private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em,
 			String userName) {
