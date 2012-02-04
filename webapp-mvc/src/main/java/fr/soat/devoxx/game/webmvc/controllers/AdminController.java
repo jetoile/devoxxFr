@@ -23,6 +23,7 @@
  */
 package fr.soat.devoxx.game.webmvc.controllers;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -71,10 +72,11 @@ public class AdminController {
 			service = new RequesterDelegate("/admin/user/" + username);
 			UserResponseDto userResponse = service.get(UserResponseDto.class);
 			model.addAttribute("userResponse", userResponse);
+			model.addAttribute("mailHash", DigestUtils.md5Hex(userResponse.getMail().trim().toLowerCase()));
 			
 			service = new RequesterDelegate("/admin/result/" + username);
 			ResultResponseDto resultResponse = service.get(ResultResponseDto.class);
-			model.addAttribute("resultResponse", resultResponse);
+			model.addAttribute("resultResponse", resultResponse);			
 			
 			forward = TilesUtil.DFR_ADMIN_SHOWUSER_PAGE;
 		} catch (HttpRestException e) {
