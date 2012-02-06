@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Khanh Tuong Maudoux <kmx.petals@gmail.com>
+ * Copyright (c) 2012 Aurélien VIALE
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,54 +21,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game.admin.pojo;
+package fr.soat.devoxx.game.admin.pojo.dto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * User: khanh
- * Date: 27/12/11
- * Time: 21:26
- */
-@XmlRootElement(name = "gameResult")
-public class GameResult {
-	private String username;
-    private int nbSuccess = 0;
-    private int nbFail = 0;
-    private int nbInvalid = 0;
+import fr.soat.devoxx.game.pojo.UserResponseDto;
 
-    public GameResult() {
-    }
+@XmlRootElement(name = "allUserResponse")
+public class AllUserResponseDto {
+	
+	private List<UserResponseDto> userResponses = new ArrayList<UserResponseDto>();
 
-    public int getNbSuccess() {
-        return nbSuccess;
-    }
-
-    public void setNbSuccess(int nbSuccess) {
-        this.nbSuccess = nbSuccess;
-    }
-
-    public int getNbFail() {
-        return nbFail;
-    }
-
-    public void setNbFail(int nbFail) {
-        this.nbFail = nbFail;
-    }
-
-    public int getNbInvalid() {
-        return nbInvalid;
-    }
-
-    public void setNbInvalid(int nbInvalid) {
-        this.nbInvalid = nbInvalid;
-    }
-
-	public String getUsername() {
-		return username;
+	public List<UserResponseDto> getUserResponses() {
+		return userResponses;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	/**
+	 * @param userResponses the userResponses to set
+	 */
+	public void setUserResponses(List<UserResponseDto> userResponses) {
+		this.userResponses = userResponses;
+	}
+	
+	/**
+	 * @param usersResponseDto the UserResponseDto to add
+	 */
+	public void addUserResponse(UserResponseDto usersResponseDto) {
+		this.userResponses.add(usersResponseDto);
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "AllUserResponseDto [userResponses=" + userResponses + "]";
 	}
 }

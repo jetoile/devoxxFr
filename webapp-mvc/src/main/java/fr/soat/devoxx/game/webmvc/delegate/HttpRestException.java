@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Khanh Tuong Maudoux <kmx.petals@gmail.com>
+ * Copyright (c) 2012 Aurélien VIALE
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,54 +21,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game.admin.pojo;
+package fr.soat.devoxx.game.webmvc.delegate;
 
-import javax.xml.bind.annotation.XmlRootElement;
+public class HttpRestException extends RuntimeException {
+	private static final long serialVersionUID = -821431573421642746L;
 
-/**
- * User: khanh
- * Date: 27/12/11
- * Time: 21:26
- */
-@XmlRootElement(name = "gameResult")
-public class GameResult {
-	private String username;
-    private int nbSuccess = 0;
-    private int nbFail = 0;
-    private int nbInvalid = 0;
-
-    public GameResult() {
-    }
-
-    public int getNbSuccess() {
-        return nbSuccess;
-    }
-
-    public void setNbSuccess(int nbSuccess) {
-        this.nbSuccess = nbSuccess;
-    }
-
-    public int getNbFail() {
-        return nbFail;
-    }
-
-    public void setNbFail(int nbFail) {
-        this.nbFail = nbFail;
-    }
-
-    public int getNbInvalid() {
-        return nbInvalid;
-    }
-
-    public void setNbInvalid(int nbInvalid) {
-        this.nbInvalid = nbInvalid;
-    }
-
-	public String getUsername() {
-		return username;
+	public HttpRestException() {
+		super();
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public HttpRestException(String message, Throwable cause) {
+		super(message, cause);
 	}
+
+	public HttpRestException(String message) {
+		super(message);
+	}
+
+	public HttpRestException(Throwable cause) {
+		super(cause);
+	}	
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Khanh Tuong Maudoux <kmx.petals@gmail.com>
+ * Copyright (c) 2012 Aurélien VIALE
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,54 +21,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game.admin.pojo;
+package fr.soat.devoxx.game.webmvc.controllers;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.ws.rs.core.MediaType;
 
-/**
- * User: khanh
- * Date: 27/12/11
- * Time: 21:26
- */
-@XmlRootElement(name = "gameResult")
-public class GameResult {
-	private String username;
-    private int nbSuccess = 0;
-    private int nbFail = 0;
-    private int nbInvalid = 0;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-    public GameResult() {
-    }
+import fr.soat.devoxx.game.pojo.QuestionResponseDto;
+import fr.soat.devoxx.game.webmvc.delegate.HttpRestException;
+import fr.soat.devoxx.game.webmvc.delegate.RequesterDelegate;
+import fr.soat.devoxx.game.webmvc.utils.TilesUtil;
 
-    public int getNbSuccess() {
-        return nbSuccess;
-    }
+@Controller
+@RequestMapping(value = "/")
+public class IndexController {
+	
+	private static Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    public void setNbSuccess(int nbSuccess) {
-        this.nbSuccess = nbSuccess;
-    }
-
-    public int getNbFail() {
-        return nbFail;
-    }
-
-    public void setNbFail(int nbFail) {
-        this.nbFail = nbFail;
-    }
-
-    public int getNbInvalid() {
-        return nbInvalid;
-    }
-
-    public void setNbInvalid(int nbInvalid) {
-        this.nbInvalid = nbInvalid;
-    }
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	@RequestMapping(value = "index", method = RequestMethod.GET)
+	public String index() {
+		RequesterDelegate service = new RequesterDelegate("/admin/question", MediaType.APPLICATION_JSON);
+        try {
+        	QuestionResponseDto questions = service.get(QuestionResponseDto.class);
+			System.out.println(questions.toString());
+		} catch (HttpRestException e) {
+			logger.error("Error while loading question", e);
+		}
+		
+		return TilesUtil.DFR_INDEX_PAGE;
 	}
 }

@@ -23,12 +23,14 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -54,6 +56,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.admin.pojo.dto.AllUserResponseDto;
 import fr.soat.devoxx.game.business.GameUtils;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import fr.soat.devoxx.game.persistent.User;
@@ -62,163 +65,192 @@ import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 
 /**
- * User: khanh
- * Date: 20/12/11
- * Time: 14:12
+ * User: khanh Date: 20/12/11 Time: 14:12
  */
 @Path("/admin/user")
 public class AdminUserService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AdminUserService.class);
+	private final static Logger LOGGER = LoggerFactory
+			.getLogger(AdminUserService.class);
 
-    private String PERSISTENCE_UNIT_NAME = "devoxx";
+	private String PERSISTENCE_UNIT_NAME = "devoxx";
 
-    private GameUserDataManager gameUserDataManager;
+	private GameUserDataManager gameUserDataManager;
 
-    private final Validator validator;
+	private final Validator validator;
 
-    {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
+	{
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
+	}
 
-    private final Mapper dozerMapper = new DozerBeanMapper();
-    private EntityManagerFactory emf;
-    private EntityManager em;
+	private final Mapper dozerMapper = new DozerBeanMapper();
+	private EntityManagerFactory emf;
+	private EntityManager em;
 
-    private void init() {
-            emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-            em = emf.createEntityManager();
-    }
+	private void init() {
+		emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+		em = emf.createEntityManager();
+	}
 
-    public AdminUserService() {
-        this.gameUserDataManager = GameUserDataManager.INSTANCE;
-    }
+	public AdminUserService() {
+		this.gameUserDataManager = GameUserDataManager.INSTANCE;
+	}
 
-    AdminUserService(String persistenceUnitName, GameUserDataManager gameUserDataManager) {
-        this.PERSISTENCE_UNIT_NAME = persistenceUnitName;
-        this.gameUserDataManager = gameUserDataManager;
-    }
+	AdminUserService(String persistenceUnitName,
+			GameUserDataManager gameUserDataManager) {
+		this.PERSISTENCE_UNIT_NAME = persistenceUnitName;
+		this.gameUserDataManager = gameUserDataManager;
+	}
 
-    private void close() {
-        if (em != null) {
-            em.close();
-        }
-    }
+	private void close() {
+		if (em != null) {
+			em.close();
+		}
+	}
 
-    @Path("/")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public UserResponseDto createUser(UserRequestDto userRequestDto) throws InvalidUserException {
-        try {
-            init();
-            User user = dozerMapper.map(userRequestDto, User.class);
+	@Path("/")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public AllUserResponseDto getAllUsers() {
+		AllUserResponseDto allUsersDto = new AllUserResponseDto();		
+		try {
+			init();
+			@SuppressWarnings("unchecked")
+			List<User> users = em.createQuery("from User u").getResultList();
+			for (User user : users) {
+				allUsersDto.addUserResponse(this.dozerMapper.map(user, UserResponseDto.class));
+			}
+		} finally {
+			close();
+		}
+		return allUsersDto;
+	}
 
-            Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+	@Path("/")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public UserResponseDto createUser(UserRequestDto userRequestDto)
+			throws InvalidUserException {
+		try {
+			init();
+			User user = dozerMapper.map(userRequestDto, User.class);
 
-            if (constraintViolations.size() != 0) {
-                LOGGER.error("Invalid input for user creation {}", userRequestDto);
-                throw new InvalidUserException(constraintViolations);
-            }
-            /*final String token = generateToken();
-            user.setToken(token);*/
+			Set<ConstraintViolation<User>> constraintViolations = validator
+					.validate(user);
 
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-            LOGGER.debug("User creation successful: {}", userRequestDto);
+			if (constraintViolations.size() != 0) {
+				LOGGER.error("Invalid input for user creation {}",
+						userRequestDto);
+				throw new InvalidUserException(constraintViolations);
+			}
+			/*
+			 * final String token = generateToken(); user.setToken(token);
+			 */
 
-            this.gameUserDataManager.registerUser(userRequestDto.getName());
+			em.getTransaction().begin();
+			em.persist(user);
+			em.getTransaction().commit();
+			LOGGER.debug("User creation successful: {}", userRequestDto);
 
-            return dozerMapper.map(user, UserResponseDto.class);
-        } finally {
-            close();
-        }
-    }
+			this.gameUserDataManager.registerUser(userRequestDto.getName());
 
-    @Path("/{username}")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public UserResponseDto getUser(@PathParam("username") String userName) {
-        try {
-            init();
+			return dozerMapper.map(user, UserResponseDto.class);
+		} finally {
+			close();
+		}
+	}
 
-            List<User> users = getUsers(em, userName);
-                    
-            if (users.size() == 1) {
-                LOGGER.debug("get user {} successful", userName);
-                UserResponseDto response = dozerMapper.map(users.get(0), UserResponseDto.class);
-                response.setToken(null);
-                return response;
-            } else if (users.size() > 1) {
-                LOGGER.debug("get user {} failed: too many response", userName);
-//                return null;
-                throw new WebApplicationException(Response.status(Status.NOT_FOUND).entity("too many response").build());
-            } else {
-                LOGGER.debug("get user {} failed: not found", userName);
-//                return null;
-                throw new WebApplicationException(Status.NOT_FOUND);
-            }
-        } finally {
-            close();
-        }
-    }
+	@Path("/{username}")
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public UserResponseDto getUser(@PathParam("username") String userName) {
+		try {
+			init();
+//			List<User> users = getUsers(em, userName);
+			User user = getUserByName(userName);
 
-    @Path("/{username}/games")
-    @DELETE
-    public void cleanUserGames(@PathParam("username") String userName) {
-        this.gameUserDataManager.cleanUser(userName);
-    }
+			if (null != user) {
+				LOGGER.debug("get user {} successful", userName);
+				UserResponseDto response = dozerMapper.map(user, UserResponseDto.class);
+				response.setToken(null);
+				return response;
+			} else {
+				LOGGER.debug("get user {} failed: not found", userName);
+				throw new WebApplicationException(Status.NOT_FOUND);
+			}
+		} catch (PersistenceException e) {
+			LOGGER.debug("get user failed: PersistenceException", e);
+			throw new WebApplicationException(Status.NOT_FOUND);
+		} finally {
+			close();
+		}
+	}
 
-    @Path("/{username}")
-    @DELETE
-    public void deleteUser(@PathParam("username") String userName) {
-        try {
-            init();
+	@Path("/{username}/games")
+	@DELETE
+	public void cleanUserGames(@PathParam("username") String userName) {
+		this.gameUserDataManager.cleanUser(userName);
+	}
 
-            List<User> users = getUsers(em, userName);
+	@Path("/{username}")
+	@DELETE
+	public void deleteUser(@PathParam("username") String userName) {
+		try {
+			init();
+//			List<User> users = getUsers(em, userName);
+			User user = getUserByName(userName);
 
-            em.getTransaction().begin();
-            for (User user : users) {
-                em.remove(user);
-            }
-            em.getTransaction().commit();
+			if(null != user) {
+				em.getTransaction().begin();			
+				em.remove(user);			
+				em.getTransaction().commit();
+			} else {
+				LOGGER.debug("delete user {} failed: not found", userName);
+				throw new WebApplicationException(Status.NOT_FOUND);
+			}
+			this.gameUserDataManager.destroyUser(userName);
 
-            this.gameUserDataManager.destroyUser(userName);
+			LOGGER.debug("delete user {} successful", userName);
+		} catch (PersistenceException e) {
+			LOGGER.debug("delete user failed: PersistenceException", e);
+			throw new WebApplicationException(Status.NOT_FOUND);
+		} finally {
+			close();
+		}
+	}
 
-            LOGGER.debug("delete all user {} successful", userName);
-        } finally {
-            close();
-        }
-    }
+	/*private List<User> getUsers(EntityManager em, String userName) {
+		// CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em,
+		// userName);
+		// return em.createQuery(criteriaQuery).setParameter("name",
+		// userName).getResultList();
+		return em.createQuery("select g from User g where g.name = :name")
+				.setParameter("name", userName).getResultList();
+	}*/
+	
+	private User getUserByName(String userName) throws PersistenceException {
+//		return (User) em.createQuery("select g from User g where g.name = :name")
+//				.setParameter("name", userName).getSingleResult();
+        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em,
+                userName);
+                return em.createQuery(criteriaQuery).setParameter("name",
+                userName).getSingleResult();
+	}
 
-    private List<User> getUsers(EntityManager em, String userName) {
-//        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em, userName);
-//        return em.createQuery(criteriaQuery).setParameter("name", userName).getResultList();
-        return em.createQuery("select g from User g where g.name = :name")
-                                    .setParameter("name", userName).getResultList();
-    }
+	private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em,
+			String userName) {
+		// List<User> users = em.createQuery(
+		// "select g from User g where g.name = :name")
+		// .setParameter("name", userName).getResultList();
 
-//    String generateToken() {
-//        return RandomStringUtils.randomAlphanumeric(UserUtils.INSTANCE.getUserTokenLenght()).toLowerCase();
-//    }
-    
-    private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em, String userName) {
-        //                    List<User> users = em.createQuery(
-        //                    "select g from User g where g.name = :name")
-        //                    .setParameter("name", userName).getResultList();
+		CriteriaBuilder queryBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = queryBuilder
+				.createQuery(User.class);
 
-        CriteriaBuilder queryBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery = queryBuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
 
-        Root<User> root = criteriaQuery.from(User.class);
-
-        criteriaQuery
-                .select(root)
-                .where(
-                        queryBuilder.equal(
-                                root.get("name"),
-                                userName)
-                );
-        return criteriaQuery;
-    }
+		criteriaQuery.select(root).where(
+				queryBuilder.equal(root.get("name"), userName));
+		return criteriaQuery;
+	}
 }

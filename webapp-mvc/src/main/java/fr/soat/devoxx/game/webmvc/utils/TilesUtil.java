@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Khanh Tuong Maudoux <kmx.petals@gmail.com>
+ * Copyright (c) 2011 Aurélien VIALE
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,54 +21,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game.admin.pojo;
+package fr.soat.devoxx.game.webmvc.utils;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-/**
- * User: khanh
- * Date: 27/12/11
- * Time: 21:26
- */
-@XmlRootElement(name = "gameResult")
-public class GameResult {
-	private String username;
-    private int nbSuccess = 0;
-    private int nbFail = 0;
-    private int nbInvalid = 0;
-
-    public GameResult() {
-    }
-
-    public int getNbSuccess() {
-        return nbSuccess;
-    }
-
-    public void setNbSuccess(int nbSuccess) {
-        this.nbSuccess = nbSuccess;
-    }
-
-    public int getNbFail() {
-        return nbFail;
-    }
-
-    public void setNbFail(int nbFail) {
-        this.nbFail = nbFail;
-    }
-
-    public int getNbInvalid() {
-        return nbInvalid;
-    }
-
-    public void setNbInvalid(int nbInvalid) {
-        this.nbInvalid = nbInvalid;
-    }
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
+public interface TilesUtil {
+	/* IndexController Pages */
+	public static final String DFR_INDEX_PAGE = "devoxxfr.index";
+	/* AdminController Pages */
+	public static final String DFR_ADMIN_INDEX_PAGE = "devoxxfr.admin.index";
+	public static final String DFR_ADMIN_SHOWALLUSERS_PAGE = "devoxxfr.admin.showallusers";
+	public static final String DFR_ADMIN_SHOWUSER_PAGE = "devoxxfr.admin.showuser";
+	/* Common pages */
+	public static final String DFR_NOT_FOUND_PAGE = "devoxxfr.notfound";
+	/* Errors */
+	public static final String DFR_ERRORS_ERRORMSG_PAGE = "devoxxfr.errors.errormsg";
+		
 }

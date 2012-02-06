@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+    <!-- Definitions communes -->
+    <definition name="common.blank" template="/views/common/blank.jsp" />
+    <definition name="common.header" template="/views/common/header.jsp" />
+    <definition name="common.footer" template="/views/common/footer.jsp" />
+
+    <definition name="common.layout" template="/views/common/layout.jsp">
+        <put-attribute name="pageTitle" type="string"
+            value="DevoxxFr - Default" />
+        <put-attribute name="header" value="common.header" />
+        <put-attribute name="content" value="common.blank" />
+        <put-attribute name="footer" value="common.footer" />
+    </definition>
+
+    <!-- Définition de la vue 'index' -->
+    <definition name="home.content" template="/views/index/index.jsp" />
+    <definition name="devoxxfr.index" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Index" />
+        <put-attribute name="content" value="home.content" />
+    </definition>
+
+    <!-- Définition de la vue index admin -->
+    <definition name="admin.index.content" template="/views/admin/index.jsp" />
+    <definition name="devoxxfr.admin.index" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Administration" />
+        <put-attribute name="content" value="admin.index.content" />
+    </definition>
+    
+    <!-- Définition de la vue show user -->
+    <definition name="admin.showuser.content" template="/views/admin/showuser.jsp" />
+    <definition name="devoxxfr.admin.showuser" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Show User" />
+        <put-attribute name="content" value="admin.showuser.content" />
+    </definition>
+    
+    <!-- Définition de la vue show all users -->
+    <definition name="admin.showallusers.content" template="/views/admin/showallusers.jsp" />
+    <definition name="devoxxfr.admin.showallusers" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Show All Users" />
+        <put-attribute name="content" value="admin.showallusers.content" />
+    </definition>
+
+    <!-- Définition de la vue Not Found -->
+    <definition name="notfound.content" template="/views/common/404.jsp" />
+    <definition name="devoxxfr.notfound" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Page not found" />
+        <put-attribute name="content" value="notfound.content" />
+    </definition>
+    
+    <!-- Définition de la vue Error messages -->
+    <definition name="errors.errormsg.content" template="/views/errors/errormsg.jsp" />
+    <definition name="devoxxfr.errors.errormsg" extends="common.layout">
+        <put-attribute name="pageTitle" type="string" value="DevoxxFr - Error" />
+        <put-attribute name="content" value="errors.errormsg.content" />
+    </definition>
+
+</tiles-definitions>
