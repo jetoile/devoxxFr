@@ -30,26 +30,12 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
-public class RequesterDelegate implements IRest {
-	private static final String BASE_URI_PROPERTIES = "webapp.properties";
+import fr.soat.devoxx.game.webmvc.utils.WebAdminUtils;
 
-	private static String BASE_URI;
+public class RequesterDelegate implements IRest {	
 
-	private static final String BASE_URI_DEFAULT_VALUE = "http://devoxxfrjee.jetoile.cloudbees.net/services";
-
-	private static PropertiesConfiguration configuration;
-
-	static {
-		try {
-			configuration = new PropertiesConfiguration(BASE_URI_PROPERTIES);
-		} catch (ConfigurationException e) {
-			// NOTHING TO DO
-		}
-		BASE_URI = configuration.getString("server.url", BASE_URI_DEFAULT_VALUE);
-	}
+	private static String BASE_URI = WebAdminUtils.INSTANCE.getBaseUri();	
 
 	private String servicePath;
 	private WebResource service;
