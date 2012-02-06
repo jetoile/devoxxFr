@@ -2,22 +2,22 @@
 <cloudbees-web-app>
 
 
-    <appid>jetoile/devoxxfrjee</appid>
+    <appid>${appid}</appid>
 
-    <resource name="jdbc/devoxxfrjee" auth="Container" type="javax.sql.DataSource">
-        <param name="username" value="jetoilejee"/>
-        <param name="password" value="jetoile"/>
-        <param name="url" value="jdbc:cloudbees://devoxxfrjee" />
-        <param name="url" value="jdbc:mysql://ec2-174-129-9-255.compute-1.amazonaws.com:3306/devoxxfrjee?autoReconnect=true"/>
+    <resource name="${jndi.datasource}" auth="Container" type="javax.sql.DataSource">
+        <param name="username" value="${username.datasource}"/>
+        <param name="password" value="${password.datasource}"/>
+        <!--<param name="url" value="jdbc:cloudbees://devoxxfrjee" />-->
+        <param name="url" value="${url.datasource}"/>
     </resource>
-    
-<!--     <appid>aure77/devoxxfrjee</appid>
-    
-	<resource name="jdbc/devoxxfrjee2" auth="Container" type="javax.sql.DataSource">
-		<param name="username" value="devoxx" />
-		<param name="password" value="devoxx" />
-		<param name="url" value="jdbc:cloudbees://devoxxfrjee2" />
-		<param name="url" value="jdbc:mysql://ec2-50-19-213-178.compute-1.amazonaws.com:3306/devoxxfrjee2?autoReconnect=true"/>
-	</resource> -->
+    <!--<appid>jetoile/devoxxfrjee</appid>-->
+
+    <!--<resource name="jdbc/devoxxfrjee" auth="Container" type="javax.sql.DataSource">-->
+        <!--<param name="username" value="jetoilejee"/>-->
+        <!--<param name="password" value="jetoile"/>-->
+        <!--&lt;!&ndash;<param name="url" value="jdbc:cloudbees://devoxxfrjee" />&ndash;&gt;-->
+        <!--<param name="url" value="jdbc:mysql://ec2-174-129-9-255.compute-1.amazonaws.com:3306/devoxxfrjee?autoReconnect=true"/>-->
+    <!--</resource>-->
+
 
 </cloudbees-web-app>

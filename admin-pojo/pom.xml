@@ -71,6 +71,24 @@
         </profile>
 
         <profile>
+            <id>cloudbees-soat</id>
+            <properties>
+                <environment>cloudbees-soat</environment>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+                <filters>
+                    <filter>src/main/filters/filter-${environment}.properties</filter>
+                </filters>
+            </build>
+        </profile>
+
+        <profile>
             <id>default</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
