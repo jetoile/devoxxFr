@@ -23,28 +23,6 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
@@ -56,6 +34,21 @@ import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
+import org.apache.commons.lang.StringUtils;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * User: khanh
@@ -65,6 +58,8 @@ import fr.soat.devoxx.game.pojo.question.ResponseType;
 @Path("/admin/question")
 public class AdminQuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminQuestionService.class);
+
+    private static Random RANDOM_GENERATOR = new Random();
 
     private final Mapper dozerMapper = new DozerBeanMapper();
 
@@ -156,22 +151,15 @@ public class AdminQuestionService {
     @Path("/{username}/create")
     @PUT
     public javax.ws.rs.core.Response addQuestionForUser(@PathParam("username") String userName) {
-        //TODO : change the algorithm : not optimized...
-        boolean success = false;
-        int NbToTry = questionManager.getNbQuestions();
-
-        Question randomQuestion = null;
-        int nbTry = 0;
-        //l'invariant est qu'il n'y a pas 2 fois le même id de question dans les questions posées
-        while (!success && nbTry < NbToTry) {
-            nbTry++;
-            randomQuestion = questionManager.loadQuestions().getRandomQuestion();
-
-            Game game = gameUserDataManager.getGameById(userName, randomQuestion.getId());
-            if (game == null) {
-                success = true;
-            }
+        List<Game> gamesAllReadyPlayed = gameUserDataManager.getGames(userName);
+        List<Question> allQuestions = questionManager.loadQuestions().getQuestions();
+        
+        if (gamesAllReadyPlayed.size() == allQuestions.size()) {
+            //NOTHING TO DO : the player allready answered all questions
+            return javax.ws.rs.core.Response.ok().build();
         }
+
+        Question randomQuestion = getRandomQuestion(gamesAllReadyPlayed, allQuestions);
 
         Game game = new Game();
         game.setId(randomQuestion.getId());
@@ -182,8 +170,22 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
-        
         return javax.ws.rs.core.Response.ok().build();
     }
 
+    private Question getRandomQuestion(List<Game> gamesAllReadyPlayed, List<Question> allQuestions) {
+        Question tmpQuestion = null;
+        for (Game game : gamesAllReadyPlayed) {
+            tmpQuestion = new Question();
+            tmpQuestion.setId(game.getId());
+            allQuestions.remove(tmpQuestion);
+        }
+
+        return allQuestions.get(getRandomIndex(allQuestions.size()));
+    }
+
+
+    private int getRandomIndex(int size) {
+        return RANDOM_GENERATOR.nextInt(size);
+    }
 }

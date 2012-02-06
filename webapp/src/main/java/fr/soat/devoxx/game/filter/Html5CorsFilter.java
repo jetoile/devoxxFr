@@ -50,21 +50,28 @@ public class Html5CorsFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         logger.debug("HTML5CorsFilter add HTML5 CORS Headers");
-        Enumeration e = ((HttpServletRequest)request).getHeaderNames();
-        String header = null, headers = "method : " + ((HttpServletRequest)request).getMethod() + "\n";
+        HttpServletRequest req = (HttpServletRequest) request;
+        Enumeration e = req.getHeaderNames();
+        String header = null;
+        String headers = "\nmethod : " + req.getMethod() + " " + req.getRequestURI() + "\n";
 		while (e.hasMoreElements()) {
 			header = (String) e.nextElement();
 			if (header != null) {
-				headers += header + " : " + ((HttpServletRequest)request).getHeader(header) + "\n";
+				headers += header + " : " + req.getHeader(header) + "\n";
 			}
 		}
 		logger.info(headers); // Log client headers
 
         HttpServletResponse res = (HttpServletResponse) response;
         res.addHeader("Access-Control-Allow-Origin", "*");
-        res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
-        res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-        chain.doFilter(request, response);
+        res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, HEAD, OPTIONS");
+        res.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        
+        try {
+        	chain.doFilter(request, response);
+        } catch (RuntimeException ex) {
+			logger.debug(ex.getMessage());
+		}
     }
 
     @Override

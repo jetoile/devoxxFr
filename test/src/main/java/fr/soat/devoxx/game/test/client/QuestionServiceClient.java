@@ -49,7 +49,7 @@ public class QuestionServiceClient {
 	public static final String BASE_URI = "http://localhost:8080/webapp/";
 	public static final String SERVICE_PATH = "services";
 	public static final String TEST_USERNAME = "toto";
-	
+
     public static void main(String[] args) {
         QuestionServiceClient client = new QuestionServiceClient();
         System.out.println("is creating an user");

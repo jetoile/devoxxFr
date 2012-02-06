@@ -42,13 +42,13 @@ import java.net.URI;
  * Time: 20:18
  */
 public class AdminQuestionServiceClient {
-	
-//	public static final String BASE_URI = "http://localhost:9090/";
+
+	public static final String BASE_URI = "http://devoxxfrjee.jetoile.cloudbees.net/";
 //	public static final String BASE_URI = "http://devoxxfr.jetoile.cloudbees.net/";
-	public static final String BASE_URI = "http://localhost:8080/webapp/";
-	public static final String SERVICE_PATH = "services";
-	public static final String TEST_USERNAME = "toto";
-    
+//    public static final String BASE_URI = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/";
+    public static final String SERVICE_PATH = "services";
+    public static final String TEST_USERNAME = "toto";
+
     public static void main(String[] args) {
         AdminQuestionServiceClient client = new AdminQuestionServiceClient();
 
@@ -99,7 +99,9 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
+//        AllQuestionResponseDto res = service.path("services").path("/admin/question/allQuestions/toto").type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
         AllQuestionResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME).type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
+
         return res;
     }
 

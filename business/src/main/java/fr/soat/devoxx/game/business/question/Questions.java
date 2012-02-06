@@ -26,10 +26,7 @@ package fr.soat.devoxx.game.business.question;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * User: khanh
@@ -55,6 +52,10 @@ public class Questions {
         } else {
             return Question.EMPTY;
         }
+    }
+    
+    public List<Question> getQuestions() {
+        return new ArrayList<Question>(this.questions.values());
     }
     
     @Override

@@ -7,7 +7,7 @@
     <groupId>fr.soat.devoxxfr.game</groupId>
     <artifactId>game</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
 
     <repositories>
@@ -32,6 +32,7 @@
     <modules>
         <module>business</module>
         <module>webapp</module>
+        <module>webapp-mvc</module>
         <module>persistent</module>
         <module>pojo</module>
         <module>test</module>
@@ -39,7 +40,8 @@
     </modules>
 
     <properties>
-
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <projectBaseUri>${project.baseUri}</projectBaseUri>
         <java.version>1.6</java.version>
 
@@ -76,6 +78,13 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <email>aurelien.viale@soat.fr</email>
+            <id>aurelien</id>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <dependencyManagement>
@@ -102,11 +111,16 @@
                 <artifactId>persistent</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
+<!--             <dependency>
                 <groupId>fr.soat.devoxxfr.game</groupId>
                 <artifactId>webapp</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>webapp-mvc</artifactId>
+                <version>${project.version}</version>
+            </dependency> -->
             <dependency>
                 <groupId>fr.soat.devoxxfr.game</groupId>
                 <artifactId>pojo</artifactId>
@@ -210,6 +224,12 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>

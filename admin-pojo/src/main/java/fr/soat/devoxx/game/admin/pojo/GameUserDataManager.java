@@ -25,7 +25,6 @@ package fr.soat.devoxx.game.admin.pojo;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
-import com.google.common.collect.Lists;
 import com.mongodb.Mongo;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
@@ -37,7 +36,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,7 +50,7 @@ public enum GameUserDataManager {
     public static final String MONGODB_PROPERTIES = "mongodb.properties";
 
     private PropertiesConfiguration configuration;
-    
+
     Datastore ds = null;
 
     private GameUserDataManager() {
@@ -67,7 +65,7 @@ public enum GameUserDataManager {
         String dbName = this.configuration.getString("mongodb.dbname", "devoxx");
         String login = this.configuration.getString("mongodb.login", "");
         String password = this.configuration.getString("mongodb.password", "");
-        
+
         Mongo mongo = null;
         try {
             mongo = new Mongo(host, port);
@@ -82,7 +80,7 @@ public enum GameUserDataManager {
     }
 
     public List<Game> getGamesByResultType(String userName, ResponseType responseType) {
-        List<Game>  result = new ArrayList<Game>();
+        List<Game> result = new ArrayList<Game>();
         if (ds != null) {
             List<GameUserData> gameUserDatas = ds.find(GameUserData.class).field("name").equal(userName).field("games.type").contains(responseType.name()).asList();
             for (GameUserData gameUserData : gameUserDatas) {
@@ -117,7 +115,23 @@ public enum GameUserDataManager {
         }
         return result;
     }
-    
+
+    public List<Game> getGames(String userName) {
+        List<Game> result = new ArrayList<Game>();
+        GameUserData gameUserData = null;
+        if (ds != null) {
+            gameUserData = ds.find(GameUserData.class).field("name").equal(userName).get();
+        } else {
+            LOGGER.error("unable to access to mongoDb: datastore is unknown: ");
+        }
+        if (gameUserData != null) {
+            for (Game game : gameUserData.getGames()) {
+                result.add(game);
+            }
+        }
+        return result;
+    }
+
     public void registerUser(String name) {
         GameUserData gameUserData = new GameUserData();
         gameUserData.setName(name);
@@ -141,7 +155,7 @@ public enum GameUserDataManager {
             LOGGER.error("unable to cleanup user {}: datastore is unknown: ", name);
         }
     }
-    
+
     public void destroyUser(String name) {
         if (ds != null) {
             GameUserData entity = ds.get(GameUserData.class, name);
@@ -173,10 +187,18 @@ public enum GameUserDataManager {
 
     public GameResult getResult(String userName) {
         GameResult result = new GameResult();
+        result.setUsername(userName);
         result.setNbSuccess(getGamesByResultType(userName, ResponseType.SUCCESS).size());
         result.setNbFail(getGamesByResultType(userName, ResponseType.FAIL).size());
         result.setNbInvalid(getGamesByResultType(userName, ResponseType.INVALID).size());
         return result;
     }
-
+    
+	public List<GameResult> getAllResult() {
+		List<GameResult> results = new ArrayList<GameResult>();
+		for (GameUserData gameUserData : ds.find(GameUserData.class).asList()) {
+			results.add(getResult(gameUserData.getName()));
+		}
+		return results;
+	}
 }

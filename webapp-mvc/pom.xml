@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>game</artifactId>
+        <groupId>fr.soat.devoxxfr.game</groupId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>webapp-mvc</artifactId>
+    <packaging>war</packaging>
+    <description>Hosted webapp with Spring MVC</description>
+    
+    <properties>
+        <spring.version>3.1.0.RELEASE</spring.version>
+        <tiles.version>2.2.2</tiles.version>
+        <jstl.version>1.2</jstl.version>
+        <taglibs.verion>1.1.2</taglibs.verion>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>fr.soat.devoxxfr.game</groupId>
+            <artifactId>pojo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.soat.devoxxfr.game</groupId>
+            <artifactId>admin-pojo</artifactId>
+        </dependency>
+
+        <!-- Jersey Client (Rest) -->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+        </dependency>
+        
+        <!-- Spring Dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Apache Tiles 2 dependencies -->
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-core</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-api</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-servlet</artifactId>
+            <version>${tiles.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-beanutils</artifactId>
+                    <groupId>commons-beanutils</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+		<!-- Apache Commons Codec (Digest) -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.6</version>
+		</dependency>
+    </dependencies>
+    
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            
+            <dependencies>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </dependency>
+        
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>jstl</artifactId>
+                    <version>${jstl.version}</version>
+                </dependency>     
+                
+            </dependencies>
+        </profile>
+        <profile>
+            <id>cloudbees</id>
+            
+            <activation>
+                <property>
+                     <name>cloudbees</name>
+                     <value>tomcat</value>
+                </property>
+            </activation>
+
+            <properties>             
+                <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
+            </properties>
+        </profile>        
+    </profiles>
+</project>
