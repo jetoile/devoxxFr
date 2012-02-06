@@ -40,6 +40,7 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -65,6 +66,7 @@ public class AdminQuestionService {
 
     QuestionManager questionManager = QuestionManager.INSTANCE;
 
+    @Inject
     private GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
@@ -75,12 +77,13 @@ public class AdminQuestionService {
     }
 
     public AdminQuestionService() {
-        this.gameUserDataManager = GameUserDataManager.INSTANCE;
+
+//        this.gameUserDataManager = GameUserDataManager.INSTANCE;
     }
 
-    AdminQuestionService(GameUserDataManager gameUserDataManager) {
-        this.gameUserDataManager = gameUserDataManager;
-    }
+//    AdminQuestionService(GameUserDataManager gameUserDataManager) {
+//        this.gameUserDataManager = gameUserDataManager;
+//    }
 
     @Path("/")
     @GET

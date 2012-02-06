@@ -52,6 +52,8 @@
 
         <validation-api.version>1.0.0.GA</validation-api.version>
         <jsr311-api.version>1.1.1</jsr311-api.version>
+        <javax.inject.version>1.0-SP4</javax.inject.version>
+
 
         <junit.version>4.10</junit.version>
         <mockito.version>1.9.0-rc1</mockito.version>
@@ -158,6 +160,12 @@
             </dependency>
 
             <dependency>
+                <groupId>javax.enterprise</groupId>
+                <artifactId>cdi-api</artifactId>
+                <version>${javax.inject.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>jsr311-api</artifactId>
                 <version>${jsr311-api.version}</version>
@@ -167,6 +175,7 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>

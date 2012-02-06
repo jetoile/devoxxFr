@@ -34,6 +34,10 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +47,9 @@ import java.util.List;
  * Date: 23/12/11
  * Time: 20:25
  */
-public enum GameUserDataManager {
-    INSTANCE;
+
+public class GameUserDataManager {
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameUserDataManager.class);
     public static final String MONGODB_PROPERTIES = "mongodb.properties";
@@ -53,7 +58,7 @@ public enum GameUserDataManager {
 
     Datastore ds = null;
 
-    private GameUserDataManager() {
+    public GameUserDataManager() {
         try {
             this.configuration = new PropertiesConfiguration(MONGODB_PROPERTIES);
         } catch (ConfigurationException e) {

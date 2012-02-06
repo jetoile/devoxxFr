@@ -26,6 +26,7 @@ package fr.soat.devoxx.game.business.admin;
 import fr.soat.devoxx.game.admin.pojo.GameResult;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,10 +41,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/admin/result")
 public class AdminResultService {
 
+    @Inject
+    private GameUserDataManager gameUserDataManager;
+
     @Path("/{username}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public GameResult getResultForUser(@PathParam("username") String userName) {
-        return GameUserDataManager.INSTANCE.getResult(userName);
+        return this.gameUserDataManager.getResult(userName);
     }
 }

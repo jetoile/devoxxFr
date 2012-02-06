@@ -26,9 +26,11 @@ package fr.soat.devoxx.game.business.admin;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -72,6 +74,7 @@ public class AdminUserService {
 
     private String PERSISTENCE_UNIT_NAME = "devoxx";
 
+    @Inject
     private GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
@@ -82,16 +85,20 @@ public class AdminUserService {
     }
 
     private final Mapper dozerMapper = new DozerBeanMapper();
+
     private EntityManagerFactory emf;
+
+    @javax.enterprise.inject.Produces
+    @PersistenceContext
     private EntityManager em;
 
     private void init() {
-            emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-            em = emf.createEntityManager();
+//            emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+//            em = emf.createEntityManager();
     }
 
     public AdminUserService() {
-        this.gameUserDataManager = GameUserDataManager.INSTANCE;
+//        this.gameUserDataManager = GameUserDataManager.INSTANCE;
     }
 
     AdminUserService(String persistenceUnitName, GameUserDataManager gameUserDataManager) {
@@ -100,9 +107,9 @@ public class AdminUserService {
     }
 
     private void close() {
-        if (em != null) {
-            em.close();
-        }
+//        if (em != null) {
+//            em.close();
+//        }
     }
 
     @Path("/")
@@ -119,8 +126,8 @@ public class AdminUserService {
                 LOGGER.error("Invalid input for user creation {}", userRequestDto);
                 throw new InvalidUserException(constraintViolations);
             }
-            /*final String token = generateToken();
-            user.setToken(token);*/
+//            final String token = UserUtils.INSTANCE.generateToken();
+//            user.setToken(token);
 
             em.getTransaction().begin();
             em.persist(user);
@@ -151,11 +158,9 @@ public class AdminUserService {
                 return response;
             } else if (users.size() > 1) {
                 LOGGER.debug("get user {} failed: too many response", userName);
-//                return null;
                 throw new WebApplicationException(Response.status(Status.NOT_FOUND).entity("too many response").build());
             } else {
                 LOGGER.debug("get user {} failed: not found", userName);
-//                return null;
                 throw new WebApplicationException(Status.NOT_FOUND);
             }
         } finally {
@@ -192,10 +197,10 @@ public class AdminUserService {
     }
 
     private List<User> getUsers(EntityManager em, String userName) {
-//        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em, userName);
-//        return em.createQuery(criteriaQuery).setParameter("name", userName).getResultList();
-        return em.createQuery("select g from User g where g.name = :name")
-                                    .setParameter("name", userName).getResultList();
+        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em, userName);
+        return em.createQuery(criteriaQuery).setParameter("name", userName).getResultList();
+//        return em.createQuery("select g from User g where g.name = :name")
+//                                    .setParameter("name", userName).getResultList();
     }
 
 //    String generateToken() {
