@@ -105,6 +105,14 @@ public class AdminQuestionService {
         //TODO update question processing
     	return javax.ws.rs.core.Response.ok().build();
     }
+    
+    @Path("/{questionId}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId) {
+        //TODO delete question processing
+    	return javax.ws.rs.core.Response.ok().build();
+    }
 
     @Path("/{username}")
     @GET
