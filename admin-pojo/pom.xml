@@ -55,7 +55,7 @@
         <profile>
             <id>cloudbees-jee</id>
             <properties>
-                <environment>cloudbees-aure77</environment>
+                <environment>cloudbees-jetoile</environment>
             </properties>
             <build>
                 <resources>

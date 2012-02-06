@@ -35,7 +35,7 @@
             <id>cloudbees-jee</id>
 
             <properties>
-                <environment>cloudbees-aure77</environment>
+                <environment>cloudbees-jetoile</environment>
 
                 <version.javax.activation>1.1</version.javax.activation>
                 <version.javax.enterprise>1.0-SP4</version.javax.enterprise>
