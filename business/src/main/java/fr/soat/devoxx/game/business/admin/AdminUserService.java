@@ -229,8 +229,12 @@ public class AdminUserService {
 	}*/
 	
 	private User getUserByName(String userName) throws PersistenceException {
-		return (User) em.createQuery("select g from User g where g.name = :name")
-				.setParameter("name", userName).getSingleResult();
+//		return (User) em.createQuery("select g from User g where g.name = :name")
+//				.setParameter("name", userName).getSingleResult();
+        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em,
+                userName);
+                return em.createQuery(criteriaQuery).setParameter("name",
+                userName).getSingleResult();
 	}
 
 	private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em,
