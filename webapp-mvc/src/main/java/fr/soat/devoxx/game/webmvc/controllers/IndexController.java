@@ -39,19 +39,19 @@ import fr.soat.devoxx.game.webmvc.utils.TilesUtil;
 @Controller
 @RequestMapping(value = "/")
 public class IndexController {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(IndexController.class);
 
 	@RequestMapping(value = "index", method = RequestMethod.GET)
 	public String index() {
 		RequesterDelegate service = new RequesterDelegate("/admin/question", MediaType.APPLICATION_JSON);
-        try {
-        	QuestionResponseDto questions = service.get(QuestionResponseDto.class);
+		try {
+			QuestionResponseDto questions = service.get(QuestionResponseDto.class);
 			System.out.println(questions.toString());
 		} catch (HttpRestException e) {
 			logger.error("Error while loading question", e);
 		}
-		
+
 		return TilesUtil.DFR_INDEX_PAGE;
 	}
 }
