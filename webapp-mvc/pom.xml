@@ -19,6 +19,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>fr.soat.devoxxfr.game</groupId>
             <artifactId>pojo</artifactId>
         </dependency>
@@ -37,6 +49,25 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
+            <exclusions>
+                <!--<exclusion>-->
+                    <!--<groupId>org.codehaus.jackson</groupId>-->
+                    <!--<artifactId>jackson-core-asl</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.codehaus.jackson</groupId>-->
+                    <!--<artifactId>jackson-mapper-asl</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.codehaus.jackson</groupId>-->
+                    <!--<artifactId>jackson-jaxrs</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.codehaus.jackson</groupId>-->
+                    <!--<artifactId>jackson-xc</artifactId>-->
+                <!--</exclusion>-->
+
+            </exclusions>
         </dependency>
         
         <!-- Spring Dependencies -->
@@ -64,6 +95,12 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
         <!-- Apache Tiles 2 dependencies -->
         <dependency>
             <groupId>org.apache.tiles</groupId>
@@ -88,6 +125,7 @@
             <artifactId>tiles-servlet</artifactId>
             <version>${tiles.version}</version>
         </dependency>
+
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
@@ -108,39 +146,79 @@
     </dependencies>
     
     <profiles>
+        <!--<profile>-->
+            <!--<id>default</id>-->
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
+            <!---->
+            <!--<dependencies>-->
+                <!--<dependency>-->
+                    <!--<groupId>javax.servlet</groupId>-->
+                    <!--<artifactId>servlet-api</artifactId>-->
+                <!--</dependency>-->
+        <!---->
+                <!--<dependency>-->
+                    <!--<groupId>javax.servlet</groupId>-->
+                    <!--<artifactId>jstl</artifactId>-->
+                    <!--<version>${jstl.version}</version>-->
+                <!--</dependency>     -->
+                <!---->
+            <!--</dependencies>-->
+        <!--</profile>-->
+        <!--<profile>-->
+            <!--<id>cloudbees</id>-->
+            <!---->
+            <!--<activation>-->
+                <!--<property>-->
+                     <!--<name>cloudbees</name>-->
+                     <!--<value>tomcat</value>-->
+                <!--</property>-->
+            <!--</activation>-->
+
+            <!--<properties>             -->
+                <!--<jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>-->
+            <!--</properties>-->
+        <!--</profile>        -->
+
+        <profile>
+            <id>cloudbees-jee</id>
+            <properties>
+                <environment>cloudbees-jetoile</environment>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+                <filters>
+                    <filter>src/main/filters/filter-${environment}.properties</filter>
+                </filters>
+            </build>
+        </profile>
+
         <profile>
             <id>default</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            
-            <dependencies>
-                <dependency>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </dependency>
-        
-                <dependency>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>jstl</artifactId>
-                    <version>${jstl.version}</version>
-                </dependency>     
-                
-            </dependencies>
-        </profile>
-        <profile>
-            <id>cloudbees</id>
-            
-            <activation>
-                <property>
-                     <name>cloudbees</name>
-                     <value>tomcat</value>
-                </property>
-            </activation>
-
-            <properties>             
-                <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
+            <properties>
+                <environment>dev</environment>
             </properties>
-        </profile>        
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+                <filters>
+                    <filter>src/main/filters/filter-${environment}.properties</filter>
+                </filters>
+            </build>
+
+        </profile>
     </profiles>
 </project>
