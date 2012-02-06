@@ -24,11 +24,16 @@
 package fr.soat.devoxx.game.admin.pojo.dto;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang.StringUtils;
+
 import fr.soat.devoxx.game.pojo.ResultResponseDto;
+import fr.soat.devoxx.game.pojo.UserResponseDto;
 
 @XmlRootElement(name = "allGameResult")
 public class AllResultResponseDto {
@@ -45,6 +50,27 @@ public class AllResultResponseDto {
 	
 	public void addGameResult(ResultResponseDto resultResponseDto) {
 		this.gameResults.add(resultResponseDto);
+	}
+	
+	/**
+	 * Unmarshal Fix
+	 * See :
+	 * http://stackoverflow.com/questions/4181120/transforming-empty-element-into-null-when-unmarshalling-with-jaxb/4197817#4197817
+	 * 
+	 * @param aUnmarshaller
+	 * @param aParent
+	 */
+	void afterUnmarshal(Unmarshaller aUnmarshaller, Object aParent) {
+		if (gameResults != null) {
+			Iterator<ResultResponseDto> iterator = gameResults.iterator();
+			while (iterator.hasNext()) {
+				ResultResponseDto resultResponse = iterator.next();
+				if (StringUtils.isEmpty(resultResponse.getUsername())) {
+					// a GameResult without username is considered invalid
+					iterator.remove();
+				}
+			}
+		}
 	}
 
 	/* (non-Javadoc)
