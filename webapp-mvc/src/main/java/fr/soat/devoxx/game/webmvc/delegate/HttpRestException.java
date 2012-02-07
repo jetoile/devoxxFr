@@ -40,5 +40,5 @@ public class HttpRestException extends RuntimeException {
 
 	public HttpRestException(Throwable cause) {
 		super(cause);
-	}	
+	}
 }

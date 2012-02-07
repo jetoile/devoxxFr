@@ -28,6 +28,7 @@
         <filter-name>Html5CorsFilter</filter-name>
         <url-pattern>/services/*</url-pattern>
     </filter-mapping>
+
     <!--<resource-ref>-->
         <!--<res-ref-name>jdbc/devoxxfrjee</res-ref-name>-->
         <!--<res-type>javax.sql.DataSource</res-type>-->

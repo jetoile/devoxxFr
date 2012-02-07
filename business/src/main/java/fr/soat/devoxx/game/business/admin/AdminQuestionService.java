@@ -25,6 +25,7 @@ package fr.soat.devoxx.game.business.admin;
 
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.admin.pojo.dto.QuestionRequestDto;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.business.question.Question;
 import fr.soat.devoxx.game.business.question.QuestionManager;
@@ -87,6 +88,30 @@ public class AdminQuestionService {
     @Produces(MediaType.APPLICATION_JSON)
     public QuestionResponseDto getQuestion() {
         return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
+    }
+    
+    @Path("/")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public javax.ws.rs.core.Response addQuestion(QuestionRequestDto questionRequest) {
+        //TODO add question processing
+    	return javax.ws.rs.core.Response.ok().build();
+    }
+    
+    @Path("/{questionId}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId, QuestionRequestDto questionRequest) {
+        //TODO update question processing
+    	return javax.ws.rs.core.Response.ok().build();
+    }
+    
+    @Path("/{questionId}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId) {
+        //TODO delete question processing
+    	return javax.ws.rs.core.Response.ok().build();
     }
 
     @Path("/{username}")

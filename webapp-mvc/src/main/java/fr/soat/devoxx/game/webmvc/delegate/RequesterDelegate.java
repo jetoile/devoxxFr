@@ -30,28 +30,13 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
-public class RequesterDelegate implements IRest {
-    private static final String BASE_URI_PROPERTIES = "webapp.properties";
+import fr.soat.devoxx.game.webmvc.utils.WebAdminUtils;
 
-    private static String BASE_URI;
-    
-    private static final String BASE_URI_DEFAULT_VALUE = "http://devoxxfrjee.jetoile.cloudbees.net/services";
-    
-    
-    private static PropertiesConfiguration configuration;
-    
-    static {
-        try {
-            configuration = new PropertiesConfiguration(BASE_URI_PROPERTIES);
-        } catch (ConfigurationException e) {
-            //NOTHING TO DO
-        }
-        BASE_URI = configuration.getString("server.url", BASE_URI_DEFAULT_VALUE);
-    }
-    
+public class RequesterDelegate implements IRest {	
+
+	private static String BASE_URI = WebAdminUtils.INSTANCE.getBaseUri();	
+
 	private String servicePath;
 	private WebResource service;
 	private String type = MediaType.APPLICATION_JSON;
@@ -61,15 +46,15 @@ public class RequesterDelegate implements IRest {
 		Client client = Client.create(config);
 		this.service = client.resource(BASE_URI);
 	}
-	
+
 	public RequesterDelegate(String servicePath) {
 		this();
-		this.servicePath = servicePath;		
+		this.servicePath = servicePath;
 	}
-	
+
 	public RequesterDelegate(String servicePath, String type) {
 		this(servicePath);
-		this.type = type;		
+		this.type = type;
 	}
 
 	/**
@@ -80,7 +65,8 @@ public class RequesterDelegate implements IRest {
 	}
 
 	/**
-	 * @param servicePath the servicePath to set
+	 * @param servicePath
+	 *            the servicePath to set
 	 */
 	public void setServicePath(String servicePath) {
 		this.servicePath = servicePath;
@@ -94,7 +80,8 @@ public class RequesterDelegate implements IRest {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -103,7 +90,7 @@ public class RequesterDelegate implements IRest {
 	@Override
 	public <T> T get(Class<T> c) throws HttpRestException {
 		try {
-			 return service.path(servicePath).type(type).get(c);
+			return service.path(servicePath).type(type).get(c);
 		} catch (UniformInterfaceException e) {
 			throw new HttpRestException(e);
 		}
@@ -124,7 +111,7 @@ public class RequesterDelegate implements IRest {
 			service.path(servicePath).type(type).put(requestEntity);
 		} catch (UniformInterfaceException e) {
 			throw new HttpRestException(e);
-		}		
+		}
 	}
 
 	@Override
@@ -151,7 +138,7 @@ public class RequesterDelegate implements IRest {
 			service.path(servicePath).type(type).post();
 		} catch (UniformInterfaceException e) {
 			throw new HttpRestException(e);
-		}		
+		}
 	}
 
 	@Override
@@ -173,7 +160,7 @@ public class RequesterDelegate implements IRest {
 	}
 
 	@Override
-	public <T> T post(Class<T> c, Object requestEntity)	throws HttpRestException {
+	public <T> T post(Class<T> c, Object requestEntity) throws HttpRestException {
 		try {
 			return service.path(servicePath).type(type).post(c, requestEntity);
 		} catch (UniformInterfaceException e) {
@@ -187,7 +174,7 @@ public class RequesterDelegate implements IRest {
 			service.path(servicePath).type(type).delete();
 		} catch (UniformInterfaceException e) {
 			throw new HttpRestException(e);
-		}		
+		}
 	}
 
 	@Override
@@ -196,7 +183,7 @@ public class RequesterDelegate implements IRest {
 			service.path(servicePath).type(type).delete(requestEntity);
 		} catch (UniformInterfaceException e) {
 			throw new HttpRestException(e);
-		}		
+		}
 	}
 
 	@Override

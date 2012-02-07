@@ -41,7 +41,7 @@ import fr.soat.devoxx.game.webmvc.utils.TilesUtil;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(AdminController.class);
 	private RequesterDelegate service;
 
@@ -49,14 +49,14 @@ public class AdminController {
 	public String index() {
 		return TilesUtil.DFR_ADMIN_INDEX_PAGE;
 	}
-	
+
 	@RequestMapping(value = "/user")
 	public String showAllUser(Model model) {
 		String forward = TilesUtil.DFR_ERRORS_ERRORMSG_PAGE;
 		try {
 			service = new RequesterDelegate("/admin/user");
 			AllUserResponseDto allUsers = service.get(AllUserResponseDto.class);
-			model.addAttribute("allUserResponses", allUsers.getUserResponses());		
+			model.addAttribute("allUserResponses", allUsers.getUserResponses());
 			forward = TilesUtil.DFR_ADMIN_SHOWALLUSERS_PAGE;
 		} catch (HttpRestException e) {
 			model.addAttribute("error", "admin.error.user.getall");
@@ -64,7 +64,7 @@ public class AdminController {
 		}
 		return forward;
 	}
-	
+
 	@RequestMapping(value = "/user/{username}")
 	public String showUser(@PathVariable String username, Model model) {
 		String forward = TilesUtil.DFR_ERRORS_ERRORMSG_PAGE;
@@ -73,11 +73,11 @@ public class AdminController {
 			UserResponseDto userResponse = service.get(UserResponseDto.class);
 			model.addAttribute("userResponse", userResponse);
 			model.addAttribute("mailHash", DigestUtils.md5Hex(userResponse.getMail().trim().toLowerCase()));
-			
+
 			service = new RequesterDelegate("/admin/result/" + username);
 			ResultResponseDto resultResponse = service.get(ResultResponseDto.class);
-			model.addAttribute("resultResponse", resultResponse);			
-			
+			model.addAttribute("resultResponse", resultResponse);
+
 			forward = TilesUtil.DFR_ADMIN_SHOWUSER_PAGE;
 		} catch (HttpRestException e) {
 			model.addAttribute("error", "admin.error.user.get");
@@ -86,7 +86,7 @@ public class AdminController {
 		}
 		return forward;
 	}
-	
+
 	@RequestMapping(value = "/user/{username}/delete")
 	public String removeUser(@PathVariable String username, Model model) {
 		String forward = TilesUtil.DFR_ERRORS_ERRORMSG_PAGE;
