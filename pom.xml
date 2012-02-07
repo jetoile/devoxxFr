@@ -27,6 +27,20 @@
             <id>morphia</id>
             <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
         </repository>
+        <repository>
+            <id>soat-cloudbees-snasphots</id>
+            <url>https://repository-soat.forge.cloudbees.com/snapshot/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>soat-cloudbees-releases</id>
+            <url>https://repository-soat.forge.cloudbees.com/release/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
     </repositories>
 
     <modules>
