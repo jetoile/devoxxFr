@@ -46,7 +46,6 @@
     <modules>
         <module>business</module>
         <module>webapp</module>
-        <module>webapp-mvc</module>
         <module>persistent</module>
         <module>pojo</module>
         <module>test</module>
