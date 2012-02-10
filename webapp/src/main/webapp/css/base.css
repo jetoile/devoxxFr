@@ -1,0 +1,179 @@
+
+
+/* basic elements */
+html {
+	margin: 0;
+	padding: 0;
+	}
+body { 
+	font: 75% ARIAL, sans-serif;
+	line-height: 1.88889;
+	color: #555753; 
+	background: #fff url(../img/trame.gif)  ; 
+	margin: 0; 
+	padding: 0;
+	text-align:center;
+	}
+p { 
+	margin-top: 0; 
+	text-align: justify;
+	}
+h3 { 
+	font: italic ARIAL 1.4em georgia, sans-serif;
+	letter-spacing: 1px; 
+	margin-bottom: 0; 
+	color: #7D775C;
+	}
+a:link { 
+	font-weight: bold; 
+	text-decoration: none; 
+	color: #B7A5DF;
+	}
+a:visited { 
+	font-weight: bold; 
+	text-decoration: none; 
+	color: #D4CDDC;
+	}
+a:hover, a:active { 
+	text-decoration: underline; 
+	color: #9685BA;
+	}
+acronym {
+	border-bottom: none;
+	}
+	input[type=text],input[type=password],input[type=button]{border:0;height:1em;}
+	li{list-style-type:none;}
+	ul{margin:0;padding:0;}
+/* specific elements */
+#container{
+	
+	position:relative;
+	top : 75px;
+}
+/*des bords arrondis et ombrés !*/
+
+#content,#menu,#login,#password,#login_send,#content_connect,#content_play,#content_rules,#content_about,#head_content,#content_answer{
+	border-radius: 3px 3px 3px 3px;
+	 box-shadow: 3px 3px 10px #4d6170; }
+#content{
+	    margin-right: 10px;
+    padding: 1px;
+margin : 0 auto;
+    max-width:800px;
+	height:530px;
+	background : #555454;
+	/*opacity:0.75;*/
+	}
+	#content div.overlay_content{opacity:0.5;}
+	#body,#foot{/*border:#fff solid 1px;*/width:705px;
+	margin: 10px 75px ;}
+	#head{
+	background-color:transparent;
+	height:75px;
+	vertical-align:top;
+	text-align:left;
+	}
+	#body{/*background-color:#fcfafa;*/height:405px; /*opacity:0.5;*/ }
+	#foot{background-color:#f4efef;height:150px;}
+	/*CONTENUS*/
+	#content_rules div.overlay_content{text-align:left;}
+	#content_connect,#content_play, #content_rules,#content_about{
+		/*display:none;*/
+	}
+	
+	/*MENU*/
+	#menu{width:85px;height:420px;background : #384f60;background:-moz-linear-gradient(40% 40% 90deg, #383737, #575C68 80%);
+	background:-webkit-gradient(linear, 10% 0%, 10% 100%, from(#383737), to(#575C68));
+	float:left;margin-left:-15px;margin-top:5px;}
+	#menu_content{margin:0 ;padding:0;text-align:center;}
+	#menu_content li{
+	width:55px;
+	height:55px;
+	
+	padding:0;
+	margin:10px auto;
+	}
+	#logon,#play,#howto,#cat,#about{background-image:url(../img/menu.png);background-repeat:none;}
+	#logon{background-position:-71px 0;}
+	#play{background-position:-71px -70px;
+	}
+	#howto{background-position:-71px -140px;}
+	#cat{background-position:-71px -210px;}
+	#about{background-position:-72px -280px;
+	}
+	#logon:hover{background-position:0 0;}
+	/*#logon:hover #content_connect{display:block;}*/
+	#play:hover{background-position:0 -70px;
+	}
+	#howto:hover{background-position:0 -140px;}
+	#cat:hover{background-position:0 -210px;}
+	#about:hover{background-position:0px -280px;
+	}
+	#content_play,#content_rules,#content_about,#content_answer{width:55%;text-align:right;background-color:#c6d2db;padding:10px;}
+	/*JEU*/
+	#content_play li{border-bottom:1px solid #fff;}
+	#content_play li:hover{background-color:#fff;}
+	#content_play li:hover span{color:#000;}
+	#content_play li:hover span.done{color:gray;}
+	#content_play {text-align:left;}
+	#content_play span{color : #fff;font-weight:bold;}
+	#content_play label{float:right;}
+	#content_play{max-width:150px;}
+	#content_answer{max-width:150px;text-align:left;}
+	.ok{color:green;opacity:1.0;}
+	.failed{color:red;}
+	.done{color:gray;}
+	
+	/*LOGON*/
+	#content_connect{max-width:55%;min-width:200px;text-align:right;background-color:#c6d2db;padding:10px;}
+	#login_send,#answer_send{font-size:1em;height:1.2em;}
+	#login_send:hover ,#answer_send:hover{color:#fff;background-color:#000;}
+	#content_connect label,#content_connect input{font-weight:normal;font-size:1.1em;margin-top:15px;}
+	#content_connect label{margin-right:10px;}
+	/*HEADER*/
+	#head_content{max-width:240px;text-align:right;background-color:#afcb08;padding:10px;margin-top:10px;margin-right:10px;font-weight:bold;display:inline-block;position:relative;left:25%;top:-20px;}
+	#pseudo{float:left;}
+	#classement{color:green;}
+	/*CLASS*/
+	.img_header{margin:0 10px;}
+	.overlay_content{
+	max-width:530px;	
+	min-height:180px;
+	max-height:380px;
+	text-align:inherit;
+	overflow:auto;
+	}
+	/* the overlayed element */
+
+.simple_overlay {
+	opacity:1;
+	/* must be initially hidden */
+	display:none;
+	
+	/* place overlay on top of other elements */
+	z-index:10000;
+	
+	/* styling */
+	background-color:#333;
+	
+	min-width:20%;	
+	max-width:550px;	
+	min-height:200px;
+	max-height:400px;
+	/*border:1px solid #666;*/
+	
+	/* CSS3 styling for latest browsers
+	-moz-box-shadow:0 0 90px 5px #000;
+	-webkit-box-shadow: 0 0 90px #000;	 */
+}
+
+/* close button positioned on upper right corner */
+.simple_overlay .close {
+	background-image:url(../img/close.png);
+	position:absolute;
+	right:-15px;
+	top:-15px;
+	cursor:pointer;
+	height:35px;
+	width:35px;
+}
