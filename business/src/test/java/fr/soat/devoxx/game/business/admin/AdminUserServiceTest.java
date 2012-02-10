@@ -37,6 +37,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import static org.junit.Assert.*;
 
 /**
@@ -56,6 +59,10 @@ public class AdminUserServiceTest {
 //        when(gameUserDataManager.)
 
         adminUserService = new AdminUserService("devoxx-test", gameUserDataManager);
+
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("devoxx-test");
+//        adminUserService.em = emf.createEntityManager();
+
 //        adminUserService = new UserService("devoxx");
         adminUserService.deleteUser("toto");
     }

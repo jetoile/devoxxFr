@@ -77,14 +77,12 @@ public class AdminQuestionService {
         validator = factory.getValidator();
     }
 
-//    public AdminQuestionService() {
-//
-////        this.gameUserDataManager = fr.soat.devoxx.game.business.admin.GameUserDataManager.INSTANCE;
-//    }
+    public AdminQuestionService() {
+    }
 
-//    AdminQuestionService(GameUserDataManager gameUserDataManager) {
-//        this.gameUserDataManager = gameUserDataManager;
-//    }
+    AdminQuestionService(GameUserDataManager gameUserDataManager) {
+        this.gameUserDataManager = gameUserDataManager;
+    }
 
     @Path("/")
     @GET

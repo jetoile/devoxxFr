@@ -46,8 +46,8 @@ import static org.mockito.Mockito.*;
  */
 public class GameUserDataManagerTest {
 
-    @Inject
-    private GameUserDataManager gameUserDataManager;
+//    @Inject
+    private GameUserDataManager gameUserDataManager = new GameUserDataManager();
 
     @Before
     public void setUp() {

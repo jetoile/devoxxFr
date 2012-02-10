@@ -35,10 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -75,31 +72,30 @@ public class AdminUserService {
 
     private final Mapper dozerMapper = new DozerBeanMapper();
 
-    private EntityManagerFactory emf;
+    EntityManagerFactory emf;
 
-    @javax.enterprise.inject.Produces
-    @PersistenceContext
-    private EntityManager em;
+//    @javax.enterprise.inject.Produces
+//    @PersistenceContext
+    EntityManager em;
 
     private void init() {
-//            emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-//            em = emf.createEntityManager();
+            emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+            em = emf.createEntityManager();
     }
 
     public AdminUserService() {
-//        this.gameUserDataManager = fr.soat.devoxx.game.business.admin.GameUserDataManager.INSTANCE;
     }
 
-//    AdminUserService(String persistenceUnitName,
-//                     GameUserDataManager gameUserDataManager) {
-//        this.PERSISTENCE_UNIT_NAME = persistenceUnitName;
-//        this.gameUserDataManager = gameUserDataManager;
-//    }
+    AdminUserService(String persistenceUnitName,
+                     GameUserDataManager gameUserDataManager) {
+        this.PERSISTENCE_UNIT_NAME = persistenceUnitName;
+        this.gameUserDataManager = gameUserDataManager;
+    }
 
     private void close() {
-//        if (em != null) {
-//            em.close();
-//        }
+        if (em != null) {
+            em.close();
+        }
     }
 
     @Path("/")
