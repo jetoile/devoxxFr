@@ -41,6 +41,7 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -64,9 +65,11 @@ public class AdminQuestionService {
 
     private final Mapper dozerMapper = new DozerBeanMapper();
 
-    QuestionManager questionManager = QuestionManager.INSTANCE;
+    @Inject
+    QuestionManager questionManager;
 
-    private GameUserDataManager gameUserDataManager;
+    @Inject
+    GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
 
@@ -76,7 +79,6 @@ public class AdminQuestionService {
     }
 
     public AdminQuestionService() {
-        this.gameUserDataManager = GameUserDataManager.INSTANCE;
     }
 
     AdminQuestionService(GameUserDataManager gameUserDataManager) {
@@ -89,29 +91,29 @@ public class AdminQuestionService {
     public QuestionResponseDto getQuestion() {
         return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
     }
-    
+
     @Path("/")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public javax.ws.rs.core.Response addQuestion(QuestionRequestDto questionRequest) {
         //TODO add question processing
-    	return javax.ws.rs.core.Response.ok().build();
+        return javax.ws.rs.core.Response.ok().build();
     }
-    
+
     @Path("/{questionId}")
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId, QuestionRequestDto questionRequest) {
         //TODO update question processing
-    	return javax.ws.rs.core.Response.ok().build();
+        return javax.ws.rs.core.Response.ok().build();
     }
-    
+
     @Path("/{questionId}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId) {
         //TODO delete question processing
-    	return javax.ws.rs.core.Response.ok().build();
+        return javax.ws.rs.core.Response.ok().build();
     }
 
     @Path("/{username}")
@@ -157,7 +159,7 @@ public class AdminQuestionService {
         }
 
         Game game = gameUserDataManager.getGameById(responseDto.getUserName(), res.getId());
-               
+
         if (game == null) {
             game = new Game();
             game.setId(response.getId());
@@ -178,7 +180,7 @@ public class AdminQuestionService {
     public javax.ws.rs.core.Response addQuestionForUser(@PathParam("username") String userName) {
         List<Game> gamesAllReadyPlayed = gameUserDataManager.getGames(userName);
         List<Question> allQuestions = questionManager.loadQuestions().getQuestions();
-        
+
         if (gamesAllReadyPlayed.size() == allQuestions.size()) {
             //NOTHING TO DO : the player allready answered all questions
             return javax.ws.rs.core.Response.ok().build();

@@ -25,8 +25,11 @@ package fr.soat.devoxx.game.business.question;
 
 import static org.junit.Assert.*;
 
+import fr.soat.devoxx.game.business.GameUtils;
 import fr.soat.devoxx.game.pojo.question.QuestionType;
 import org.junit.Test;
+
+import javax.inject.Inject;
 
 /**
  * User: khanh
@@ -34,30 +37,34 @@ import org.junit.Test;
  * Time: 14:44
  */
 public class QuestionManagerTest {
+
+//    @Inject
+    private QuestionManager instance = new QuestionManager(new GameUtils());
+
     @Test
     public void getNbQuestionsShouldReturn5() throws Exception {
-        QuestionManager instance = QuestionManager.INSTANCE;
+//        QuestionManager instance = QuestionManager.INSTANCE;
         instance.setConfiguration("question-test.properties");
         assertTrue(instance.getNbQuestions() == 6);
     }
 
     @Test
     public void getNbQuestionsShouldReturnDefaultValueIfFileIsNotFound() throws Exception {
-        QuestionManager instance = QuestionManager.INSTANCE;
+//        QuestionManager instance = QuestionManager.INSTANCE;
         instance.setConfiguration("question-test-unknown.properties");
         assertTrue(instance.getNbQuestions() == 0);
     }
 
     @Test
     public void getNbQuestionsShouldReturnDefaultValueIfKeyIsNotFound() throws Exception {
-        QuestionManager instance = QuestionManager.INSTANCE;
+//        QuestionManager instance = QuestionManager.INSTANCE;
         instance.setConfiguration("question-test2.properties");
         assertTrue(instance.getNbQuestions() == 0);
     }
 
     @Test
     public void getLoadQuestionsShouldReturnRightQuestions() throws Exception {
-        QuestionManager instance = QuestionManager.INSTANCE;
+//        QuestionManager instance = QuestionManager.INSTANCE;
         instance.setConfiguration("question-test.properties");
         Questions questions = instance.loadQuestions();
 

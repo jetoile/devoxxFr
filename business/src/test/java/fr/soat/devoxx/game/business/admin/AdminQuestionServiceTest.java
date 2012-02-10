@@ -26,6 +26,7 @@ package fr.soat.devoxx.game.business.admin;
 import com.google.common.collect.Lists;
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.business.GameUtils;
 import fr.soat.devoxx.game.business.question.QuestionManager;
 import fr.soat.devoxx.game.pojo.AllQuestionResponseDto;
 import fr.soat.devoxx.game.pojo.QuestionResponseDto;
@@ -41,9 +42,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
@@ -59,15 +60,18 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(GameUserDataManager.class)
 @PowerMockIgnore("javax.management.*")
 public class AdminQuestionServiceTest {
+
     private AdminQuestionService adminQuestionService;
-    private GameUserDataManager gameUserDataManager;
+
+//    @Inject
+    private GameUserDataManager gameUserDataManager = new GameUserDataManager();
 
     @Before
     public void setUp() {
         gameUserDataManager = PowerMockito.mock(GameUserDataManager.class);
 //        when(gameUserDataManager.getResult())
 
-        QuestionManager questionManager = QuestionManager.INSTANCE;
+        QuestionManager questionManager = new QuestionManager(new GameUtils());
         questionManager.setConfiguration("question-test.properties");
         adminQuestionService = new AdminQuestionService(gameUserDataManager);
         adminQuestionService.questionManager = questionManager;
@@ -97,9 +101,9 @@ public class AdminQuestionServiceTest {
         Game game = new Game();
         game.setId(1);
         game.setType(ResponseType.NEED_RESPONSE);
-        
+
         when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
-        
+
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(1);
         ArrayList<String> responses = new ArrayList<String>();

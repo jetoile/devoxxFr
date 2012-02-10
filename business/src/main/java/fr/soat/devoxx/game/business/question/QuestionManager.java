@@ -32,6 +32,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.*;
 
 /**
@@ -39,21 +41,27 @@ import java.util.*;
  * Date: 21/12/11
  * Time: 08:41
  */
-public enum QuestionManager {
-    INSTANCE;
+@Singleton
+public class QuestionManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuestionManager.class);
     private static final int NB_QUESTIONS_DEFAULT = 0;
     public static final String QUESTION_LABEL = ".question.label";
     public static final String SEPARATOR = ";";
 
-    private final String QUESTION_FILE_PATH = GameUtils.INSTANCE.getQuestionFilePath();
+//    @Inject
+//    private GameUtils gameUtils;
+
+    private String QUESTION_FILE_PATH;
 
     private PropertiesConfiguration configuration;
 
     private Questions questions = null;
 
-    private QuestionManager() {
+    @Inject
+    public QuestionManager(GameUtils gameUtils) {
+//        QUESTION_FILE_PATH = GameUtils.INSTANCE.getQuestionFilePath();
+        QUESTION_FILE_PATH = gameUtils.getQuestionFilePath();
         try {
             this.configuration = new PropertiesConfiguration(QUESTION_FILE_PATH);
         } catch (ConfigurationException e) {

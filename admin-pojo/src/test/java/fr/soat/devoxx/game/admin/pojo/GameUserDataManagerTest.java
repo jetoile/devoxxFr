@@ -32,6 +32,7 @@ import fr.soat.devoxx.game.pojo.question.ResponseType;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -44,6 +45,10 @@ import static org.mockito.Mockito.*;
  * Time: 14:08
  */
 public class GameUserDataManagerTest {
+
+//    @Inject
+    private GameUserDataManager gameUserDataManager = new GameUserDataManager();
+
     @Before
     public void setUp() {
 //        try {
@@ -60,10 +65,10 @@ public class GameUserDataManagerTest {
     public void registerUserShouldSuccess() throws Exception {
         //given
         Datastore ds = mock(Datastore.class);
-        GameUserDataManager.INSTANCE.ds = ds;
+        gameUserDataManager.ds = ds;
 
         //when
-        GameUserDataManager.INSTANCE.registerUser("user1");
+        gameUserDataManager.registerUser("user1");
         //then
         verify(ds).save(any(GameUserData.class));
     }
@@ -78,7 +83,7 @@ public class GameUserDataManagerTest {
         Query<GameUserData> query = mock(Query.class);
         FieldEnd fieldEnd = mock(FieldEnd.class);
 
-        GameUserDataManager.INSTANCE.ds = ds;        
+        gameUserDataManager.ds = ds;
         when(query.get()).thenReturn(null);
         when(query.field("name")).thenReturn(fieldEnd);
         when(fieldEnd.equal(anyString())).thenReturn(query);
@@ -89,7 +94,7 @@ public class GameUserDataManagerTest {
         game.setType(ResponseType.SUCCESS);
 
         //when
-        GameUserDataManager.INSTANCE.addOrUpdateGame("use", game);
+        gameUserDataManager.addOrUpdateGame("use", game);
 //        verify(ds).save();
     }
 
@@ -103,7 +108,7 @@ public class GameUserDataManagerTest {
         Query<GameUserData> query = mock(Query.class);
         FieldEnd fieldEnd = mock(FieldEnd.class);
 
-        GameUserDataManager.INSTANCE.ds = ds;
+        gameUserDataManager.ds = ds;
         when(query.get()).thenReturn(gameUserData);
         when(query.field("name")).thenReturn(fieldEnd);
         when(fieldEnd.equal(anyString())).thenReturn(query);
@@ -115,7 +120,7 @@ public class GameUserDataManagerTest {
         game.setType(ResponseType.SUCCESS);
 
         //when
-        GameUserDataManager.INSTANCE.addOrUpdateGame("user1", game);
+        gameUserDataManager.addOrUpdateGame("user1", game);
 
         //then
         verify(gameUserData, times(1)).addOrReplace(game);
@@ -134,7 +139,7 @@ public class GameUserDataManagerTest {
         FieldEnd fieldEnd = mock(FieldEnd.class);
         FieldEnd fieldEnd2 = mock(FieldEnd.class);
 
-        GameUserDataManager.INSTANCE.ds = ds;
+        gameUserDataManager.ds = ds;
         when(query.field("name")).thenReturn(fieldEnd);
         when(fieldEnd.equal("user1")).thenReturn(query2);
         when(query2.get()).thenReturn(gameUserData);
@@ -159,7 +164,7 @@ public class GameUserDataManagerTest {
         when(gameUserData.getGames()).thenReturn(Lists.newArrayList(game1, game2, game3));
 
         //then
-        List<Game> games = GameUserDataManager.INSTANCE.getGames("user1");
+        List<Game> games = gameUserDataManager.getGames("user1");
         assertTrue(games.size() == 3);
         assertTrue(games.get(0).getId() == 1);
         assertTrue(games.get(1).getId() == 2);
@@ -181,7 +186,7 @@ public class GameUserDataManagerTest {
         FieldEnd fieldEnd = mock(FieldEnd.class);
         FieldEnd fieldEnd2 = mock(FieldEnd.class);
 
-        GameUserDataManager.INSTANCE.ds = ds;
+        gameUserDataManager.ds = ds;
         when(query.field("name")).thenReturn(fieldEnd);
         when(fieldEnd.equal("user1")).thenReturn(query2);
         when(query2.field("games.type")).thenReturn(fieldEnd2);
@@ -217,16 +222,16 @@ public class GameUserDataManagerTest {
         when(gameUserData.getGames()).thenReturn(Lists.newArrayList(game1, game2, game3));
 
         //then
-        List<Game> games = GameUserDataManager.INSTANCE.getGamesByResultType("user1", ResponseType.SUCCESS);
+        List<Game> games = gameUserDataManager.getGamesByResultType("user1", ResponseType.SUCCESS);
         assertTrue(games.size() == 2);
         assertTrue(games.get(0).getId() == 1);
         assertTrue(games.get(1).getId() == 3);
 
-        games = GameUserDataManager.INSTANCE.getGamesByResultType("user1", ResponseType.FAIL);
+        games = gameUserDataManager.getGamesByResultType("user1", ResponseType.FAIL);
         assertTrue(games.size() == 1);
         assertTrue(games.get(0).getId() == 2);
 
-        games = GameUserDataManager.INSTANCE.getGamesByResultType("user1", ResponseType.INVALID);
+        games = gameUserDataManager.getGamesByResultType("user1", ResponseType.INVALID);
         assertTrue(games.size() == 0);
     }
 }

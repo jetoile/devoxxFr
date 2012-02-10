@@ -23,6 +23,7 @@
  */
 package fr.soat.devoxx.game.business;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,7 +41,8 @@ import fr.soat.devoxx.game.pojo.ResultResponseDto;
 @Path("/result")
 public class ResultService {
 
-    private AdminResultService delegate = new AdminResultService();
+    @Inject
+    private AdminResultService delegate;
 
     @Path("/{username}")
     @GET

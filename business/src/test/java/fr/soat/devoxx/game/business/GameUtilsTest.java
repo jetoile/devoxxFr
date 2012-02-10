@@ -27,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import javax.inject.Inject;
+
 
 /**
  * User: khanh
@@ -37,16 +39,18 @@ public class GameUtilsTest {
 	
 	private static final String GAME_QUESTION_FILE_PATH_TEST="question.properties";
 
+    GameUtils propertiesUtils = new GameUtils();
+
 	@Test
     public void getQuestionFilePathShouldReturnAnEmptySizeIfPropertiesAreNotFound() {
-		GameUtils propertiesUtils = GameUtils.INSTANCE;
+//		GameUtils propertiesUtils = GameUtils;
         propertiesUtils.setConfiguration("nothing");
         assertEquals(GAME_QUESTION_FILE_PATH_TEST, propertiesUtils.getQuestionFilePath());
     }
 
     @Test
     public void getQuestionFilePathReturnSizeIfPropertiesAreFound() {
-    	GameUtils propertiesUtils = GameUtils.INSTANCE;
+//    	GameUtils propertiesUtils = GameUtils.INSTANCE;
         propertiesUtils.reload();
         assertEquals(GAME_QUESTION_FILE_PATH_TEST, propertiesUtils.getQuestionFilePath());
     }
