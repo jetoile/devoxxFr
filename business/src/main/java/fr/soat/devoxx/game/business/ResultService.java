@@ -23,9 +23,10 @@
  */
 package fr.soat.devoxx.game.business;
 
-import fr.soat.devoxx.game.admin.pojo.GameResult;
 import fr.soat.devoxx.game.business.admin.AdminResultService;
+import fr.soat.devoxx.game.pojo.ResultResponseDto;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,13 +41,14 @@ import javax.ws.rs.core.MediaType;
 @Path("/result")
 public class ResultService {
 
-    private AdminResultService delegate = new AdminResultService();
+    @Inject
+    private AdminResultService delegate;
 
     @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public GameResult getResultForUser(@PathParam("username") String userName) {
-        GameResult result = delegate.getResultForUser(userName);
+    public ResultResponseDto getResultForUser(@PathParam("username") String userName) {
+        ResultResponseDto result = delegate.getResultForUser(userName);
         return result;
     }
 }

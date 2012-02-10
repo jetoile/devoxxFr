@@ -51,6 +51,12 @@
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.ejb</groupId>-->
+            <!--<artifactId>ejb-api</artifactId>-->
+            <!--<version>3.0</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
@@ -89,25 +95,25 @@
                 <jdbc.url>jdbc:mysql://localhost:3306/devoxx</jdbc.url>
                 <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
                 <jdbc.username>root</jdbc.username>
-                <jdbc.password>Sic21pes</jdbc.password>
+                <jdbc.password></jdbc.password>
                 <jdbc.target-database>org.eclipse.persistence.platform.database.MySQLPlatform</jdbc.target-database>
             </properties>
         </profile>
-        <profile>
-            <id>jrebel</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.zeroturnaround</groupId>
-                        <artifactId>jrebel-maven-plugin</artifactId>
-                        <configuration>
-                            <!--<relativePath>../</relativePath>-->
-                            <rootPath>${workspace.root}</rootPath>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+        <!--<profile>-->
+            <!--<id>jrebel</id>-->
+            <!--<build>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<groupId>org.zeroturnaround</groupId>-->
+                        <!--<artifactId>jrebel-maven-plugin</artifactId>-->
+                        <!--<configuration>-->
+                            <!--&lt;!&ndash;<relativePath>../</relativePath>&ndash;&gt;-->
+                            <!--<rootPath>${workspace.root}</rootPath>-->
+                        <!--</configuration>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
+        <!--</profile>-->
     </profiles>
 
 

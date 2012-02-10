@@ -41,9 +41,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
@@ -59,7 +59,10 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(GameUserDataManager.class)
 @PowerMockIgnore("javax.management.*")
 public class AdminQuestionServiceTest {
+
     private AdminQuestionService adminQuestionService;
+
+    @Inject
     private GameUserDataManager gameUserDataManager;
 
     @Before

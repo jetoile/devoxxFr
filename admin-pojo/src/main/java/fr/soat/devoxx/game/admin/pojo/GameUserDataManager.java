@@ -34,9 +34,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -48,11 +45,12 @@ import java.util.List;
  * Time: 20:25
  */
 
+@Singleton
 public class GameUserDataManager {
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameUserDataManager.class);
-    public static final String MONGODB_PROPERTIES = "mongodb.properties";
+    private final Logger LOGGER = LoggerFactory.getLogger(GameUserDataManager.class);
+    public final String MONGODB_PROPERTIES = "mongodb.properties";
 
     private PropertiesConfiguration configuration;
 
@@ -192,10 +190,18 @@ public class GameUserDataManager {
 
     public GameResult getResult(String userName) {
         GameResult result = new GameResult();
+        result.setUsername(userName);
         result.setNbSuccess(getGamesByResultType(userName, ResponseType.SUCCESS).size());
         result.setNbFail(getGamesByResultType(userName, ResponseType.FAIL).size());
         result.setNbInvalid(getGamesByResultType(userName, ResponseType.INVALID).size());
         return result;
     }
 
+    public List<GameResult> getAllResult() {
+        List<GameResult> results = new ArrayList<GameResult>();
+        for (GameUserData gameUserData : ds.find(GameUserData.class).asList()) {
+            results.add(getResult(gameUserData.getName()));
+        }
+        return results;
+    }
 }

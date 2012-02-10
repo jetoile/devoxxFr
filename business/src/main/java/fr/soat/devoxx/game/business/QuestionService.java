@@ -31,6 +31,7 @@ import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -44,7 +45,8 @@ import java.util.List;
 public class QuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuestionService.class);
 
-    private AdminQuestionService delegate = new AdminQuestionService();
+    @Inject
+    private AdminQuestionService delegate;
 
     @Path("/")
     @GET

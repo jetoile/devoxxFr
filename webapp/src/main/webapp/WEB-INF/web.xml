@@ -9,7 +9,7 @@
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
 
-    <filter>
+<!--     <filter>
         <filter-name>jsonFilter</filter-name>
         <filter-class>fr.soat.devoxx.game.business.admin.JSONPRequestFilter</filter-class>
     </filter>
@@ -17,7 +17,7 @@
     <filter-mapping>
         <filter-name>jsonFilter</filter-name>
         <url-pattern>/services/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping> -->
 
     <filter>
         <filter-name>Html5CorsFilter</filter-name>
@@ -28,9 +28,14 @@
         <filter-name>Html5CorsFilter</filter-name>
         <url-pattern>/services/*</url-pattern>
     </filter-mapping>
+
     <!--<resource-ref>-->
         <!--<res-ref-name>jdbc/devoxxfrjee</res-ref-name>-->
         <!--<res-type>javax.sql.DataSource</res-type>-->
         <!--<res-auth>Container</res-auth>-->
     <!--</resource-ref>-->
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

@@ -30,6 +30,7 @@ import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -42,11 +43,11 @@ import javax.ws.rs.core.MediaType;
 public class UserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    private AdminUserService delegate = new AdminUserService();
+    @Inject
+    private AdminUserService delegate;
 
     @Path("/")
     @POST
-//    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
         UserRequestDto userRequestDto = new UserRequestDto();

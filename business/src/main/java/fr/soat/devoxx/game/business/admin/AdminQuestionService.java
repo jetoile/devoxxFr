@@ -25,6 +25,7 @@ package fr.soat.devoxx.game.business.admin;
 
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.admin.pojo.dto.QuestionRequestDto;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.business.question.Question;
 import fr.soat.devoxx.game.business.question.QuestionManager;
@@ -34,7 +35,6 @@ import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
-import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -64,10 +64,11 @@ public class AdminQuestionService {
 
     private final Mapper dozerMapper = new DozerBeanMapper();
 
-    QuestionManager questionManager = QuestionManager.INSTANCE;
+    @Inject
+    QuestionManager questionManager;
 
     @Inject
-    private GameUserDataManager gameUserDataManager;
+    GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
 
@@ -76,10 +77,10 @@ public class AdminQuestionService {
         validator = factory.getValidator();
     }
 
-    public AdminQuestionService() {
-
-//        this.gameUserDataManager = GameUserDataManager.INSTANCE;
-    }
+//    public AdminQuestionService() {
+//
+////        this.gameUserDataManager = fr.soat.devoxx.game.business.admin.GameUserDataManager.INSTANCE;
+//    }
 
 //    AdminQuestionService(GameUserDataManager gameUserDataManager) {
 //        this.gameUserDataManager = gameUserDataManager;
@@ -90,6 +91,30 @@ public class AdminQuestionService {
     @Produces(MediaType.APPLICATION_JSON)
     public QuestionResponseDto getQuestion() {
         return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
+    }
+
+    @Path("/")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public javax.ws.rs.core.Response addQuestion(QuestionRequestDto questionRequest) {
+        //TODO add question processing
+        return javax.ws.rs.core.Response.ok().build();
+    }
+
+    @Path("/{questionId}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId, QuestionRequestDto questionRequest) {
+        //TODO update question processing
+        return javax.ws.rs.core.Response.ok().build();
+    }
+
+    @Path("/{questionId}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId) {
+        //TODO delete question processing
+        return javax.ws.rs.core.Response.ok().build();
     }
 
     @Path("/{username}")
@@ -135,7 +160,7 @@ public class AdminQuestionService {
         }
 
         Game game = gameUserDataManager.getGameById(responseDto.getUserName(), res.getId());
-               
+
         if (game == null) {
             game = new Game();
             game.setId(response.getId());
@@ -156,7 +181,7 @@ public class AdminQuestionService {
     public javax.ws.rs.core.Response addQuestionForUser(@PathParam("username") String userName) {
         List<Game> gamesAllReadyPlayed = gameUserDataManager.getGames(userName);
         List<Question> allQuestions = questionManager.loadQuestions().getQuestions();
-        
+
         if (gamesAllReadyPlayed.size() == allQuestions.size()) {
             //NOTHING TO DO : the player allready answered all questions
             return javax.ws.rs.core.Response.ok().build();

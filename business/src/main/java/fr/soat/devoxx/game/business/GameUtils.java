@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Singleton;
 import java.util.NoSuchElementException;
 
 /**
@@ -37,8 +38,10 @@ import java.util.NoSuchElementException;
  * Time: 12:03
  */
 //@Path("/gridService")
-public enum GameUtils {
-    INSTANCE;
+@Singleton
+public class GameUtils {
+//public enum GameUtils {
+//    INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameUtils.class);
     
@@ -48,7 +51,7 @@ public enum GameUtils {
 
     private PropertiesConfiguration configuration;
 
-    private GameUtils() {
+    public GameUtils() {
         try {
             this.configuration = new PropertiesConfiguration(GAME_PROPERTIES_FILENAME);
             this.configuration.setThrowExceptionOnMissing(true);

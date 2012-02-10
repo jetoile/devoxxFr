@@ -168,6 +168,26 @@ as the API is included in JBoss AS 7 -->
             </dependencies>
 
             <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <webResources>
+                                <webResource>
+                                    <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                                    <includes>
+                                        <include>*.xml</include>
+                                    </includes>
+                                    <targetPath>WEB-INF</targetPath>
+                                    <filtering>true</filtering>
+                                </webResource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+
                 <resources>
                     <resource>
                         <filtering>true</filtering>
@@ -200,6 +220,45 @@ as the API is included in JBoss AS 7 -->
                 </filters>
             </build>
 
+        </profile>
+
+        <profile>
+            <id>cloudbees-soat</id>
+            <properties>
+                <environment>cloudbees-soat</environment>
+            </properties>
+
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <webResources>
+                                <webResource>
+                                    <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                                    <includes>
+                                        <include>*.xml</include>
+                                    </includes>
+                                    <targetPath>WEB-INF</targetPath>
+                                    <filtering>true</filtering>
+                                </webResource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+                <filters>
+                    <filter>src/main/filters/filter-${environment}.properties</filter>
+                </filters>
+            </build>
         </profile>
 
         <profile>

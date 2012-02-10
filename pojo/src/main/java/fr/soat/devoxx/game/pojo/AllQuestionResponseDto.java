@@ -23,8 +23,13 @@
  */
 package fr.soat.devoxx.game.pojo;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -48,6 +53,27 @@ public class AllQuestionResponseDto {
     public void addQuestion(QuestionResponseDto question) {
         this.questions.add(question);
     }
+    
+    /**
+	 * Unmarshal Fix
+	 * See :
+	 * http://stackoverflow.com/questions/4181120/transforming-empty-element-into-null-when-unmarshalling-with-jaxb/4197817#4197817
+	 * 
+	 * @param aUnmarshaller
+	 * @param aParent
+	 */
+	void afterUnmarshal(Unmarshaller aUnmarshaller, Object aParent) {
+		if (questions != null) {
+			Iterator<QuestionResponseDto> iterator = questions.iterator();
+			while (iterator.hasNext()) {
+				QuestionResponseDto questionResponse = iterator.next();
+				if (StringUtils.isEmpty(questionResponse.getLabel())) {
+					// a QuestionResponseDto without label is considered invalid
+					iterator.remove();
+				}
+			}
+		}
+	}
 
     @Override
     public String toString() {

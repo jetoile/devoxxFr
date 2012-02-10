@@ -4,19 +4,8 @@
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="devoxx-test" transaction-type="RESOURCE_LOCAL">
 
-        <!-- comment out to use the default provider
-        <provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider>
-        -->
-
         <class>fr.soat.devoxx.game.persistent.User</class>
         <properties>
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/devoxx"/>-->
-            <!--<property name="javax.persistence.jdbc.user" value="root"/>-->
-            <!--<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>-->
-            <!--<property name="javax.persistence.jdbc.password" value="Sic21pes"/>-->
-            <!--<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>-->
-            <!--<property name="eclipselink.ddl-generation.output-mode" value="database" />-->
-
 
             <property name="eclipselink.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
             <property name="eclipselink.jdbc.url" value="jdbc:hsqldb:mem:test"/>
