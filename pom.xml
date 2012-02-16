@@ -28,6 +28,12 @@
             <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
         </repository>
         <repository>
+            <id>org.eclipse.jetty</id>
+            <name>Jetty Eclipse Repository</name>
+            <url>http://mvnrepository.com/artifact/org.eclipse.jetty</url>
+        </repository>
+
+        <repository>
             <id>soat-cloudbees-snasphots</id>
             <url>https://repository-soat.forge.cloudbees.com/snapshot/</url>
             <snapshots>
@@ -82,7 +88,7 @@
         <dozer.version>5.3.2</dozer.version>
         <mongo-java-driver.version>2.5.3</mongo-java-driver.version>
         <morphia.version>0.99</morphia.version>
-        <servlet-api.version>3.0-alpha-1</servlet-api.version>
+        <!--<servlet-api.version>3.0-alpha-1</servlet-api.version>-->
     </properties>
 
     <developers>
@@ -169,6 +175,11 @@
                 <version>${jackson.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>javax.persistence</artifactId>
                 <version>${javax.persistence.version}</version>
@@ -230,12 +241,12 @@
                 <artifactId>jersey-jrebel</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>${servlet-api.version}</version>
-                <scope>provided</scope>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>javax.servlet</groupId>-->
+                <!--<artifactId>servlet-api</artifactId>-->
+                <!--<version>${servlet-api.version}</version>-->
+                <!--<scope>provided</scope>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>

@@ -30,6 +30,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Enumeration;
 
 /**
@@ -39,43 +40,40 @@ import java.util.Enumeration;
  */
 public class Html5CorsFilter implements Filter {
 
-    private static final Logger logger = LoggerFactory.getLogger(Html5CorsFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Html5CorsFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //NOTHING TO DO
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        logger.debug("HTML5CorsFilter add HTML5 CORS Headers");
+        LOGGER.debug("HTML5CorsFilter add HTML5 CORS Headers");
         HttpServletRequest req = (HttpServletRequest) request;
-        Enumeration e = req.getHeaderNames();
-        String header = null;
-        String headers = "\nmethod : " + req.getMethod() + " " + req.getRequestURI() + "\n";
-		while (e.hasMoreElements()) {
-			header = (String) e.nextElement();
+        StringBuilder headers = new StringBuilder("\nmethod : " + req.getMethod() + " " + req.getRequestURI() + "\n");
+		for (Object header : Collections.list(req.getHeaderNames())) {
 			if (header != null) {
-				headers += header + " : " + req.getHeader(header) + "\n";
+				headers.append(" : " + req.getHeader((String)header) + "\n");
 			}
-		}
-		logger.info(headers); // Log client headers
+        }
+        LOGGER.info(headers.toString()); // Log client headers
 
         HttpServletResponse res = (HttpServletResponse) response;
         res.addHeader("Access-Control-Allow-Origin", "*");
         res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, HEAD, OPTIONS");
-        res.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Transfer-Encoding, Connection, Keep-Alive");
         
         try {
         	chain.doFilter(request, response);
         } catch (RuntimeException ex) {
-			logger.debug(ex.getMessage());
+            LOGGER.debug(ex.getMessage());
 		}
     }
 
     @Override
     public void destroy() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //NOTHING TO DO
     }
 }

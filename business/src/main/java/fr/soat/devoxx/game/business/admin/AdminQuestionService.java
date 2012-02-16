@@ -23,6 +23,7 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
+import fr.soat.devoxx.game.QuestionsNotifier;
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.dto.QuestionRequestDto;
@@ -64,6 +65,9 @@ public class AdminQuestionService {
     private static Random RANDOM_GENERATOR = new Random();
 
     private final Mapper dozerMapper = new DozerBeanMapper();
+
+    @Inject
+    QuestionsNotifier questionsNotifier;
 
     @Inject
     QuestionManager questionManager;
@@ -197,6 +201,9 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
+
+        questionsNotifier.notifyListener(userName, randomQuestion);
+
         return javax.ws.rs.core.Response.ok().build();
     }
 
