@@ -14,9 +14,19 @@
         <filter-class>fr.soat.devoxx.game.filter.Html5CorsFilter</filter-class>
     </filter>
 
+    <filter>
+        <filter-name>WebsocketAdapter</filter-name>
+        <filter-class>fr.soat.devoxx.game.filter.WebsocketPortMapper</filter-class>
+    </filter>
+
     <filter-mapping>
-    <filter-name>Html5CorsFilter</filter-name>
-    <url-pattern>/services/*</url-pattern>
+        <filter-name>Html5CorsFilter</filter-name>
+        <url-pattern>/services/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>WebsocketAdapter</filter-name>
+        <url-pattern>/adapter/*</url-pattern>
     </filter-mapping>
 
     <!--<filter-mapping>-->

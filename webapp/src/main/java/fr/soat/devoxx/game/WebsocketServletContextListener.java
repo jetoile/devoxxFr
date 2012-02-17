@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.net.InetAddress;
 
 /**
  * User: khanh
