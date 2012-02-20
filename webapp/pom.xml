@@ -55,16 +55,39 @@
             <artifactId>business</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-websocket</artifactId>
+            <version>8.1.0.RC5</version>
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>javax.serlvet</groupId>-->
+                    <!--<artifactId>servlet-api</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        </dependency>
+
+        <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>8.1.0.RC5</version>
+        </dependency>
 
         <!--<dependency>-->
-        <!--<groupId>org.codehaus.jackson</groupId>-->
-        <!--<artifactId>jackson-core-asl</artifactId>-->
+            <!--<groupId>org.codehaus.jackson</groupId>-->
+            <!--<artifactId>jackson-core-asl</artifactId>-->
         <!--</dependency>-->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.codehaus.jackson</groupId>-->
+            <!--<artifactId>jackson-mapper-asl</artifactId>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>javax.servlet</groupId>-->
+        <!--<artifactId>servlet-api</artifactId>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
 
         <dependency>

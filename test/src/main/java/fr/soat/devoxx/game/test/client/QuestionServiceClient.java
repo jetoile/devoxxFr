@@ -46,39 +46,45 @@ public class QuestionServiceClient {
 
 //	public static final String BASE_URI = "http://localhost:9090/";
 //	public static final String BASE_URI = "http://devoxxfr.jetoile.cloudbees.net/";
-	public static final String BASE_URI = "http://localhost:8080/webapp/";
+	public static final String BASE_URI = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/";
 	public static final String SERVICE_PATH = "services";
 	public static final String TEST_USERNAME = "toto";
 
     public static void main(String[] args) {
         QuestionServiceClient client = new QuestionServiceClient();
-        System.out.println("is creating an user");
-        UserResponseDto res = client.testCreateUser();
-        System.out.println("RESULT: is creating an user: " + res);
+        System.out.println("generateQuestion");
+        client.testCleanAllQuestionsForUser("titi2");
+        client.testGenerateQuestionForUser("titi2");
+        System.out.println("ok");
 
-        System.out.println("is asking for a question");
-        QuestionResponseDto responseDto = client.testGetQuestion();
-        System.out.println("RESULT: is creating an user: " + responseDto);
-
-        System.out.println("is responding to a question");
-        ResponseResponseDto resp = client.testGetReplyForQuestion1();
-        System.out.println("RESULT: is responding to a question: " + resp);
-
-        System.out.println("is responding to a question");
-        resp = client.testGetReplyForQuestion3();
-        System.out.println("RESULT: is responding to a question: " + resp);
-
-        System.out.println("is responding to a question");
-        resp = client.testGetReplyForQuestion3WithFalseResponse();
-        System.out.println("RESULT: is responding to a question: " + resp);
-
-        System.out.println("is responding to a question");
-        resp = client.testGetReplyForQuestion3WithInvalidResponse();
-        System.out.println("RESULT: is responding to a question: " + resp);
-
-
-        System.out.println("is getting results");
-        System.out.println("RESULT: is responding to a question: " + client.testGetResult());
+//
+//        System.out.println("is creating an user");
+//        UserResponseDto res = client.testCreateUser();
+//        System.out.println("RESULT: is creating an user: " + res);
+//
+//        System.out.println("is asking for a question");
+//        QuestionResponseDto responseDto = client.testGetQuestion();
+//        System.out.println("RESULT: is creating an user: " + responseDto);
+//
+//        System.out.println("is responding to a question");
+//        ResponseResponseDto resp = client.testGetReplyForQuestion1();
+//        System.out.println("RESULT: is responding to a question: " + resp);
+//
+//        System.out.println("is responding to a question");
+//        resp = client.testGetReplyForQuestion3();
+//        System.out.println("RESULT: is responding to a question: " + resp);
+//
+//        System.out.println("is responding to a question");
+//        resp = client.testGetReplyForQuestion3WithFalseResponse();
+//        System.out.println("RESULT: is responding to a question: " + resp);
+//
+//        System.out.println("is responding to a question");
+//        resp = client.testGetReplyForQuestion3WithInvalidResponse();
+//        System.out.println("RESULT: is responding to a question: " + resp);
+//
+//
+//        System.out.println("is getting results");
+//        System.out.println("RESULT: is responding to a question: " + client.testGetResult());
 
 //        System.out.println("is deleting the user");
 //        client.testDeleteUser();
@@ -186,5 +192,18 @@ public class QuestionServiceClient {
 //        JSONWithPadding res = service.path("services").path("/result/result/toto").type(MediaType.APPLICATION_JSON).get(JSONWithPadding.class);
         return res;
     }
+    
+    public void testGenerateQuestionForUser(String userName) {
+        ClientConfig config = new DefaultClientConfig();
+        Client client = Client.create(config);
+        WebResource service = client.resource(getBaseURI());
+        service.path(SERVICE_PATH).path("/admin/question/" + userName + "/create").put();
+    }
 
+    public void testCleanAllQuestionsForUser(String userName) {
+        ClientConfig config = new DefaultClientConfig();
+        Client client = Client.create(config);
+        WebResource service = client.resource(getBaseURI());
+        service.path(SERVICE_PATH).path("/admin/user/" + userName + "/games").delete();
+    }
 }
