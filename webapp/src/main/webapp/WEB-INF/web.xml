@@ -29,6 +29,16 @@
         <url-pattern>/services/*</url-pattern>
     </filter-mapping>
 
+    <!--<servlet>-->
+        <!--<servlet-name>PushServlet</servlet-name>-->
+        <!--<servlet-class>fr.soat.devoxx.game.PushServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!---->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>PushServlet</servlet-name>-->
+        <!--<url-pattern>/pushService/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+    
     <!--<resource-ref>-->
         <!--<res-ref-name>jdbc/devoxxfrjee</res-ref-name>-->
         <!--<res-type>javax.sql.DataSource</res-type>-->
@@ -36,6 +46,6 @@
     <!--</resource-ref>-->
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>indexJBoss.html</welcome-file>
     </welcome-file-list>
 </web-app>

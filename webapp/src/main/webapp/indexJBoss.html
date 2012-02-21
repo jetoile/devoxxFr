@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DevoxxFr</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!--<link rel="stylesheet" href="jquery.mobile-1.0.min.css"/>-->
+<link rel="stylesheet" href="css/jquery.mobile-1.0.css"/>
+<!--<link rel="stylesheet" href="jquery.mobile.structure-1.0.min.css" />-->
+<!-- <link rel="stylesheet" href="soat-custom-theme.min.css"> -->
+
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.4.0.js"></script>
+<!--<script type="text/javascript" charset="utf-8" src="websocket.js"></script>-->
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
+<!--<script type="text/javascript" charset="utf-8" src="push_client.js"></script>-->
+<script type="text/javascript">
+    $(document).bind("mobileinit", function () {
+        // Make your jQuery Mobile framework configuration changes here!
+        $.mobile.allowCrossDomainPages = true;
+        $.support.cors = true;
+        /*         $.mobile.ajaxEnabled = 'false'; */
+        $.mobile.ajaxEnabled = 'true';
+        $.mobile.touchOverflowEnabled = true;
+        $.mobile.orientationChangeEnabled = false;
+        $.mobile.pushStateEnabled = false;
+        $.mobile.defaultPageTransition = 'none';
+        $.mobile.defaultDialogTransition = 'none';
+        $.mobile.page.prototype.options.addBackBtn = true;
+        $.mobile.page.prototype.options.backBtnTheme = "a";
+        /*         $.mobile.loadingMessage = true;
+         $.mobile.page.prototype.options.backBtnText = "previous"; */
+//        $.mobile.page.prototype.options.domCache = true;
+        $.ajaxSetup({
+            cache:false
+        });
+    });
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0.min.js"></script>
+
+<script type="text/javascript">
+//var baseUri = 'http://10.0.2.2:8080/webapp-1.0.1-SNAPSHOT';
+var baseUri = 'http://localhost:8080/webapp-1.0.1-SNAPSHOT';
+//var baseUri = 'http://devoxxfrjee.jetoile.cloudbees.net';
+//var baseUri = 'http://devoxxfr.jetoile.cloudbees.net';
+
+//var myWebSocket = new WebSocket("ws://localhost:8080/webapp-1.0.1-SNAPSHOT/adapter/dsf");
+//
+//if (window.MozWebSocket) {
+//    window.WebSocket = window.MozWebSocket;
+//}
+//
+//function doSend() {
+//    if (window.localStorage.getItem("username") !== undefined) {
+//        myWebSocket.send(window.localStorage.getItem("username"));
+//    }
+//}
+//
+//function openConnection() {
+////    myWebSocket = new WebSocket("ws://devoxxfrjee.jetoile.cloudbees.net/adapter/dsf");
+//    myWebSocket = new WebSocket("ws://localhost:8080/webapp-1.0.1-SNAPSHOT/adapter/dsf");
+//    myWebSocket.onopen = function () {
+//        $('#support').html('<h2>Connection open</h2>');
+////        };
+//
+//        myWebSocket.onmessage = function (event) {
+//            var message = event.data; //JSON.parse(event.data);
+//            $('#support').html('<h2>' + message + '</h2>');
+//        };
+//
+//        myWebSocket.onclose = function (event) {
+//            $('#support').html('<h2>WebSocket closed</h2>');
+//        };
+//
+//        doSend();
+//    }
+//}
+
+
+/*  ============================= DB ============================
+ document.addEventListener("deviceready", onDeviceReady, false); */
+
+/* PhoneGap is ready */
+//function onDeviceReady() {
+//    var db = window.openDatabase("devoxxFr", "1.0", "Devoxx Soat DB", 100);
+//}
+//
+//
+//function storeUsername(tx, username) {
+//    tx.executeSql('DROP TABLE IF EXISTS USERNAME');
+//    tx.executeSql('CREATE TABLE IF NOT EXISTS USERNAME (id unique, data)');
+//    tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "' + username + '")');
+//}
+//
+//function queryDB(tx) {
+//    tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+//}
+//
+//function querySuccess(tx, results) {
+//
+//}
+// =================================================================
+$.stream.setup({enableXDR:true});
+
+//function go() {
+//    var url = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/pushService"
+//    var request = new XMLHttpRequest();
+//    request.open("GET", url, true);
+//    request.setRequestHeader("Content-Type", "application/x-javascript;");
+//    request.setRequestHeader("Access-Control-Allow-Origin", "*");
+//    request.onreadystatechange = function () {
+//        alert("======= " + request.responseText + request.readyState + request.status);
+//        if (request.readyState == 4) {
+//            if (request.status == 200) {
+//                if (request.responseText) {
+//                    document.getElementById("forecasts").innerHTML =
+//                            request.responseText;
+//                    go();
+//
+//                }
+//            }
+//        }
+//    };
+//    request.send(null);
+//}
+// =================================================================
+
+function displayOneQuestion(data, nbForm) {
+    var result = '<div data-role="collapsible" id="questionList-' + nbForm + '">';
+    result += '<h3>Question ' + data.id + '</h3>';
+    result += '<div data-role="fieldcontain">\n';
+    result += '<form action="" name="replyQuestionForm" id="replyQuestionForm-' + nbForm + '">'
+    result += '<fieldset data-role="controlgroup">\n';
+    if (data.questionType == 'MULTIPLE_CHOICE') {
+        result += '<legend>' + data.label + '</legend>\n';
+        $.each(data.questions, function (i, val) {
+            result += '<input type="checkbox" name="responses" id="checkbox-' + i + '" class="custom" value="' + val + '"></input>\n';
+            result += '<label for="checkbox-' + i + '">' + val + '</label>\n';
+        });
+    } else if (data.questionType == 'MULTIPLE_SINGLE_CHOICE') {
+        result += '<legend>' + data.label + '</legend>\n';
+        $.each(data.questions, function (i, val) {
+            var checked = "";
+            if (i == 0) {
+                checked = 'checked="true"';
+            }
+            result += '<input type="radio" name="responses" id="radio-choice-' + i + '" value="' + val + '" ' + checked + '></input>\n';
+            result += '<label for="radio-choice-' + i + '">' + val + '</label>\n';
+        });
+    } else if (data.questionType == 'FREE') {
+        result += '<legend>' + data.label + '</legend>\n';
+        result += '<textarea name="responses"></textarea>\n';
+    }
+
+    result += '</fieldset>\n';
+    result += '<input type="hidden" name="id" value="' + data.id + '"></input>\n';
+    result += '<input type="hidden" name="userName" value="' + displayUserName() + '"></input>\n';
+    result += '</form>\n';
+    result += '<button type="button" data-theme="a" name="submit" onclick="submitQuestionResultForm(' + nbForm + ')">Submit</button>\n';
+    result += '</div>\n';
+    result += '</div>\n';
+    $(result).appendTo('#resultGetQuestion');
+}
+
+
+function waitForMsg() {
+    $.ajax({
+        type : 'GET',
+        url: 'http://localhost:8080/webapp-1.0.1-SNAPSHOT/pushService',
+        async : true,
+        cache: false,
+        success: function(data) {
+            alert(data);
+            waitForMsg();
+        },
+        error: function() {
+            alert('error');
+            waitForMsg();
+        }
+    });
+}
+
+$(document).ready(function() {
+    waitForMsg();
+});
+
+$(function () {
+
+
+
+//    $.stream("http://localhost:8080/webapp-1.0.1-SNAPSHOT/pushService", {
+//        type:"http",
+//        dataType:"text",
+//        context:$("#mainTitleUsername")[0],
+////        open: function(event, stream) {
+////            alert('ici ' + event.data + " " + stream.message);
+//////            stream.send({username:"toto", message:"Hello"});
+//////            alert('send');
+//////            go();
+////        },
+//        message: function(event) {
+//            alert(event.data);
+//        },
+//        error: function() {
+////            alert('error');
+//        },
+//        close: function() {
+//            alert('close');
+//        }
+//    });
+
+
+    $('#mainTitleUsername').bind('userChange', function () {
+        $(this).html(displayUserName());
+    });
+    $('#mainTitleUsername').trigger('userChange');
+    /* onload execute handler */
+
+    $('#getImage').click(function () {
+        $('#getImage').button('disable');
+        $.mobile.showPageLoadingMsg();
+
+        $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+                {
+                    tags:"cat",
+                    tagmode:"any",
+                    format:"json"
+                },
+                function (data) {
+                    $("#images").html("");
+                    $.each(data.items, function (i, item) {
+                        $("<img/>").attr("src", item.media.m)
+                                .attr("alt", item.title).appendTo("#images");
+                        if (i == 5) return false;
+                    });
+                    /*              $('#getImage').removeClass('ui-disabled');*/
+                    $.mobile.hidePageLoadingMsg();
+                    $('#getImage').button('enable');
+                });
+    });
+
+
+    $('#getScore').click(function () {
+        $('#getScore').button('disable');
+        $.mobile.showPageLoadingMsg();
+        $.getJSON(baseUri + '/services/result/' + displayUserName(),
+                function (data) {
+                    var result = '\n<ul data-role="listview">\n';
+                    result += '<li><a href="#">Number of Failed Responses<span class="ui-li-count">' + data.nbFail + '</span></a></li>';
+                    result += '<li><a href="#">Number of Invalid Responses<span class="ui-li-count">' + data.nbInvalid + '</span></a></li>';
+                    result += '<li><a href="#">Number of Right Responses<span class="ui-li-count">' + data.nbSuccess + '</span></a></li>';
+                    result += '</ul>';
+                    $('#result').html(result).trigger("create");
+                    $('#getScore').button('enable');
+                    $.mobile.hidePageLoadingMsg();
+                });
+    });
+
+    $('#getQuestion').click(function () {
+        $.mobile.showPageLoadingMsg();
+        var nbForm = $('[name="replyQuestionForm"]').length;
+        /*getElementsByTagNames("replyQuestionForm")*/
+
+        $('#getQuestion').addClass('ui-disabled');
+        $('#getQuestion').button('disable');
+        $.getJSON(baseUri + '/services/question',
+                function (data) {
+                    displayOneQuestion(data, ++nbForm);
+                    $('#resultGetQuestion1').trigger("create");
+                    $('#getQuestion').removeClass('ui-disabled');
+                    $('#getQuestion').button('enable');
+                    $.mobile.hidePageLoadingMsg();
+                });
+    });
+
+    $('#getAllQuestions').click(function () {
+        $.mobile.showPageLoadingMsg();
+        $('#resultGetQuestion').html('');
+        var nbForm = $('[name="replyQuestionForm"]').length;
+
+        $('#getAllQuestions').addClass('ui-disabled');
+        $('#getAllQuestions').button('disable');
+        $.getJSON(baseUri + '/services/question/' + displayUserName(),
+                function (data) {
+                    if (data !== null) {
+                        if (data.questions.id === undefined) {
+                            $(data.questions).each(function () {
+                                displayOneQuestion(this, ++nbForm);
+                            });
+                        } else {
+                            displayOneQuestion(data.questions, ++nbForm);
+                        }
+                    }
+
+                    $('#resultGetQuestion1').trigger("create");
+                    $('#getAllQuestions').removeClass('ui-disabled');
+                    $('#getAllQuestions').button('enable');
+                    $.mobile.hidePageLoadingMsg();
+                }).error(function () {
+                    $.mobile.hidePageLoadingMsg();
+                    console.log("getAllQuestions : error occured when loading getJson");
+                });
+    });
+
+    $('#registerUser').click(function () {
+        $.mobile.showPageLoadingMsg();
+        var formData = $("#registerUsercallAjaxForm").serialize();
+        $.post(baseUri + '/services/user',
+                formData,
+                jsonCallbackRegisterUserSuccess,
+                'json'
+        ).error(callbackRegisterUserError);
+
+    });
+
+    /**
+     * TODO: Does not operate with a HTC Desire
+     */
+    $('#generateQuestionPage').click(function () {
+        $.mobile.showPageLoadingMsg();
+        $.putAction(
+                baseUri + '/services/admin/question/' + displayUserName() + '/create'
+        ).error(function (data) {
+                    console.log("generateQuestionPage : error occured when PUT data");
+                });
+        /* $.mobile.changePage("#home"); */
+        $.mobile.hidePageLoadingMsg();
+    });
+
+    $('#cleanUserPage').click(function () {
+        $.mobile.showPageLoadingMsg();
+        $.deleteAction(
+                baseUri + '/services/admin/user/' + displayUserName() + '/games'
+        ).error(function () {
+                    console.log("cleanUserPage : error occured when GET data");
+                });
+        $.mobile.changePage("#home");
+        $.mobile.hidePageLoadingMsg();
+    });
+
+    $('#cancelRegisterUser').click(function () {
+        document.getElementById('username').value = "";
+        document.getElementById('mail').value = "";
+    });
+
+    $('#cancelLogin').click(function () {
+        document.getElementById('loginUsername').value = "";
+        $.mobile.changePage("#home");
+        $('#mainTitleUsername').trigger('userChange');
+    });
+
+    $('#disconnectUserPage').click(function () {
+        window.localStorage.removeItem("username");
+        $.mobile.changePage("#home");
+        $('#mainTitleUsername').trigger('userChange');
+    });
+
+    $('#submitLogin').click(function () {
+        $.mobile.showPageLoadingMsg();
+        var userName = document.getElementById('loginUsername').value;
+        window.localStorage.setItem("username", userName);
+        $.mobile.changePage("#home");
+        $('#mainTitleUsername').trigger('userChange');
+        $.mobile.hidePageLoadingMsg();
+    });
+
+});
+
+/* Extend jQuery with functions for PUT and DELETE requests. */
+function _ajax_request(url, data, callback, type, method) {
+    /* shift arguments if data argument was omitted */
+    if (jQuery.isFunction(data)) {
+        type = type || callback;
+        callback = data;
+        data = undefined;
+    }
+    return jQuery.ajax({
+        type:method,
+        url:url,
+        cache:false,
+        data:data,
+        success:callback,
+        dataType:type
+    });
+}
+
+jQuery.extend({
+    putAction:function (url, data, callback, type) {
+        return _ajax_request(url, data, callback, type, 'PUT');
+    },
+    deleteAction:function (url, data, callback, type) {
+        return _ajax_request(url, data, callback, type, 'DELETE');
+    }
+});
+
+function submitQuestionResultForm(value) {
+    $.mobile.showPageLoadingMsg();
+    var formData = $("#replyQuestionForm-" + value).serialize();
+    $('#questionList-' + value).remove();
+
+    $.post(baseUri + '/services/question/reply',
+            formData,
+            jsonCallbackGetResultPostQuestionSuccess,
+            'json'
+    ).error(callbackGetResultPostQuestionError);
+    /* @TODO gérer le cas des "aborted" */
+}
+
+function displayUserName() {
+    if (window.localStorage.getItem("username") !== null) {
+        return window.localStorage.getItem("username");
+    }
+    return "Not logged...";
+}
+
+function jsonCallbackGetResultPostQuestionSuccess(data) {
+    if (data.responseType === 'SUCCESS') {
+        $('#replyQuestionTitleResult').html('<h2>Congratulation! You win!</h2>');
+    } else if (data.responseType === 'FAIL') {
+        $('#replyQuestionTitleResult').html('<h2>Too bad! You loose!</h2>');
+    } else {
+        $('#replyQuestionTitleResult').html('<h2>Stop trying to bullshit!</h2>');
+    }
+
+    var result = '<label>You answered for question: ' + data.id + '<br/>';
+    var answer = data.answer;
+    result += "Answers : <br/>";
+    if (answer && answer.length) {
+        if ($.isArray(answer)) {
+            $.each(answer, function (key, val) {
+                result += val + '<br/>';
+            });
+        }
+        else {
+            result += answer;
+        }
+    }
+    result += '</label><br/>';
+    $.mobile.hidePageLoadingMsg();
+    $('#replyQuestionBodyResult').html(result);
+    $.mobile.changePage("#popupReplyQuestionResult", {transition:'pop', role:'dialog'});
+}
+
+function callbackGetResultPostQuestionError() {
+    $.mobile.hidePageLoadingMsg();
+    $('#replyQuestionTitleResult').attr('data-theme', 'e').html('<h2>Error</h2>');
+    $('#replyQuestionBodyResult').html('Error when sending answers !');
+    $.mobile.changePage("#popupReplyQuestionResult", {transition:'pop', role:'dialog'});
+}
+
+
+function jsonCallbackRegisterUserSuccess(data) {
+    $.mobile.hidePageLoadingMsg();
+    $('#registerUserTitleResult').html('<h2>User Successfully registered!</h2>');
+    if (undefined !== data) {
+        $.each(data, function (key, val) {
+            $('#registerUserBodyResult').html('<label>' + key + ': ' + val + '</label><br/>');
+        });
+    }
+
+    var userName = document.getElementById('username').value;
+    window.localStorage.setItem("username", userName);
+    /*     $.mobile.changePage("#home"); */
+    $('#mainTitleUsername').trigger('userChange');
+
+    $.mobile.changePage("#popupRegisterUser", {transition:'pop', role:'dialog'});
+}
+
+function callbackRegisterUserError() {
+    $.mobile.hidePageLoadingMsg();
+    $('#registerUserTitleResult').html('<h2>User Unsuccessfully registered !</h2>');
+    $('#registerUserBodyResult').html('<label>Please check registrations fields.</label><br/>');
+
+    $.mobile.changePage("#popupRegisterUser", {transition:'pop', role:'dialog'});
+}
+
+/* $(document).ready(function() {
+ $('body').find('.script').each(function() {
+ eval($(this).html());
+ });
+ }); */
+</script>
+
+<style type="text/css">
+</style>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+    //    if (window.WebSocket) {
+    //        $('#html5support').html('<h2>This browser is websocket compliant</h2>');
+    //    } else {
+    //        $('#html5support').html('<h2>This browser is not websocket compliant</h2>');
+    //    }
+
+    //    if (myWebSocket.readyState === 1) {
+    //    if (window.localStorage.getItem("username") !== null) {
+    //        alert(conn + ' ' + window.localStorage.getItem("username"));
+    ////        myWebSocket.send(window.localStorage.getItem("username"));
+    //        myWebSocket.send(JSON.stringify('tp'));
+    //    }
+    //    } else  {
+    //        alert('ooo');
+    //    }
+
+
+    //    openConnection();
+
+</script>
+<!--<script type="text/javascript">-->
+
+<!--//    var baseWSUri = 'ws://10.0.2.2:8080/webapp-1.0.1-SNAPSHOT/servletAsync?userName=titi1';-->
+<!--var baseWSUri = 'ws://localhost:8080/webapp-1.0.1-SNAPSHOT/servletAsync?userName=titi1';-->
+<!--//    var baseWSUri = 'ws://192.168.1.153:8081';-->
+<!--//var baseWSUri = 'ws://devoxxfrjee.jetoile.cloudbees.net';-->
+
+<!--// new socket-->
+<!--var socket = new WebSocket(baseWSUri);-->
+
+<!--// push a message after the connection is established.-->
+<!--socket.onopen = function () {-->
+<!--alert('connected');-->
+<!--};-->
+
+<!--// alerts message pushed from server-->
+<!--socket.onmessage = function (msg) {-->
+<!--//        alert(JSON.stringify(msg));-->
+<!--alert(msg);-->
+<!--};-->
+
+<!--socket.onerror = function () {-->
+<!--alert('error');-->
+<!--}-->
+
+
+<!--// alert close event-->
+<!--socket.onclose = function () {-->
+<!--alert('closed');-->
+<!--};-->
+<!--</script>-->
+
+<!-- Popup Dialog Page -->
+<div data-role="dialog" id="popupRegisterUser">
+    <div data-role="header" data-theme="e" data-position="inline" id="registerUserTitleResult"></div>
+
+    <div data-role="content" data-theme="a" class="ui-body-a ui-body-a">
+        <div id="registerUserBodyResult"></div>
+        <p><a href="#registerUserPage" data-rel="back" data-role="button" data-inline="true" data-icon="back">Close</a>
+        </p>
+    </div>
+</div>
+
+<div data-role="dialog" id="popupReplyQuestionResult">
+    <div data-role="header" data-theme="c" data-position="inline" id="replyQuestionTitleResult"></div>
+
+    <div data-role="content" data-theme="a" class="ui-body-a ui-body-a">
+        <div id="replyQuestionBodyResult"></div>
+        <p><a href="#questionPage" data-rel="back" data-role="button" data-inline="true" data-icon="back">Close</a>
+        </p>
+    </div>
+</div>
+
+<!-- Home Page -->
+<div data-role="page" id="home">
+    <div data-role="header">
+        <!--<a href="#home" data-icon="home" class="ui-btn-left">Home</a>-->
+        <h1 id="mainTitle">DevoxxFr - <span id="mainTitleUsername"></span></h1>
+        <!--<a href="#" data-icon="check">-->
+        <!--<script type="text/javascript">-->
+        <!--function displayUserName() {-->
+        <!--if (window.localStorage.getItem("username") !== null) {-->
+        <!--return window.localStorage.getItem("username");-->
+        <!--}-->
+        <!--return "Not logged...";-->
+        <!--}-->
+        <!--document.write(displayUserName("username"));-->
+        <!--</script>-->
+        <!--</a>-->
+    </div>
+    <div data-role="content" class="ui-body-a ui-body-a">
+        <div id="html5support"></div>
+        <div id="support"></div>
+        <p>Quizz Game powered by: So@t</p>
+        <img src="images/logoJetoile_petit_v1.png" alt="logoJetoile"/>
+        <img src="images/cloudbees03.png" alt="cloudbees"/>
+        <img src="images/soatExperts_carre_petit.png" alt="soatExperts"/>
+
+        <!--<input type="button" onclick="go()" value="Go!"></input>-->
+        <div id="forecasts"></div>
+
+        <div>
+            <ul data-role="listview" data-inset="true" data-theme="a" data-dividertheme="a">
+                <!--<input type="button" onclick="javascript:doSend();" value="webSocket"/>-->
+                <li data-role="list-divider">Menu</li>
+                <li>
+                    <a href="#questionPage">
+                        <h3>Play</h3>
+
+                        <p>Access/Reply Questions</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#getHistoryPage">
+                        <h3>History</h3>
+
+                        <p>To Game: history...</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#manageUserPage">
+                        <h3>Manage User</h3>
+
+                        <p>To manage user: login/create/register/...</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#getAdminPage">
+                        <h3>Admin</h3>
+
+                        <p>To administration page: generateQuestion...</p>
+                    </a>
+                </li>
+                <!--<li><a href="#bar">Foo</a></li>-->
+            </ul>
+        </div>
+
+        <button type="button" data-theme="a" data-inline="true" id="getImage">Bonus</button>
+        <div id="images"></div>
+    </div>
+
+    <!--<div data-role="footer" class="ui-bar-a">-->
+    <!--<a href="index.html" data-role="button" data-icon="delete">Remove</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="plus">Add</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-u">Up</a>-->
+    <!--<a href="#" data-role="button" data-icon="arrow-d" id="toto">Down</a>-->
+    <!--</div>-->
+</div>
+
+<!-- History Page -->
+<div data-role="page" id="getHistoryPage" data-add-back-btn="true">
+    <div data-role="header">
+        <!--<a href="#home" data-icon="home" class="ui-btn-left">Home</a>-->
+        <h1>History page</h1>
+
+        <!--<a href="index.html" data-icon="gear" class="ui-btn-right">Options</a>-->
+    </div>
+    <div data-role="content" class="ui-body-a ui-body-a">
+        <button type="button" data-theme="a" id="getScore">getScore</button>
+
+        <br/>
+        <br/>
+
+        <div id="result">
+        </div>
+        <!--<div id="list"></div>-->
+    </div>
+    <!--<div data-role="footer" class="ui-bar-a">-->
+    <!--<a href="index.html" data-role="button" data-icon="delete">Remove</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="plus">Add</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-u">Up</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-d">Down</a>-->
+    <!--</div>-->
+</div>
+
+<!-- Login Page -->
+<div data-role="page" id="loginPage" data-add-back-btn="true">
+    <div data-role="header">
+        <!--<a href="#home" data-icon="home" class="ui-btn-left">Home</a>-->
+        <h1>Login page</h1>
+
+        <!--<a href="index.html" data-icon="gear" class="ui-btn-right">Options</a>-->
+    </div>
+    <div data-role="content" class="ui-body-a ui-body-a">
+        <!--<form id="loginCallAjaxForm">-->
+        <label for="username" class="ui-hidden-accessible">Username:</label>
+        <input type="text" name="username" id="loginUsername" value="" placeholder="Username"/>
+        <!--</form>-->
+        <!--<div id="result1"></div>-->
+
+        <div class="ui-body ui-body-b">
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a">
+                    <button type="button" data-theme="a" id="cancelLogin">Cancel</button>
+                </div>
+                <div class="ui-block-b">
+                    <button type="button" data-theme="a" id="submitLogin">Login</button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <!--<div data-role="footer" class="ui-bar-a">-->
+    <!--<a href="index.html" data-role="button" data-icon="delete">Remove</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="plus">Add</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-u">Up</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-d">Down</a>-->
+    <!--</div>-->
+</div>
+
+<!-- Manage User Page -->
+<div data-role="page" id="manageUserPage" data-add-back-btn="true">
+    <div data-role="header">
+        <!--<a href="#home" data-icon="home" class="ui-btn-left">Home</a>-->
+        <h1>Manage User page</h1>
+
+    </div>
+    <div data-role="content" class="ui-body-a ui-body-a">
+        <div class="content-primary">
+            <ul data-role="listview" data-inset="true" data-theme="a" data-dividertheme="a">
+                <li data-role="list-divider">Menu</li>
+                <li>
+                    <a href="#loginPage">
+                        <h3>Login User</h3>
+
+                        <p>Login...</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#registerUserPage">
+                        <h3>Register User</h3>
+
+                        <p>Register...</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="disconnectUserPage">
+                        <h3>Disconnect User</h3>
+
+                        <p>WARNING: Disconnect...</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--<div data-role="footer" class="ui-bar-a">-->
+    <!--<a href="index.html" data-role="button" data-icon="delete">Remove</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="plus">Add</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-u">Up</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-d">Down</a>-->
+    <!--</div>-->
+</div>
+
+<!-- Register User Page -->
+<div data-role="page" id="registerUserPage" data-add-back-btn="true">
+    <div data-role="header">
+        <!--<a href="#home" data-icon="home" class="ui-btn-left">Home</a>-->
+        <h1>User page</h1>
+
+    </div>
+    <div data-role="content" class="ui-body-a ui-body-a">
+        <form id="registerUsercallAjaxForm">
+            <label for="username" class="ui-hidden-accessible">Username:</label>
+            <input type="text" name="username" id="username" value="" placeholder="Username"/>
+
+            <label for="mail" class="ui-hidden-accessible">Mail:</label>
+            <input type="text" name="mail" id="mail" value="" placeholder="Mail"/>
+        </form>
+        <!--<div id="result1"></div>-->
+
+        <div class="ui-body ui-body-b">
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a">
+                    <button type="button" data-theme="a" id="cancelRegisterUser">Cancel</button>
+                </div>
+                <div class="ui-block-b">
+                    <button type="button" data-theme="a" id="registerUser">Submit</button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <!--<div data-role="footer" class="ui-bar-a">-->
+    <!--<a href="index.html" data-role="button" data-icon="delete">Remove</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="plus">Add</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-u">Up</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-d">Down</a>-->
+    <!--</div>-->
+</div>
+
+<!-- Admin Page -->
+<div data-role="page" id="getAdminPage" data-add-back-btn="true">
+    <div data-role="header">
+        <h1>Admin page</h1>
+    </div>
+
+    <div data-role="content" class="ui-body-a ui-body-a">
+        <div class="content-primary">
+            <ul data-role="listview" data-inset="true" data-theme="a" data-dividertheme="a">
+                <li data-role="list-divider">Menu</li>
+                <li>
+                    <a href="#" id="generateQuestionPage">
+                        <h3>Generate Question for current User</h3>
+
+                        <p>WARNING: MOCK!!! Generate Random Question for current User</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="cleanUserPage">
+                        <h3>Cleanup the current User's games</h3>
+
+                        <p>WARNING: MOCK!!! Clean up the current User</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Question Page -->
+<div data-role="page" id="questionPage" data-add-back-btn="true">
+    <div data-role="header">
+        <h1>Question page</h1>
+    </div>
+    <div data-role="content" class="ui-body-a ui-body-a">
+        <div class="content-primary">
+            <button type="button" data-theme="a" id="getAllQuestions">getAllQuestions</button>
+
+            <button type="button" data-theme="a" id="getQuestion">WARNING: MOCK!!! Should not be used anymore...
+                getQuestion
+            </button>
+
+            <div id="resultGetQuestion1" data-role="fieldcontain">
+                <div data-role="collapsible-set" id="resultGetQuestion">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div data-role="footer" class="ui-bar-a" data-position="fixed">-->
+    <!--<a href="index.html" data-role="button" data-icon="delete">Remove</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="plus">Add</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-u">Up</a>-->
+    <!--<a href="index.html" data-role="button" data-icon="arrow-d">Down</a>-->
+    <!--</div>-->
+</div>
+
+<!-- ?? -->
+<div data-role="page" id="bar" data-add-back-btn="true">
+    <div data-role="header" data-theme="a">
+        <h1>My Site</h1>
+    </div>
+    <div data-role="content">
+        <h1>This is an internal page 1 - the HTML is located in the footer.</h1>
+    </div>
+    <!--<div data-role="footer" >-->
+    <!--<h1>&copy; Copyright Info or Site URL</h1>-->
+    <!--</div>-->
+</div>
+
+</body>
+</html>
