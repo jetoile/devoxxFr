@@ -43,9 +43,9 @@ import java.net.URI;
  */
 public class AdminQuestionServiceClient {
 
-	public static final String BASE_URI = "http://devoxxfrjee.jetoile.cloudbees.net/";
+//	public static final String BASE_URI = "http://devoxxfrjee.jetoile.cloudbees.net/";
 //	public static final String BASE_URI = "http://devoxxfr.jetoile.cloudbees.net/";
-//    public static final String BASE_URI = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/";
+    public static final String BASE_URI = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/";
     public static final String SERVICE_PATH = "services";
     public static final String TEST_USERNAME = "toto";
 

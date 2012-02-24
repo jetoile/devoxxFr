@@ -28,6 +28,11 @@
             <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
         </repository>
         <repository>
+            <id>sonatype</id>
+            <url>http://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+
+        <repository>
             <id>soat-cloudbees-snasphots</id>
             <url>https://repository-soat.forge.cloudbees.com/snapshot/</url>
             <snapshots>
