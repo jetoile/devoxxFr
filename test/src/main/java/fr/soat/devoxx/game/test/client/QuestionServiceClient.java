@@ -45,16 +45,16 @@ import fr.soat.devoxx.game.pojo.*;
 public class QuestionServiceClient {
 
 //	public static final String BASE_URI = "http://localhost:9090/";
-//	public static final String BASE_URI = "http://devoxxfr.jetoile.cloudbees.net/";
-	public static final String BASE_URI = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/";
+	public static final String BASE_URI = "http://devoxxfrjee.jetoile.cloudbees.net/";
+//	public static final String BASE_URI = "http://localhost:8080/webapp-1.0.1-SNAPSHOT/";
 	public static final String SERVICE_PATH = "services";
 	public static final String TEST_USERNAME = "toto";
 
     public static void main(String[] args) {
         QuestionServiceClient client = new QuestionServiceClient();
         System.out.println("generateQuestion");
-        client.testCleanAllQuestionsForUser("titi2");
-        client.testGenerateQuestionForUser("titi2");
+//        client.testCleanAllQuestionsForUser("khanh");
+        client.testGenerateQuestionForUser("khanh");
         System.out.println("ok");
 
 //
