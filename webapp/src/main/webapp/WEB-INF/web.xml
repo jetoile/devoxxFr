@@ -9,7 +9,7 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>fr.soat.devoxx.game.business, fr.soat.devoxx.game.business.admin</param-value>
+            <param-value>com.jetoile.devoxx.game.business, com.jetoile.devoxx.game.business.admin</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -22,7 +22,7 @@
 
     <filter>
         <filter-name>Html5CorsFilter</filter-name>
-        <filter-class>fr.soat.devoxx.game.filter.Html5CorsFilter</filter-class>
+        <filter-class>com.jetoile.devoxx.game.filter.Html5CorsFilter</filter-class>
     </filter>
 
     <filter-mapping>

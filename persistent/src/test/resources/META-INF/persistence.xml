@@ -8,7 +8,7 @@
         <provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider>
         -->
 
-        <class>fr.soat.devoxx.game.persistent.User</class>
+        <class>com.jetoile.devoxx.game.persistent.User</class>
         <properties>
             <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/devoxx"/>-->
             <!--<property name="javax.persistence.jdbc.user" value="root"/>-->

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>game</artifactId>
-        <groupId>fr.soat.devoxxfr.game</groupId>
+        <groupId>com.jetoile.devoxxfr.game</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -14,15 +14,15 @@
     <dependencies>
 
         <dependency>
-            <groupId>fr.soat.devoxxfr.game</groupId>
+            <groupId>com.jetoile.devoxxfr.game</groupId>
             <artifactId>persistent</artifactId>
         </dependency>
         <dependency>
-            <groupId>fr.soat.devoxxfr.game</groupId>
+            <groupId>com.jetoile.devoxxfr.game</groupId>
             <artifactId>pojo</artifactId>
         </dependency>
         <dependency>
-            <groupId>fr.soat.devoxxfr.game</groupId>
+            <groupId>com.jetoile.devoxxfr.game</groupId>
             <artifactId>admin-pojo</artifactId>
         </dependency>
 
